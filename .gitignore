@@ -14,3 +14,10 @@ dist/
 .vscode/*
 !.vscode/extensions.json
 .idea
+.zed
+
+# Claude code
+.claude
+
+# Tanstack
+.tanstack
