@@ -1,0 +1,119 @@
+.input-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+  max-width: 320px;
+}
+
+.input-wrapper--full-width {
+  max-width: none;
+}
+
+.input__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-gray-900);
+  background-color: white;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  outline: none;
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--color-gray-300);
+}
+
+.input:focus:not(:disabled) {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.input:disabled {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-500);
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* With Icons */
+.input--with-icon-left {
+  padding-left: 2.5rem;
+}
+
+.input--with-icon-right {
+  padding-right: 2.5rem;
+}
+
+.input__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 100%;
+  color: var(--color-gray-400);
+  pointer-events: none;
+}
+
+.input__icon--left {
+  left: 0;
+}
+
+.input__icon--right {
+  right: 0;
+}
+
+/* Error State */
+.input--error,
+.input--error:hover,
+.input--error:focus {
+  border-color: var(--color-red-500);
+}
+
+.input--error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Labels */
+.input__label,
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-xs);
+}
+
+.label__required {
+  color: var(--color-red-500);
+  margin-left: 0.25rem;
+}
+
+/* Error and Hint Messages */
+.input__error,
+.input__hint {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: var(--spacing-xs);
+}
+
+.input__error {
+  color: var(--color-red-600);
+}
+
+.input__hint {
+  color: var(--color-gray-500);
+}
