@@ -11,6 +11,7 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@tanstack/react-router": "^1.130.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -18,8 +19,10 @@
     "@biomejs/biome": "2.0.6",
     "@rsbuild/core": "^1.4.3",
     "@rsbuild/plugin-react": "^1.3.3",
+    "@tanstack/router-plugin": "^1.130.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "rspack": "link:@tanstack/router-plugin/rspack",
     "typescript": "^5.8.3"
   }
 }
