@@ -9,3 +9,12 @@ declare module '*.svg?react' {
   const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   export default ReactComponent;
 }
+
+// Provide typings for env vars exposed to the client via import.meta.env
+interface ImportMetaEnv {
+  readonly BAO_ADDR?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

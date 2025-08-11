@@ -21,3 +21,6 @@ dist/
 
 # Tanstack
 .tanstack
+
+
+.env
