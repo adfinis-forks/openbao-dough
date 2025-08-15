@@ -1,6 +1,7 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import type React from 'react';
 import { routeTree } from './routeTree.gen';
+import { FloatingThemeToggle } from '../shared/theme';
 import './App.css';
 
 export type ViewType =
@@ -25,7 +26,12 @@ declare module '@tanstack/react-router' {
 }
 
 export const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <FloatingThemeToggle />
+    </>
+  );
 };
 
 export default App;
