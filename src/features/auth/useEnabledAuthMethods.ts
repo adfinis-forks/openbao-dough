@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { AuthMethodType } from './authMethods';
 import { KNOWN_AUTH_METHODS } from './authMethods';
+import { APP_CONFIG } from '../../shared/config';
 
 export interface EnabledAuth {
-  path: string; // e.g., 'userpass/'
-  type: AuthMethodType; // e.g., 'userpass'
+  path: string;
+  type: AuthMethodType;
   description?: string;
 }
 
@@ -15,7 +16,7 @@ interface SysAuthResponse {
   };
 }
 
-const ALLOWED: AuthMethodType[] = [
+const ALLOWED_AUTH_TYPES: AuthMethodType[] = [
   'token',
   'userpass',
   'ldap',
@@ -24,9 +25,28 @@ const ALLOWED: AuthMethodType[] = [
   'approle',
 ];
 
-export function useEnabledAuthMethods(opts?: { baseUrl?: string }) {
-  const baseUrl =
-    opts?.baseUrl || (import.meta as any)?.env?.VITE_OPENBAO_ADDR || '';
+// Default mock data for development
+const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
+  {
+    path: 'userpass/',
+    type: 'userpass',
+    description: 'Username and password authentication',
+  },
+  {
+    path: 'token/',
+    type: 'token',
+    description: 'Direct token authentication',
+  },
+  {
+    path: 'ldap/',
+    type: 'ldap',
+    description: 'LDAP directory authentication',
+  },
+];
+
+export function useEnabledAuthMethods(baseUrl?: string) {
+  // Resolve API URL using helper with defaults
+  const apiUrl = (baseUrl || APP_CONFIG.BAO_ADDR || '').trim();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,71 +54,77 @@ export function useEnabledAuthMethods(opts?: { baseUrl?: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    async function run() {
+
+    async function fetchAuthMethods() {
       setLoading(true);
       setError(null);
+
       try {
-        const url = `${baseUrl.replace(/\/$/, '')}/v1/sys/auth`;
+        if (!apiUrl) {
+          // Use default mock data in development
+          if (!cancelled) {
+            setEnabled(DEFAULT_AUTH_METHODS);
+          }
+          return;
+        }
+
+        const url = `${apiUrl.replace(/\/$/, '')}/v1/sys/auth`;
         const res = await fetch(url, { method: 'GET' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
         const data: SysAuthResponse = await res.json();
-        const list: EnabledAuth[] = Object.entries(data).map(
+        const authMethods: EnabledAuth[] = Object.entries(data).map(
           ([path, info]) => ({
             path,
             type: info.type as AuthMethodType,
             description: info.description,
           }),
         );
-        if (!cancelled) setEnabled(list);
-      } catch (e: any) {
+
         if (!cancelled) {
-          setError(e?.message || 'Failed to load auth methods');
-          setEnabled([
-            {
-              path: 'userpass/',
-              type: 'userpass',
-              description: KNOWN_AUTH_METHODS.userpass.description,
-            },
-            {
-              path: 'token/',
-              type: 'token',
-              description: KNOWN_AUTH_METHODS.token.description,
-            },
-            {
-              path: 'ldap/',
-              type: 'ldap',
-              description: KNOWN_AUTH_METHODS.ldap.description,
-            },
-          ]);
+          setEnabled(authMethods);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          const message =
+            err instanceof Error ? err.message : 'Failed to load auth methods';
+          setError(message);
+          // Use default data as fallback
+          setEnabled(DEFAULT_AUTH_METHODS);
         }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
-    run();
+
+    fetchAuthMethods();
+
     return () => {
       cancelled = true;
     };
-  }, [baseUrl]);
+  }, [apiUrl]);
 
-  // Build select options, filtered to allowed types, with clean labels (no mount path in label)
+  // Build select options with clean labels
   const options = useMemo(() => {
     return enabled
-      .filter(
-        (m) =>
-          KNOWN_AUTH_METHODS[m.type as keyof typeof KNOWN_AUTH_METHODS] &&
-          ALLOWED.includes(m.type),
-      )
-      .map((m) => {
-        const meta = KNOWN_AUTH_METHODS[m.type];
-        const icon = getIcon(meta.type);
+      .filter((method) => {
+        const meta = KNOWN_AUTH_METHODS[method.type];
+        return meta && ALLOWED_AUTH_TYPES.includes(method.type);
+      })
+      .map((method) => {
+        const meta = KNOWN_AUTH_METHODS[method.type];
         return {
-          value: `${m.type}:${m.path}`, // unique by type+path
-          label: meta.label, // no "(/userpass)" suffix
-          description: m.description || meta.description,
-          icon,
+          value: `${method.type}:${method.path}`,
+          label: meta.label,
+          description: method.description || meta.description,
+          icon: getAuthIcon(method.type),
           meta,
-          raw: m,
+          raw: method,
         };
       });
   }, [enabled]);
@@ -106,35 +132,21 @@ export function useEnabledAuthMethods(opts?: { baseUrl?: string }) {
   return { loading, error, enabled, options };
 }
 
-function getIcon(type: AuthMethodType) {
-  switch (type) {
-    case 'token':
-      return '🔑';
-    case 'userpass':
-      return '👤';
-    case 'ldap':
-      return '📇';
-    case 'oidc':
-      return '🌐';
-    case 'jwt':
-      return '🧾';
-    case 'approle':
-      return '🏷';
-    case 'kubernetes':
-      return '🧭';
-    case 'github':
-      return '🐙';
-    case 'aws':
-      return '☁';
-    case 'azure':
-      return '🔷';
-    case 'gcp':
-      return '🟨';
-    case 'cert':
-      return '📜';
-    case 'radius':
-      return '📡';
-    default:
-      return '🔐';
-  }
+function getAuthIcon(type: AuthMethodType): string {
+  const iconMap: Record<AuthMethodType, string> = {
+    token: '🔑',
+    userpass: '👤',
+    ldap: '📇',
+    oidc: '🌐',
+    jwt: '🎫',
+    approle: '🏷',
+    kubernetes: '☸️',
+    github: '🐙',
+    aws: '☁️',
+    azure: '☁️',
+    gcp: '☁️',
+    cert: '📜',
+    radius: '📡',
+  };
+  return iconMap[type] || '🔐';
 }

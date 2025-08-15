@@ -8,96 +8,96 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './../routes/__root';
-import { Route as LoginRouteImport } from './../routes/login';
-import { Route as AuthenticatedRouteImport } from './../routes/_authenticated';
-import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index';
-import { Route as AuthenticatedSystemRouteImport } from './../routes/_authenticated/system';
-import { Route as AuthenticatedSecretsRouteImport } from './../routes/_authenticated/secrets';
-import { Route as AuthenticatedPoliciesRouteImport } from './../routes/_authenticated/policies';
-import { Route as AuthenticatedDashboardRouteImport } from './../routes/_authenticated/dashboard';
-import { Route as AuthenticatedAuthRouteImport } from './../routes/_authenticated/auth';
-import { Route as AuthenticatedAuditRouteImport } from './../routes/_authenticated/audit';
+import { Route as rootRouteImport } from './../routes/__root'
+import { Route as LoginRouteImport } from './../routes/login'
+import { Route as AuthenticatedRouteImport } from './../routes/_authenticated'
+import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index'
+import { Route as AuthenticatedSystemRouteImport } from './../routes/_authenticated/system'
+import { Route as AuthenticatedSecretsRouteImport } from './../routes/_authenticated/secrets'
+import { Route as AuthenticatedPoliciesRouteImport } from './../routes/_authenticated/policies'
+import { Route as AuthenticatedDashboardRouteImport } from './../routes/_authenticated/dashboard'
+import { Route as AuthenticatedAuthRouteImport } from './../routes/_authenticated/auth'
+import { Route as AuthenticatedAuditRouteImport } from './../routes/_authenticated/audit'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 const AuthenticatedSystemRoute = AuthenticatedSystemRouteImport.update({
   id: '/system',
   path: '/system',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 const AuthenticatedSecretsRoute = AuthenticatedSecretsRouteImport.update({
   id: '/secrets',
   path: '/secrets',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 const AuthenticatedPoliciesRoute = AuthenticatedPoliciesRouteImport.update({
   id: '/policies',
   path: '/policies',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 const AuthenticatedAuthRoute = AuthenticatedAuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
   id: '/audit',
   path: '/audit',
   getParentRoute: () => AuthenticatedRoute,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/login': typeof LoginRoute;
-  '/audit': typeof AuthenticatedAuditRoute;
-  '/auth': typeof AuthenticatedAuthRoute;
-  '/dashboard': typeof AuthenticatedDashboardRoute;
-  '/policies': typeof AuthenticatedPoliciesRoute;
-  '/secrets': typeof AuthenticatedSecretsRoute;
-  '/system': typeof AuthenticatedSystemRoute;
-  '/': typeof AuthenticatedIndexRoute;
+  '/login': typeof LoginRoute
+  '/audit': typeof AuthenticatedAuditRoute
+  '/auth': typeof AuthenticatedAuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/policies': typeof AuthenticatedPoliciesRoute
+  '/secrets': typeof AuthenticatedSecretsRoute
+  '/system': typeof AuthenticatedSystemRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof LoginRoute;
-  '/audit': typeof AuthenticatedAuditRoute;
-  '/auth': typeof AuthenticatedAuthRoute;
-  '/dashboard': typeof AuthenticatedDashboardRoute;
-  '/policies': typeof AuthenticatedPoliciesRoute;
-  '/secrets': typeof AuthenticatedSecretsRoute;
-  '/system': typeof AuthenticatedSystemRoute;
-  '/': typeof AuthenticatedIndexRoute;
+  '/login': typeof LoginRoute
+  '/audit': typeof AuthenticatedAuditRoute
+  '/auth': typeof AuthenticatedAuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/policies': typeof AuthenticatedPoliciesRoute
+  '/secrets': typeof AuthenticatedSecretsRoute
+  '/system': typeof AuthenticatedSystemRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  '/_authenticated': typeof AuthenticatedRouteWithChildren;
-  '/login': typeof LoginRoute;
-  '/_authenticated/audit': typeof AuthenticatedAuditRoute;
-  '/_authenticated/auth': typeof AuthenticatedAuthRoute;
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute;
-  '/_authenticated/policies': typeof AuthenticatedPoliciesRoute;
-  '/_authenticated/secrets': typeof AuthenticatedSecretsRoute;
-  '/_authenticated/system': typeof AuthenticatedSystemRoute;
-  '/_authenticated/': typeof AuthenticatedIndexRoute;
+  __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authenticated/audit': typeof AuthenticatedAuditRoute
+  '/_authenticated/auth': typeof AuthenticatedAuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/policies': typeof AuthenticatedPoliciesRoute
+  '/_authenticated/secrets': typeof AuthenticatedSecretsRoute
+  '/_authenticated/system': typeof AuthenticatedSystemRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/login'
     | '/audit'
@@ -106,8 +106,8 @@ export interface FileRouteTypes {
     | '/policies'
     | '/secrets'
     | '/system'
-    | '/';
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+  fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
     | '/audit'
@@ -116,7 +116,7 @@ export interface FileRouteTypes {
     | '/policies'
     | '/secrets'
     | '/system'
-    | '/';
+    | '/'
   id:
     | '__root__'
     | '/_authenticated'
@@ -127,90 +127,90 @@ export interface FileRouteTypes {
     | '/_authenticated/policies'
     | '/_authenticated/secrets'
     | '/_authenticated/system'
-    | '/_authenticated/';
-  fileRoutesById: FileRoutesById;
+    | '/_authenticated/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
-  LoginRoute: typeof LoginRoute;
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/login': {
-      id: '/login';
-      path: '/login';
-      fullPath: '/login';
-      preLoaderRoute: typeof LoginRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
-      id: '/_authenticated';
-      path: '';
-      fullPath: '';
-      preLoaderRoute: typeof AuthenticatedRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/': {
-      id: '/_authenticated/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/system': {
-      id: '/_authenticated/system';
-      path: '/system';
-      fullPath: '/system';
-      preLoaderRoute: typeof AuthenticatedSystemRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/system'
+      path: '/system'
+      fullPath: '/system'
+      preLoaderRoute: typeof AuthenticatedSystemRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/secrets': {
-      id: '/_authenticated/secrets';
-      path: '/secrets';
-      fullPath: '/secrets';
-      preLoaderRoute: typeof AuthenticatedSecretsRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/secrets'
+      path: '/secrets'
+      fullPath: '/secrets'
+      preLoaderRoute: typeof AuthenticatedSecretsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/policies': {
-      id: '/_authenticated/policies';
-      path: '/policies';
-      fullPath: '/policies';
-      preLoaderRoute: typeof AuthenticatedPoliciesRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/policies'
+      path: '/policies'
+      fullPath: '/policies'
+      preLoaderRoute: typeof AuthenticatedPoliciesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard';
-      path: '/dashboard';
-      fullPath: '/dashboard';
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/auth': {
-      id: '/_authenticated/auth';
-      path: '/auth';
-      fullPath: '/auth';
-      preLoaderRoute: typeof AuthenticatedAuthRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthenticatedAuthRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/audit': {
-      id: '/_authenticated/audit';
-      path: '/audit';
-      fullPath: '/audit';
-      preLoaderRoute: typeof AuthenticatedAuditRouteImport;
-      parentRoute: typeof AuthenticatedRoute;
-    };
+      id: '/_authenticated/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthenticatedAuditRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute;
-  AuthenticatedAuthRoute: typeof AuthenticatedAuthRoute;
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute;
-  AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRoute;
-  AuthenticatedSecretsRoute: typeof AuthenticatedSecretsRoute;
-  AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute;
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute;
+  AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
+  AuthenticatedAuthRoute: typeof AuthenticatedAuthRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRoute
+  AuthenticatedSecretsRoute: typeof AuthenticatedSecretsRoute
+  AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -221,16 +221,16 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSecretsRoute: AuthenticatedSecretsRoute,
   AuthenticatedSystemRoute: AuthenticatedSystemRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-};
+}
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
-);
+)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()

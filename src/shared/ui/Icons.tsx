@@ -361,3 +361,43 @@ export const X: React.FC<IconProps> = ({ size, ...props }) => (
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
 );
+
+export const ChevronDown: React.FC<IconProps> = ({
+  size = 24,
+  className = '',
+  color = 'currentColor',
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
+export const ChevronUp: React.FC<IconProps> = ({
+  size = 24,
+  className = '',
+  color = 'currentColor',
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <polyline points="18 15 12 9 6 15" />
+  </svg>
+);

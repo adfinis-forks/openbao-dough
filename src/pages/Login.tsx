@@ -1,5 +1,7 @@
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
+// For RSBuild: Import SVG as URL
+// If you want to use as React component, install @rsbuild/plugin-svgr and use: import OpenBaoLogo from '../../public/openbao.svg?react';
 import OpenBaoLogo from '../../public/openbao.svg';
 import {
   type AuthMethodType,
@@ -7,14 +9,8 @@ import {
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
 import { Button } from '../shared/ui/Button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../shared/ui/Card';
-import { Eye, EyeOff } from '../shared/ui/Icons';
+import { Card, CardContent, CardHeader, CardTitle } from '../shared/ui/Card';
+import { Eye, EyeOff, ChevronDown, ChevronUp, Globe } from '../shared/ui/Icons';
 import { Input } from '../shared/ui/Input';
 import { Select } from '../shared/ui/Select';
 import './Login.css';
@@ -24,37 +20,29 @@ export interface LoginProps {
 }
 
 interface FormData {
-  username?: string;
-  password?: string;
-  token?: string;
-  ldapUsername?: string;
-  ldapPassword?: string;
-  roleId?: string;
-  secretId?: string;
-  jwt?: string;
-  pkcs7?: string;
+  [key: string]: string;
 }
-
-const initialFormData: FormData = {};
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const { options, loading } = useEnabledAuthMethods();
-  const [selected, setSelected] = useState<string | undefined>(
-    () => localStorage.getItem('login.selectedAuth') || undefined,
-  );
+  const [selected, setSelected] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-
-  // Always-visible namespace (top of form)
-  const [namespace, setNamespace] = useState<string>(
-    localStorage.getItem('login.namespace') || '/',
-  );
-
-  // More options
-  const [moreOpen, setMoreOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormData>({});
+  const [namespace, setNamespace] = useState<string>('');
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [mountPath, setMountPath] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Default to first available option
+  // Load saved preferences
+  useEffect(() => {
+    const savedAuth = localStorage.getItem('openbao.lastAuth');
+    const savedNamespace = localStorage.getItem('openbao.lastNamespace');
+
+    if (savedAuth) setSelected(savedAuth);
+    if (savedNamespace) setNamespace(savedNamespace);
+  }, []);
+
+  // Set default auth method when loaded
   useEffect(() => {
     if (!selected && options.length > 0 && !loading) {
       setSelected(options[0].value);
@@ -64,56 +52,47 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const selectedMeta = useMemo(() => {
     if (!selected) return null;
     const [type, path] = selected.split(':');
-    const opt = options.find((o) => o.value === selected);
+    const option = options.find((o) => o.value === selected);
     const meta = KNOWN_AUTH_METHODS[type as AuthMethodType];
+
     return {
       type: type as AuthMethodType,
       path,
-      label: opt?.label ?? meta?.label,
-      description: opt?.description ?? meta?.description,
+      label: option?.label || meta?.label,
+      description: option?.description || meta?.description,
       meta,
+      isExternal: meta?.external || false,
     };
   }, [selected, options]);
 
-  // Update default mount path based on discovered path or fallback to the type
+  // Update mount path when auth method changes
   useEffect(() => {
     if (!selectedMeta) return;
-    const needsMount = selectedMeta.type !== 'token';
-    if (needsMount) {
-      const discovered = (selectedMeta.path || '').replace(/\/$/, '');
-      const defaultMount = discovered || selectedMeta.type;
-      setMountPath(defaultMount);
+
+    if (selectedMeta.type !== 'token') {
+      const discoveredPath = (selectedMeta.path || '').replace(/\/$/, '');
+      setMountPath(discoveredPath || selectedMeta.type);
     } else {
       setMountPath('');
     }
-  }, [selectedMeta?.type, selectedMeta?.path]);
-
-  const needsMountPath = !!selectedMeta && selectedMeta.type !== 'token';
-  const showSSOInfo = !!selectedMeta?.meta?.external;
+  }, [selectedMeta]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you’d call your OpenBao login endpoint according to selectedMeta.type and mountPath.
-    // Examples:
-    // - userpass:  POST /v1/auth/<mountPath>/login/<username>
-    // - token:     Header X-Vault-Token: <token>
-    // - ldap:      POST /v1/auth/<mountPath>/login/<ldapUsername>
-    // - jwt:       POST /v1/auth/<mountPath>/login  (body: { jwt })
-    // - oidc:      Redirect via /v1/auth/<mountPath>/oidc/auth_url
-    // - approle:   POST /v1/auth/<mountPath>/login  (body: { role_id, secret_id })
-    //
-    // Namespace header:
-    // - If namespace !== '/' include header: X-Vault-Namespace: <namespace>
-    // - If namespace === '/', omit the header.
-    //
-    // This demo just persists selection and continues:
-    localStorage.setItem('login.selectedAuth', selected || '');
-    localStorage.setItem('login.namespace', namespace || '/');
+    setIsSubmitting(true);
+
+    // Save preferences
+    localStorage.setItem('openbao.lastAuth', selected);
+    localStorage.setItem('openbao.lastNamespace', namespace || '/');
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     onLogin();
   };
 
@@ -122,165 +101,190 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     return selectedMeta.meta.fields || [];
   }, [selectedMeta]);
 
-  const passwordFieldToggleIcon = (
-    <Button
-      type="button"
-      variant="ghost"
-      size="small"
-      onClick={() => setShowPassword((s) => !s)}
-    >
-      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-    </Button>
-  );
+  const isFormValid = useMemo(() => {
+    if (!selectedMeta) return false;
+    if (selectedMeta.isExternal) return true;
+
+    return fields.every((field) => {
+      const value = formData[field.name];
+      return value && value.trim().length > 0;
+    });
+  }, [selectedMeta, fields, formData]);
 
   return (
     <div className="login-page">
-      <div className="login-page__gradient" />
-      <div className="login-page__container">
-        <div className="login-page__header">
-          <div className="login-page__logo">
-            <img
-              src={OpenBaoLogo}
-              alt="OpenBao Logo"
-              className="login-page__logo-img"
-            />
-            <span className="login-page__logo-text">OpenBao</span>
+      <div className="login-background">
+        <div className="login-background__gradient" />
+        <div className="login-background__pattern" />
+      </div>
+
+      <div className="login-container">
+        <div className="login-header">
+          <div className="login-logo">
+            <img src={OpenBaoLogo} alt="OpenBao" className="login-logo__img" />
+            <span className="login-logo__text">OpenBao</span>
           </div>
-          <p className="login-page__subtitle">
-            Secure secrets management platform
-          </p>
+          <p className="login-subtitle">Secure secrets management platform</p>
         </div>
 
         <Card className="login-card">
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
-            <CardDescription>Access your vault securely</CardDescription>
+            <CardTitle>Sign in to your vault</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="auth-form">
-              <div className="auth-form__content">
-                {/* Namespace (always visible, at the very top) */}
-                <div className="login-namespace">
-                  <div className="login-namespace__label">Namespace</div>
-                  <Input
-                    label=""
-                    name="namespace"
-                    type="text"
-                    placeholder="/ (Root)"
-                    value={namespace}
-                    onChange={(e) => setNamespace(e.target.value)}
-                    fullWidth
-                  />
-                  <div className="login-namespace__help">
-                    You are signing into this namespace. Leave “/” for root.
-                  </div>
+            <form onSubmit={handleSubmit} className="login-form">
+              {/* Namespace Field - Improved Design */}
+              <div className="namespace-field">
+                <div className="namespace-field__header">
+                  <Globe size={16} className="namespace-field__icon" />
+                  <span className="namespace-field__label">Namespace</span>
+                  <span className="namespace-field__badge">Optional</span>
                 </div>
+                <Input
+                  name="namespace"
+                  type="text"
+                  placeholder="/ (root namespace)"
+                  value={namespace}
+                  onChange={(e) => setNamespace(e.target.value)}
+                  fullWidth
+                  className="namespace-field__input"
+                />
+                <p className="namespace-field__help">
+                  Leave empty to use the root namespace
+                </p>
+              </div>
 
-                {/* Auth method selector */}
-                <div className="login-select-row">
-                  <Select
-                    options={options}
-                    value={selected}
-                    onChange={(val) => setSelected(val)}
-                    searchable={false}
-                    fullWidth
-                    placeholder={
-                      loading ? 'Loading auth methods...' : 'Select auth method'
-                    }
-                    ariaLabel="Authentication method"
-                  />
-                </div>
-
+              {/* Auth Method Selector */}
+              <div className="auth-method-field">
+                <label className="field-label">Authentication Method</label>
+                <Select
+                  options={options}
+                  value={selected}
+                  onChange={setSelected}
+                  placeholder={loading ? 'Loading...' : 'Select method'}
+                  fullWidth
+                  searchable={false}
+                  ariaLabel="Authentication method"
+                />
                 {selectedMeta?.description && (
-                  <p className="login-help">{selectedMeta.description}</p>
-                )}
-
-                {/* Dynamic fields per auth method */}
-                {fields.map((f) => {
-                  const isPassword = f.type === 'password';
-                  const name = f.name as keyof FormData;
-                  const value = (formData[name] as string) || '';
-                  const inputType = isPassword
-                    ? showPassword
-                      ? 'text'
-                      : 'password'
-                    : 'text';
-
-                  const icon =
-                    isPassword &&
-                    (f.name === 'password' || f.name === 'ldapPassword')
-                      ? passwordFieldToggleIcon
-                      : undefined;
-
-                  return (
-                    <div
-                      key={f.name}
-                      className={isPassword ? 'auth-form__password-field' : ''}
-                    >
-                      <Input
-                        label={f.label}
-                        name={f.name}
-                        type={inputType}
-                        placeholder={f.placeholder}
-                        value={value}
-                        onChange={handleInputChange}
-                        fullWidth
-                        icon={icon}
-                        iconPosition={icon ? 'right' : 'left'}
-                      />
-                    </div>
-                  );
-                })}
-
-                {/* More options placed under input fields, above submit */}
-                <div className="login-more-toggle">
-                  <button
-                    type="button"
-                    className="login-more-toggle__btn"
-                    onClick={() => setMoreOpen((v) => !v)}
-                    aria-expanded={moreOpen}
-                  >
-                    {moreOpen ? 'Hide options' : 'More options'}
-                  </button>
-                </div>
-
-                {moreOpen && (
-                  <div className="login-more">
-                    {needsMountPath && (
-                      <div className="login-more__row">
-                        <Input
-                          label="Mount path"
-                          name="mountPath"
-                          type="text"
-                          placeholder={selectedMeta?.type || 'userpass'}
-                          value={mountPath}
-                          onChange={(e) => setMountPath(e.target.value)}
-                          title="If this backend was mounted using a non-default path, enter it here."
-                          fullWidth
-                        />
-                        <p className="login-help">
-                          Tip: if this backend was mounted using a non-default
-                          path, enter it here.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* External SSO-style flows: show a continue note */}
-                {showSSOInfo && (
-                  <div className="login-sso-info">
-                    You will be redirected to complete authentication.
-                  </div>
+                  <p className="field-help">{selectedMeta.description}</p>
                 )}
               </div>
 
-              <Button type="submit" variant="overlay" size="large" fullWidth>
-                {showSSOInfo ? 'Continue' : 'Sign In'}
+              {/* Dynamic Fields */}
+              {fields.map((field) => {
+                const isPasswordField = field.type === 'password';
+                const value = formData[field.name] || '';
+
+                return (
+                  <div key={field.name} className="form-field">
+                    <label className="field-label">{field.label}</label>
+                    <div className="field-input-wrapper">
+                      <Input
+                        name={field.name}
+                        type={
+                          isPasswordField && !showPassword ? 'password' : 'text'
+                        }
+                        placeholder={field.placeholder}
+                        value={value}
+                        onChange={handleInputChange}
+                        fullWidth
+                        required
+                      />
+                      {isPasswordField && (
+                        <button
+                          type="button"
+                          className="password-toggle"
+                          onClick={() => setShowPassword(!showPassword)}
+                          aria-label={
+                            showPassword ? 'Hide password' : 'Show password'
+                          }
+                        >
+                          {showPassword ? (
+                            <EyeOff size={18} />
+                          ) : (
+                            <Eye size={18} />
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* External Auth Info */}
+              {selectedMeta?.isExternal && (
+                <div className="external-auth-info">
+                  <span className="external-auth-info__icon">🔗</span>
+                  <span>You'll be redirected to complete authentication</span>
+                </div>
+              )}
+
+              {/* Advanced Options */}
+              {selectedMeta && selectedMeta.type !== 'token' && (
+                <div className="advanced-options">
+                  <button
+                    type="button"
+                    className="advanced-options__toggle"
+                    onClick={() => setShowAdvanced(!showAdvanced)}
+                    aria-expanded={showAdvanced}
+                  >
+                    <span>Advanced options</span>
+                    {showAdvanced ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
+                  </button>
+
+                  {showAdvanced && (
+                    <div className="advanced-options__content">
+                      <div className="form-field">
+                        <label className="field-label">Mount Path</label>
+                        <Input
+                          name="mountPath"
+                          type="text"
+                          placeholder={selectedMeta.type}
+                          value={mountPath}
+                          onChange={(e) => setMountPath(e.target.value)}
+                          fullWidth
+                        />
+                        <p className="field-help">
+                          Custom mount path if not using default
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                variant="primary"
+                size="large"
+                fullWidth
+                disabled={!isFormValid || isSubmitting}
+                className="login-submit"
+              >
+                {isSubmitting
+                  ? 'Signing in...'
+                  : selectedMeta?.isExternal
+                    ? 'Continue with Provider'
+                    : 'Sign In'}
               </Button>
             </form>
           </CardContent>
         </Card>
+
+        <div className="login-footer">
+          <p>
+            Need help?{' '}
+            <a href="#" className="login-link">
+              View documentation
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
