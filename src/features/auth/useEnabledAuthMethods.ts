@@ -45,8 +45,8 @@ const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
 ];
 
 export function useEnabledAuthMethods(baseUrl?: string) {
-  // Resolve API URL using helper with defaults
-  const apiUrl = (baseUrl || APP_CONFIG.BAO_ADDR || '').trim();
+  // For development, use current origin (proxy) instead of direct OpenBao URL
+  const apiUrl = baseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -60,8 +60,18 @@ export function useEnabledAuthMethods(baseUrl?: string) {
       setError(null);
 
       try {
+        // For now, always use default auth methods since /sys/auth requires auth
+        // In production OpenBao UI, this would be handled by the server-side rendering
+        // or by a public endpoint that doesn't require authentication
+        console.log('Using default auth methods for development');
+        if (!cancelled) {
+          setEnabled(DEFAULT_AUTH_METHODS);
+        }
+        return;
+
+        // TODO: This code would be used when we have proper auth or public endpoint
+        /*
         if (!apiUrl) {
-          // Use default mock data in development
           if (!cancelled) {
             setEnabled(DEFAULT_AUTH_METHODS);
           }
@@ -87,6 +97,7 @@ export function useEnabledAuthMethods(baseUrl?: string) {
         if (!cancelled) {
           setEnabled(authMethods);
         }
+        */
       } catch (err) {
         if (!cancelled) {
           const message =

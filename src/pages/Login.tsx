@@ -8,6 +8,9 @@ import {
   KNOWN_AUTH_METHODS,
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
+import { useAuthenticate } from '../shared/api/auth-hooks';
+import { initializeClient } from '../shared/api/hooks';
+import { BAO_ADDR } from '../shared/config';
 import { Button } from '../shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../shared/ui/Card';
 import { Eye, EyeOff, ChevronDown, ChevronUp, Globe } from '../shared/ui/Icons';
@@ -31,7 +34,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [namespace, setNamespace] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [mountPath, setMountPath] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authError, setAuthError] = useState<string>('');
+  
+  const authenticateMutation = useAuthenticate();
+  
+  // Use BAO_ADDR from shared config (already includes /v1)
+  const baseUrl = BAO_ADDR;
 
   // Load saved preferences
   useEffect(() => {
@@ -84,16 +92,44 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setAuthError('');
+    
+    if (!selectedMeta) return;
 
-    // Save preferences
-    localStorage.setItem('openbao.lastAuth', selected);
-    localStorage.setItem('openbao.lastNamespace', namespace || '/');
+    try {
+      // Save preferences
+      localStorage.setItem('openbao.lastAuth', selected);
+      localStorage.setItem('openbao.lastNamespace', namespace || '/');
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
+      // Debug logging
+      console.log('Authentication attempt:', {
+        baseUrl,
+        authMethod: selectedMeta.type,
+        credentials: formData,
+        namespace: namespace || undefined,
+        mountPath: mountPath || undefined,
+      });
 
-    onLogin();
+      const result = await authenticateMutation.mutateAsync({
+        baseUrl,
+        authMethod: selectedMeta.type,
+        credentials: formData,
+        namespace: namespace || undefined,
+        mountPath: mountPath || undefined,
+      });
+
+      if (result.token) {
+        // Initialize the global API client with the token
+        initializeClient(baseUrl, result.token);
+        
+        // Save token securely (consider using secure storage in production)
+        sessionStorage.setItem('openbao.token', result.token);
+        
+        onLogin();
+      }
+    } catch (error) {
+      setAuthError(error instanceof Error ? error.message : 'Authentication failed');
+    }
   };
 
   const fields = useMemo(() => {
@@ -258,16 +294,31 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 </div>
               )}
 
+              {/* Authentication Error */}
+              {authError && (
+                <div className="auth-error" style={{
+                  padding: '12px',
+                  backgroundColor: 'var(--color-danger-50)',
+                  border: '1px solid var(--color-danger-200)',
+                  borderRadius: '6px',
+                  color: 'var(--color-danger-700)',
+                  fontSize: '14px',
+                  marginBottom: '16px'
+                }}>
+                  {authError}
+                </div>
+              )}
+
               {/* Submit Button */}
               <Button
                 type="submit"
                 variant="primary"
                 size="large"
                 fullWidth
-                disabled={!isFormValid || isSubmitting}
+                disabled={!isFormValid || authenticateMutation.isPending}
                 className="login-submit"
               >
-                {isSubmitting
+                {authenticateMutation.isPending
                   ? 'Signing in...'
                   : selectedMeta?.isExternal
                     ? 'Continue with Provider'
