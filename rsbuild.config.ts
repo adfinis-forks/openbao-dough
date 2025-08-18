@@ -30,5 +30,13 @@ export default defineConfig({
   },
   server: {
     historyApiFallback: true,
+    proxy: {
+      '/v1': {
+        target: process.env.BAO_ADDR || 'http://localhost:8200',
+        changeOrigin: true,
+        secure: false,
+        logLevel: 'debug',
+      },
+    },
   },
 });

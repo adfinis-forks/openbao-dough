@@ -1,7 +1,9 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import type React from 'react';
-import { routeTree } from './routeTree.gen';
+import { queryClient } from '../shared/api/queryClient';
 import { FloatingThemeToggle } from '../shared/theme';
+import { routeTree } from './routeTree.gen';
 import './App.css';
 
 export type ViewType =
@@ -27,10 +29,10 @@ declare module '@tanstack/react-router' {
 
 export const App: React.FC = () => {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <FloatingThemeToggle />
-    </>
+    </QueryClientProvider>
   );
 };
 
