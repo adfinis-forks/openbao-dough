@@ -8,9 +8,11 @@
     "check": "biome check --write",
     "dev": "rsbuild dev --open",
     "format": "biome format --write",
-    "preview": "rsbuild preview"
+    "preview": "rsbuild preview",
+    "codegen": "openapi-typescript api/oapi.yaml -o src/types/api.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.85.3",
     "@tanstack/react-router": "^1.130.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -23,6 +25,8 @@
     "@tanstack/router-plugin": "^1.130.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "openapi-fetch": "^0.14.0",
+    "openapi-typescript": "^7.9.1",
     "rspack": "link:@tanstack/router-plugin/rspack",
     "typescript": "^5.8.3"
   }
