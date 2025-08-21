@@ -160,8 +160,8 @@
   );
 }
 
-.auth-method-card__icon--enabled img {
-  filter: brightness(0) invert(1);
+.auth-method-card__icon--enabled span {
+  filter: none;
 }
 
 .auth-method-card:hover .auth-method-card__icon--enabled {
@@ -176,9 +176,9 @@
   background-color: var(--color-gray-200);
 }
 
-.auth-method-card__icon--disabled img {
-  filter: brightness(0) saturate(100%) invert(60%) sepia(11%) saturate(200%)
-    hue-rotate(176deg) brightness(94%) contrast(86%);
+.auth-method-card__icon--disabled span {
+  opacity: 0.5;
+  filter: grayscale(100%);
 }
 
 .auth-method-card__info {

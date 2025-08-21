@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { AuthMethodType } from './authMethods';
 import { KNOWN_AUTH_METHODS } from './authMethods';
-import { APP_CONFIG } from '../../shared/config';
+import { ALLOWED_AUTH_TYPES, formatAuthMethodPath } from './authUtils';
+import { useAuthStore } from '../../shared/stores/authStore';
 
 export interface EnabledAuth {
   path: string;
@@ -9,21 +10,7 @@ export interface EnabledAuth {
   description?: string;
 }
 
-interface SysAuthResponse {
-  [path: string]: {
-    type: string;
-    description?: string;
-  };
-}
 
-const ALLOWED_AUTH_TYPES: AuthMethodType[] = [
-  'token',
-  'userpass',
-  'ldap',
-  'jwt',
-  'oidc',
-  'approle',
-];
 
 // Default mock data for development
 const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
@@ -44,10 +31,9 @@ const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
   },
 ];
 
-export function useEnabledAuthMethods(baseUrl?: string) {
-  // For development, use current origin (proxy) instead of direct OpenBao URL
-  const apiUrl = baseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
-
+export function useEnabledAuthMethods() {
+  const { getClient, isAuthenticated } = useAuthStore();
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [enabled, setEnabled] = useState<EnabledAuth[]>([]);
@@ -55,55 +41,49 @@ export function useEnabledAuthMethods(baseUrl?: string) {
   useEffect(() => {
     let cancelled = false;
 
-    async function fetchAuthMethods() {
+    const fetchAuthMethods = async (): Promise<void> => {
       setLoading(true);
       setError(null);
 
       try {
-        // For now, always use default auth methods since /sys/auth requires auth
-        // In production OpenBao UI, this would be handled by the server-side rendering
-        // or by a public endpoint that doesn't require authentication
-        console.log('Using default auth methods for development');
-        if (!cancelled) {
-          setEnabled(DEFAULT_AUTH_METHODS);
-        }
-        return;
-
-        // TODO: This code would be used when we have proper auth or public endpoint
-        /*
-        if (!apiUrl) {
+        const client = getClient();
+        
+        // If no authenticated client, fall back to default auth methods
+        if (!client || !isAuthenticated) {
           if (!cancelled) {
             setEnabled(DEFAULT_AUTH_METHODS);
           }
           return;
         }
 
-        const url = `${apiUrl.replace(/\/$/, '')}/v1/sys/auth`;
-        const res = await fetch(url, { method: 'GET' });
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+        const { data, error: apiError } = await client.GET('/sys/auth');
+        
+        if (apiError) {
+          throw new Error(`API Error: ${apiError.detail || 'Failed to fetch auth methods'}`);
         }
 
-        const data: SysAuthResponse = await res.json();
-        const authMethods: EnabledAuth[] = Object.entries(data).map(
-          ([path, info]) => ({
-            path,
-            type: info.type as AuthMethodType,
-            description: info.description,
-          }),
-        );
+        if (data?.data) {
+          const authMethods: EnabledAuth[] = Object.entries(data.data).map(
+            ([path, info]: [string, any]) => ({
+              path,
+              type: info.type as AuthMethodType,
+              description: info.description,
+            })
+          );
 
-        if (!cancelled) {
-          setEnabled(authMethods);
+          if (!cancelled) {
+            setEnabled(authMethods);
+          }
+        } else {
+          // Fall back to default methods if no data
+          if (!cancelled) {
+            setEnabled(DEFAULT_AUTH_METHODS);
+          }
         }
-        */
       } catch (err) {
         if (!cancelled) {
-          const message =
-            err instanceof Error ? err.message : 'Failed to load auth methods';
+          const message = err instanceof Error ? err.message : 'Failed to load auth methods';
           setError(message);
-          // Use default data as fallback
           setEnabled(DEFAULT_AUTH_METHODS);
         }
       } finally {
@@ -111,29 +91,28 @@ export function useEnabledAuthMethods(baseUrl?: string) {
           setLoading(false);
         }
       }
-    }
+    };
 
     fetchAuthMethods();
 
     return () => {
       cancelled = true;
     };
-  }, [apiUrl]);
+  }, [getClient, isAuthenticated]);
 
-  // Build select options with clean labels
   const options = useMemo(() => {
     return enabled
-      .filter((method) => {
+      .filter((method): method is EnabledAuth => {
         const meta = KNOWN_AUTH_METHODS[method.type];
-        return meta && ALLOWED_AUTH_TYPES.includes(method.type);
+        return Boolean(meta && ALLOWED_AUTH_TYPES.includes(method.type));
       })
       .map((method) => {
-        const meta = KNOWN_AUTH_METHODS[method.type];
+        const meta = KNOWN_AUTH_METHODS[method.type]!;
         return {
-          value: `${method.type}:${method.path}`,
+          value: formatAuthMethodPath(method.type, method.path),
           label: meta.label,
           description: method.description || meta.description,
-          icon: getAuthIcon(method.type),
+          icon: meta.icon,
           meta,
           raw: method,
         };
@@ -143,21 +122,3 @@ export function useEnabledAuthMethods(baseUrl?: string) {
   return { loading, error, enabled, options };
 }
 
-function getAuthIcon(type: AuthMethodType): string {
-  const iconMap: Record<AuthMethodType, string> = {
-    token: '🔑',
-    userpass: '👤',
-    ldap: '📇',
-    oidc: '🌐',
-    jwt: '🎫',
-    approle: '🏷',
-    kubernetes: '☸️',
-    github: '🐙',
-    aws: '☁️',
-    azure: '☁️',
-    gcp: '☁️',
-    cert: '📜',
-    radius: '📡',
-  };
-  return iconMap[type] || '🔐';
-}

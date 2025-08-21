@@ -9,7 +9,7 @@ import {
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
 import { useAuthenticate } from '../shared/api/auth-hooks';
-import { initializeClient } from '../shared/api/hooks';
+import { useAuthStore } from '../shared/stores/authStore';
 import { BAO_ADDR } from '../shared/config';
 import { Button } from '../shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../shared/ui/Card';
@@ -28,6 +28,7 @@ interface FormData {
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const { options, loading } = useEnabledAuthMethods();
+  const { setToken } = useAuthStore();
   const [selected, setSelected] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({});
@@ -119,11 +120,15 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       });
 
       if (result.token) {
-        // Initialize the global API client with the token
-        initializeClient(baseUrl, result.token);
-        
-        // Save token securely (consider using secure storage in production)
-        sessionStorage.setItem('openbao.token', result.token);
+        // Store token securely in Zustand store
+        setToken({
+          token: result.token,
+          accessor: result.accessor || '',
+          ttl: result.lease_duration || 3600,
+          renewable: result.renewable || false,
+          policies: result.policies || [],
+          metadata: result.metadata,
+        });
         
         onLogin();
       }

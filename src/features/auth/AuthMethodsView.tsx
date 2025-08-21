@@ -1,10 +1,9 @@
 import type React from 'react';
 import { useState } from 'react';
-import { Badge } from '../../shared/ui/Badge';
 import { Button } from '../../shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
-import { Dropdown, DropdownMenuItem } from '../../shared/ui/Dropdown';
-import { Lock, MoreHorizontal, Plus, Unlock } from '../../shared/ui/Icons';
+import { Lock, Plus, Unlock } from '../../shared/ui/Icons';
+import { AuthMethodCard } from './AuthMethodCard';
 import './AuthMethodsView.css';
 
 interface AuthMethod {
@@ -88,118 +87,6 @@ export const AuthMethodsView: React.FC = () => {
   const enabledMethods = authMethods.filter((method) => method.enabled);
   const disabledMethods = authMethods.filter((method) => !method.enabled);
 
-  const getAuthMethodIcon = (type: string) => {
-    switch (type) {
-      case 'userpass':
-      case 'ldap':
-        return () => (
-          <img src="/people-outline.svg" alt="Users" width={24} height={24} />
-        );
-      case 'jwt':
-      case 'github':
-        return Lock;
-      default:
-        return () => (
-          <img
-            src="/settings-outline.svg"
-            alt="Settings"
-            width={24}
-            height={24}
-          />
-        );
-    }
-  };
-
-  const AuthMethodCard: React.FC<{ method: AuthMethod }> = ({ method }) => {
-    const Icon = getAuthMethodIcon(method.type);
-
-    return (
-      <Card
-        className={`auth-method-card ${!method.enabled ? 'auth-method-card--disabled' : ''}`}
-      >
-        <CardContent>
-          <div className="auth-method-card__content">
-            <div className="auth-method-card__header">
-              <div
-                className={`auth-method-card__icon ${method.enabled ? 'auth-method-card__icon--enabled' : 'auth-method-card__icon--disabled'}`}
-              >
-                <Icon size={24} />
-              </div>
-              <div className="auth-method-card__info">
-                <div className="auth-method-card__title-row">
-                  <h3 className="auth-method-card__name">{method.type}</h3>
-                  <Badge variant={method.enabled ? 'success' : 'default'}>
-                    {method.enabled ? 'Enabled' : 'Disabled'}
-                  </Badge>
-                </div>
-                <p className="auth-method-card__description">
-                  {method.description}
-                </p>
-                <p className="auth-method-card__path">Path: {method.path}</p>
-                {method.enabled && method.users > 0 && (
-                  <p className="auth-method-card__users">
-                    {method.users} active users
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="auth-method-card__actions">
-              <Button
-                variant={method.enabled ? 'outline' : 'primary'}
-                size="small"
-                onClick={() => toggleAuthMethod(method.id)}
-                icon={
-                  method.enabled ? <Lock size={16} /> : <Unlock size={16} />
-                }
-              >
-                {method.enabled ? 'Disable' : 'Enable'}
-              </Button>
-
-              <Dropdown
-                trigger={
-                  <Button variant="ghost" size="small">
-                    <MoreHorizontal size={16} />
-                  </Button>
-                }
-                align="end"
-              >
-                <DropdownMenuItem>
-                  <img
-                    src="/settings-outline.svg"
-                    alt="Settings"
-                    width={16}
-                    height={16}
-                  />
-                  Configure
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <img
-                    src="/people-outline.svg"
-                    alt="Users"
-                    width={16}
-                    height={16}
-                  />
-                  Manage Users
-                </DropdownMenuItem>
-                {method.enabled ? (
-                  <DropdownMenuItem danger>
-                    <Lock size={16} />
-                    Disable
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenuItem>
-                    <Unlock size={16} />
-                    Enable
-                  </DropdownMenuItem>
-                )}
-              </Dropdown>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
 
   return (
     <div className="auth-methods-view">
@@ -257,7 +144,7 @@ export const AuthMethodsView: React.FC = () => {
             <CardContent>
               <div className="auth-methods-grid">
                 {enabledMethods.map((method) => (
-                  <AuthMethodCard key={method.id} method={method} />
+                  <AuthMethodCard key={method.id} method={method} onToggle={toggleAuthMethod} />
                 ))}
               </div>
             </CardContent>
@@ -277,7 +164,7 @@ export const AuthMethodsView: React.FC = () => {
             <CardContent>
               <div className="auth-methods-grid">
                 {disabledMethods.map((method) => (
-                  <AuthMethodCard key={method.id} method={method} />
+                  <AuthMethodCard key={method.id} method={method} onToggle={toggleAuthMethod} />
                 ))}
               </div>
             </CardContent>
