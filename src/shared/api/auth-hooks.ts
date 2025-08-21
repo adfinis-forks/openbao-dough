@@ -1,6 +1,18 @@
 import { useMutation } from '@tanstack/react-query'
 import { createOpenBaoClient } from './client'
 
+// Runtime response types (since OpenAPI spec lacks response schemas)
+interface RuntimeTokenLookupResponse {
+  data: {
+    accessor: string;
+    lease_duration: number;
+    renewable: boolean;
+    policies: string[];
+    metadata?: Record<string, any>;
+    [key: string]: any;
+  };
+}
+
 // Authentication doesn't use the global client since we need to authenticate first
 export function useAuthenticate() {
   return useMutation({
@@ -55,9 +67,16 @@ export function useAuthenticate() {
               }
             }
             
+            // Cast to runtime type since OpenAPI spec lacks response schema
+            const tokenData = data as unknown as RuntimeTokenLookupResponse
+            
             return {
               token: credentials.token,
-              tokenData: data,
+              accessor: tokenData?.data?.accessor || '',
+              lease_duration: tokenData?.data?.lease_duration || 3600,
+              renewable: tokenData?.data?.renewable || false,
+              policies: tokenData?.data?.policies || [],
+              metadata: tokenData?.data?.metadata,
               method: 'token'
             }
           } catch (fetchError) {

@@ -1437,173 +1437,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/secret/^.*$": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/config": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Read the backend level settings. */
-        get: operations["kv-read-config"];
-        put?: never;
-        /** Configure backend level settings that are applied to every key in the key-value store. */
-        post: operations["kv-write-config"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/data/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get: operations["kv-read-data-path"];
-        put?: never;
-        post: operations["kv-write-data-path"];
-        delete: operations["kv-delete-data-path"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/delete/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["kv-write-delete-path"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/destroy/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["kv-write-destroy-path"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/detailed-metadata/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get: operations["kv-list-detailed-metadata-path"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/metadata/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get: operations["kv-read-metadata-path"];
-        put?: never;
-        post: operations["kv-write-metadata-path"];
-        delete: operations["kv-delete-metadata-path"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/subkeys/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get: operations["kv-read-subkeys-path"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/secret/undelete/{path}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["kv-write-undelete-path"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/sys/audit": {
         parameters: {
             query?: never;
@@ -4176,6 +4009,193 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["wrap"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/^.*$": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        /** Read the backend level settings. */
+        get: operations["kv-read-config"];
+        put?: never;
+        /** Configure backend level settings that are applied to every key in the key-value store. */
+        post: operations["kv-write-config"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/data/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get: operations["kv-read-data-path"];
+        put?: never;
+        post: operations["kv-write-data-path"];
+        delete: operations["kv-delete-data-path"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/delete/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["kv-write-delete-path"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/destroy/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["kv-write-destroy-path"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/detailed-metadata/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get: operations["kv-list-detailed-metadata-path"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/metadata/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get: operations["kv-read-metadata-path"];
+        put?: never;
+        post: operations["kv-write-metadata-path"];
+        delete: operations["kv-delete-metadata-path"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/subkeys/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get: operations["kv-read-subkeys-path"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/{secret_mount_path}/undelete/{path}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["kv-write-undelete-path"];
         delete?: never;
         options?: never;
         head?: never;
@@ -9312,303 +9332,6 @@ export interface operations {
             };
         };
     };
-    "kv-read-config": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-write-config": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KvWriteConfigRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-read-data-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-write-data-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KvWriteDataPathRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-delete-data-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description empty body */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-write-delete-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KvWriteDeletePathRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-write-destroy-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KvWriteDestroyPathRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-list-detailed-metadata-path": {
-        parameters: {
-            query: {
-                /** @description Must be set to `true` */
-                list: "true";
-            };
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-read-metadata-path": {
-        parameters: {
-            query?: {
-                /** @description Return a list if `true` */
-                list?: string;
-            };
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-write-metadata-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KvWriteMetadataPathRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-delete-metadata-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description empty body */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-read-subkeys-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "kv-write-undelete-path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Location of the secret. */
-                path: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KvWriteUndeletePathRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     "auditing-list-enabled-devices": {
         parameters: {
             query?: never;
@@ -13916,6 +13639,331 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-read-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-write-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KvWriteConfigRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-read-data-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-write-data-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KvWriteDataPathRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-delete-data-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description empty body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-write-delete-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KvWriteDeletePathRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-write-destroy-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KvWriteDestroyPathRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-list-detailed-metadata-path": {
+        parameters: {
+            query: {
+                /** @description Must be set to `true` */
+                list: "true";
+            };
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-read-metadata-path": {
+        parameters: {
+            query?: {
+                /** @description Return a list if `true` */
+                list?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-write-metadata-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KvWriteMetadataPathRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-delete-metadata-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description empty body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-read-subkeys-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "kv-write-undelete-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Location of the secret. */
+                path: string;
+                /** @description Path that the backend was mounted at */
+                secret_mount_path: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KvWriteUndeletePathRequest"];
+            };
+        };
         responses: {
             /** @description OK */
             200: {

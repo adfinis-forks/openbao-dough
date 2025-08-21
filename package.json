@@ -9,7 +9,10 @@
     "dev": "rsbuild dev --open",
     "format": "biome format --write",
     "preview": "rsbuild preview",
-    "codegen": "openapi-typescript api/oapi.yaml -o src/types/api.ts"
+    "codegen": "openapi-typescript api/oapi.yaml -o src/types/api.ts",
+    "gen:spec": "make spec",
+    "gen:types": "make codegen",
+    "gen:all": "make regen"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.85.3",
