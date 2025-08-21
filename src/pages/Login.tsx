@@ -1,8 +1,6 @@
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-// For RSBuild: Import SVG as URL
-// If you want to use as React component, install @rsbuild/plugin-svgr and use: import OpenBaoLogo from '../../public/openbao.svg?react';
-import OpenBaoLogo from '../../public/openbao.svg';
+import OpenBaoLogo from '../../public/openbao.svg?react';
 import {
   type AuthMethodType,
   KNOWN_AUTH_METHODS,
@@ -162,7 +160,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       <div className="login-container">
         <div className="login-header">
           <div className="login-logo">
-            <img src={OpenBaoLogo} alt="OpenBao" className="login-logo__img" />
+            <OpenBaoLogo aria-label="OpenBao logo" className="login-logo__img" />
             <span className="login-logo__text">OpenBao</span>
           </div>
           <p className="login-subtitle">Secure secrets management platform</p>
