@@ -9,9 +9,12 @@ export const ALLOWED_AUTH_TYPES: AuthMethodType[] = [
   'approle',
 ];
 
-export const formatAuthMethodPath = (type: string, path: string): string => `${type}:${path}`;
+export const formatAuthMethodPath = (type: string, path: string): string =>
+  `${type}:${path}`;
 
-export const parseAuthMethodValue = (value: string): { type: string; path: string } | null => {
+export const parseAuthMethodValue = (
+  value: string,
+): { type: string; path: string } | null => {
   const [type, path] = value.split(':');
   return type && path ? { type, path } : null;
 };

@@ -87,7 +87,6 @@ export const AuthMethodsView: React.FC = () => {
   const enabledMethods = authMethods.filter((method) => method.enabled);
   const disabledMethods = authMethods.filter((method) => !method.enabled);
 
-
   return (
     <div className="auth-methods-view">
       <div className="auth-methods-view__header">
@@ -144,7 +143,11 @@ export const AuthMethodsView: React.FC = () => {
             <CardContent>
               <div className="auth-methods-grid">
                 {enabledMethods.map((method) => (
-                  <AuthMethodCard key={method.id} method={method} onToggle={toggleAuthMethod} />
+                  <AuthMethodCard
+                    key={method.id}
+                    method={method}
+                    onToggle={toggleAuthMethod}
+                  />
                 ))}
               </div>
             </CardContent>
@@ -164,7 +167,11 @@ export const AuthMethodsView: React.FC = () => {
             <CardContent>
               <div className="auth-methods-grid">
                 {disabledMethods.map((method) => (
-                  <AuthMethodCard key={method.id} method={method} onToggle={toggleAuthMethod} />
+                  <AuthMethodCard
+                    key={method.id}
+                    method={method}
+                    onToggle={toggleAuthMethod}
+                  />
                 ))}
               </div>
             </CardContent>

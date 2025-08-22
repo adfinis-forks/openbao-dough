@@ -18,7 +18,7 @@ interface AuthState {
   tokenInfo: TokenInfo | null;
   client: OpenBaoClient | null;
   isAuthenticated: boolean;
-  
+
   // Actions
   setToken: (tokenData: Partial<TokenInfo> & { token: string }) => void;
   clearAuth: () => void;
@@ -35,7 +35,7 @@ const secureStorage = {
       // Use sessionStorage for better security than localStorage
       const item = sessionStorage.getItem(name);
       if (!item) return null;
-      
+
       // Basic obfuscation (not cryptographically secure, but better than plain text)
       return atob(item);
     } catch {
@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthState>()(
 
       setToken: (tokenData) => {
         const expiresAt = Date.now() + (tokenData.ttl || 3600) * 1000; // TTL in seconds to milliseconds
-        
+
         const tokenInfo: TokenInfo = {
           token: tokenData.token,
           accessor: tokenData.accessor || '',
@@ -79,7 +79,10 @@ export const useAuthStore = create<AuthState>()(
           metadata: tokenData.metadata,
         };
 
-        const client = createOpenBaoClient(APP_CONFIG.BAO_ADDR, tokenData.token);
+        const client = createOpenBaoClient(
+          APP_CONFIG.BAO_ADDR,
+          tokenData.token,
+        );
 
         set({
           tokenInfo,
@@ -102,7 +105,7 @@ export const useAuthStore = create<AuthState>()(
 
         try {
           const { data, error } = await client.POST('/auth/token/renew-self');
-          
+
           if (error) {
             console.warn('Token renewal failed:', error);
             get().clearAuth();
@@ -128,7 +131,7 @@ export const useAuthStore = create<AuthState>()(
       isTokenExpired: () => {
         const { tokenInfo } = get();
         if (!tokenInfo) return true;
-        
+
         // Add 5 minute buffer before expiration
         const bufferMs = 5 * 60 * 1000;
         return Date.now() + bufferMs >= tokenInfo.expiresAt;
@@ -157,15 +160,18 @@ export const useAuthStore = create<AuthState>()(
       onRehydrateStorage: () => (state) => {
         if (state?.tokenInfo && !state.isTokenExpired()) {
           // Recreate client after rehydration
-          const client = createOpenBaoClient(APP_CONFIG.BAO_ADDR, state.tokenInfo.token);
+          const client = createOpenBaoClient(
+            APP_CONFIG.BAO_ADDR,
+            state.tokenInfo.token,
+          );
           state.client = client;
         } else if (state) {
           // Clear expired auth
           state.clearAuth();
         }
       },
-    }
-  )
+    },
+  ),
 );
 
 // Auto-refresh token before expiration
@@ -180,7 +186,7 @@ useAuthStore.subscribe((state) => {
   if (state.isAuthenticated && state.tokenInfo?.renewable) {
     const refreshTime = Math.max(
       (state.tokenInfo.ttl * 1000) / 2, // Refresh at half TTL
-      5 * 60 * 1000 // Minimum 5 minutes
+      5 * 60 * 1000, // Minimum 5 minutes
     );
 
     refreshInterval = setInterval(() => {

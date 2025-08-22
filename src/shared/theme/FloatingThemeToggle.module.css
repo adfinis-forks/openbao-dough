@@ -5,44 +5,46 @@
   top: 2rem;
   right: 2rem;
   z-index: 9999;
-  
+
   /* Dimensions */
   width: 3.5rem;
   height: 3.5rem;
   min-width: 3.5rem; /* Prevent shrinking */
   min-height: 3.5rem; /* Prevent shrinking */
-  
+
   /* Visual styling */
   border-radius: 2rem;
   background: var(--color-surface, #ffffff);
   border: 1px solid var(--color-border, #e5e7eb);
-  
+
   /* Layout */
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   /* Effects */
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
   backdrop-filter: blur(20px);
-  
+
   /* Interaction */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
+
   /* Prevent conflicts */
   overflow: hidden;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  
+
   /* Ensure it's not affected by flex/grid containers */
   flex-shrink: 0;
   flex-grow: 0;
 }
 
 .toggle.toggle.toggle::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -64,7 +66,9 @@
 
 .toggle.toggle.toggle:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
   border-color: var(--color-border-hover, #d1d5db);
 }
 
@@ -78,7 +82,7 @@
   line-height: 1;
   position: relative;
   z-index: 2;
-  
+
   transition: transform 200ms ease-in-out;
 }
 
@@ -99,7 +103,7 @@
     rgba(var(--color-primary-500-rgb), 0.1) 50%,
     transparent 100%
   );
-  
+
   transform: translate(-50%, -50%);
   transition: all var(--transition-base);
   pointer-events: none;
@@ -127,7 +131,7 @@
     width: 3rem;
     height: 3rem;
   }
-  
+
   .icon {
     font-size: 1.25rem;
   }
@@ -140,7 +144,7 @@
     width: 2.75rem;
     height: 2.75rem;
   }
-  
+
   .icon {
     font-size: 1.125rem;
   }
@@ -161,11 +165,11 @@
   .ripple {
     transition: none;
   }
-  
+
   .toggle:hover {
     transform: none;
   }
-  
+
   .toggle.toggle.toggle:hover .icon {
     transform: none;
   }

@@ -10,8 +10,6 @@ export interface EnabledAuth {
   description?: string;
 }
 
-
-
 // Default mock data for development
 const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
   {
@@ -33,7 +31,7 @@ const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
 
 export function useEnabledAuthMethods() {
   const { getClient, isAuthenticated } = useAuthStore();
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [enabled, setEnabled] = useState<EnabledAuth[]>([]);
@@ -47,7 +45,7 @@ export function useEnabledAuthMethods() {
 
       try {
         const client = getClient();
-        
+
         // If no authenticated client, fall back to default auth methods
         if (!client || !isAuthenticated) {
           if (!cancelled) {
@@ -57,9 +55,11 @@ export function useEnabledAuthMethods() {
         }
 
         const { data, error: apiError } = await client.GET('/sys/auth');
-        
+
         if (apiError) {
-          throw new Error(`API Error: ${apiError.detail || 'Failed to fetch auth methods'}`);
+          throw new Error(
+            `API Error: ${apiError.detail || 'Failed to fetch auth methods'}`,
+          );
         }
 
         if (data?.data) {
@@ -68,7 +68,7 @@ export function useEnabledAuthMethods() {
               path,
               type: info.type as AuthMethodType,
               description: info.description,
-            })
+            }),
           );
 
           if (!cancelled) {
@@ -82,7 +82,8 @@ export function useEnabledAuthMethods() {
         }
       } catch (err) {
         if (!cancelled) {
-          const message = err instanceof Error ? err.message : 'Failed to load auth methods';
+          const message =
+            err instanceof Error ? err.message : 'Failed to load auth methods';
           setError(message);
           setEnabled(DEFAULT_AUTH_METHODS);
         }
@@ -121,4 +122,3 @@ export function useEnabledAuthMethods() {
 
   return { loading, error, enabled, options };
 }
-

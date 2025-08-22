@@ -6,7 +6,10 @@ interface ThemeToggleProps {
   style?: React.CSSProperties;
 }
 
-export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className, style }) => {
+export const ThemeToggle: React.FC<ThemeToggleProps> = ({
+  className,
+  style,
+}) => {
   const { theme, toggleTheme } = useThemeStore();
 
   const defaultStyle: React.CSSProperties = {

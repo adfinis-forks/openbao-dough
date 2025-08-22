@@ -34,7 +34,7 @@ export const KNOWN_AUTH_METHODS: Record<AuthMethodType, AuthMethodMeta> = {
     description: 'Authenticate with a direct token',
     icon: '🔑',
     fields: [
-      { name: 'token', label: 'Token', type: 'text', placeholder: 'hvb_...' },
+      { name: 'token', label: 'Token', type: 'text', placeholder: 's.token' },
     ],
   },
   userpass: {

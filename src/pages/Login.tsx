@@ -34,9 +34,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [mountPath, setMountPath] = useState<string>('');
   const [authError, setAuthError] = useState<string>('');
-  
+
   const authenticateMutation = useAuthenticate();
-  
+
   // Use BAO_ADDR from shared config (already includes /v1)
   const baseUrl = BAO_ADDR;
 
@@ -92,7 +92,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError('');
-    
+
     if (!selectedMeta) return;
 
     try {
@@ -127,11 +127,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
           policies: result.policies || [],
           metadata: result.metadata,
         });
-        
+
         onLogin();
       }
     } catch (error) {
-      setAuthError(error instanceof Error ? error.message : 'Authentication failed');
+      setAuthError(
+        error instanceof Error ? error.message : 'Authentication failed',
+      );
     }
   };
 
@@ -160,7 +162,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       <div className="login-container">
         <div className="login-header">
           <div className="login-logo">
-            <OpenBaoLogo aria-label="OpenBao logo" className="login-logo__img" />
+            <OpenBaoLogo
+              aria-label="OpenBao logo"
+              className="login-logo__img"
+            />
             <span className="login-logo__text">OpenBao</span>
           </div>
           <p className="login-subtitle">Secure secrets management platform</p>
@@ -299,15 +304,18 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
               {/* Authentication Error */}
               {authError && (
-                <div className="auth-error" style={{
-                  padding: '12px',
-                  backgroundColor: 'var(--color-danger-50)',
-                  border: '1px solid var(--color-danger-200)',
-                  borderRadius: '6px',
-                  color: 'var(--color-danger-700)',
-                  fontSize: '14px',
-                  marginBottom: '16px'
-                }}>
+                <div
+                  className="auth-error"
+                  style={{
+                    padding: '12px',
+                    backgroundColor: 'var(--color-danger-50)',
+                    border: '1px solid var(--color-danger-200)',
+                    borderRadius: '6px',
+                    color: 'var(--color-danger-700)',
+                    fontSize: '14px',
+                    marginBottom: '16px',
+                  }}
+                >
                   {authError}
                 </div>
               )}

@@ -12,9 +12,7 @@ export const FloatingThemeToggle: React.FC = () => {
       aria-label="Toggle theme"
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
-      <div className={styles.icon}>
-        {theme === 'light' ? '🌙' : '☀️'}
-      </div>
+      <div className={styles.icon}>{theme === 'light' ? '🌙' : '☀️'}</div>
       <div className={styles.ripple}></div>
     </button>
   );

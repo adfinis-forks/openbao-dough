@@ -21,8 +21,12 @@ interface AuthMethodCardProps {
   onToggle: (id: string) => void;
 }
 
-export const AuthMethodCard: React.FC<AuthMethodCardProps> = ({ method, onToggle }) => {
-  const authMeta = KNOWN_AUTH_METHODS[method.type as keyof typeof KNOWN_AUTH_METHODS];
+export const AuthMethodCard: React.FC<AuthMethodCardProps> = ({
+  method,
+  onToggle,
+}) => {
+  const authMeta =
+    KNOWN_AUTH_METHODS[method.type as keyof typeof KNOWN_AUTH_METHODS];
   const icon = authMeta?.icon || '🔐';
 
   return (
@@ -61,9 +65,7 @@ export const AuthMethodCard: React.FC<AuthMethodCardProps> = ({ method, onToggle
               variant={method.enabled ? 'outline' : 'primary'}
               size="small"
               onClick={() => onToggle(method.id)}
-              icon={
-                method.enabled ? <Lock size={16} /> : <Unlock size={16} />
-              }
+              icon={method.enabled ? <Lock size={16} /> : <Unlock size={16} />}
             >
               {method.enabled ? 'Disable' : 'Enable'}
             </Button>

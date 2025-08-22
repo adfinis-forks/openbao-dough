@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query'
-import { createOpenBaoClient } from './client'
+import { useMutation } from '@tanstack/react-query';
+import { createOpenBaoClient } from './client';
 
 // Runtime response types (since OpenAPI spec lacks response schemas)
 interface RuntimeTokenLookupResponse {
@@ -16,60 +16,72 @@ interface RuntimeTokenLookupResponse {
 // Authentication doesn't use the global client since we need to authenticate first
 export function useAuthenticate() {
   return useMutation({
-    mutationFn: async ({ 
-      baseUrl, 
-      authMethod, 
-      credentials, 
+    mutationFn: async ({
+      baseUrl,
+      authMethod,
+      credentials,
       namespace,
-      mountPath 
+      mountPath,
     }: {
-      baseUrl: string
-      authMethod: string
-      credentials: Record<string, string>
-      namespace?: string
-      mountPath?: string
+      baseUrl: string;
+      authMethod: string;
+      credentials: Record<string, string>;
+      namespace?: string;
+      mountPath?: string;
     }) => {
       // Add namespace header if provided
-      const headers: Record<string, string> = {}
+      const headers: Record<string, string> = {};
       if (namespace && namespace !== '/') {
-        headers['X-Vault-Namespace'] = namespace
+        headers['X-Vault-Namespace'] = namespace;
       }
-      
+
       // Create client with namespace headers but no token for authentication
-      const authClient = createOpenBaoClient(baseUrl, undefined, headers)
+      const authClient = createOpenBaoClient(baseUrl, undefined, headers);
 
       // Handle different authentication methods
       switch (authMethod) {
         case 'token': {
           // For token auth, just validate the token
-          const tokenClient = createOpenBaoClient(baseUrl, credentials.token, headers)
-          
+          const tokenClient = createOpenBaoClient(
+            baseUrl,
+            credentials.token,
+            headers,
+          );
+
           try {
-            const { data, error, response } = await tokenClient.GET('/auth/token/lookup-self')
-            
+            const { data, error, response } = await tokenClient.GET(
+              '/auth/token/lookup-self',
+            );
+
             if (error) {
               // Log more details about the error
               console.error('Token validation error:', {
                 status: response?.status,
                 statusText: response?.statusText,
                 error,
-                url: response?.url
-              })
-              
+                url: response?.url,
+              });
+
               if (response?.status === 404) {
-                throw new Error('OpenBao server not found. Check if the server is running.')
+                throw new Error(
+                  'OpenBao server not found. Check if the server is running.',
+                );
               } else if (response?.status === 403) {
-                throw new Error('Token is invalid or has insufficient permissions.')
+                throw new Error(
+                  'Token is invalid or has insufficient permissions.',
+                );
               } else if (response?.status === 401) {
-                throw new Error('Token is invalid or expired.')
+                throw new Error('Token is invalid or expired.');
               } else {
-                throw new Error(`Authentication failed: ${response?.status || 'Unknown error'}`)
+                throw new Error(
+                  `Authentication failed: ${response?.status || 'Unknown error'}`,
+                );
               }
             }
-            
+
             // Cast to runtime type since OpenAPI spec lacks response schema
-            const tokenData = data as unknown as RuntimeTokenLookupResponse
-            
+            const tokenData = data as unknown as RuntimeTokenLookupResponse;
+
             return {
               token: credentials.token,
               accessor: tokenData?.data?.accessor || '',
@@ -77,113 +89,123 @@ export function useAuthenticate() {
               renewable: tokenData?.data?.renewable || false,
               policies: tokenData?.data?.policies || [],
               metadata: tokenData?.data?.metadata,
-              method: 'token'
-            }
+              method: 'token',
+            };
           } catch (fetchError) {
-            console.error('Network error during token validation:', fetchError)
-            if (fetchError instanceof TypeError && fetchError.message.includes('fetch')) {
-              throw new Error(`Cannot connect to OpenBao server at ${baseUrl}. Is the server running?`)
+            console.error('Network error during token validation:', fetchError);
+            if (
+              fetchError instanceof TypeError &&
+              fetchError.message.includes('fetch')
+            ) {
+              throw new Error(
+                `Cannot connect to OpenBao server at ${baseUrl}. Is the server running?`,
+              );
             }
-            throw fetchError
+            throw fetchError;
           }
         }
-        
+
         case 'userpass': {
           // Userpass authentication
-          const path = mountPath || 'userpass'
-          const loginPath = `/auth/${path}/login/${credentials.username}` as any
-          
+          const path = mountPath || 'userpass';
+          const loginPath =
+            `/auth/${path}/login/${credentials.username}` as any;
+
           const { data, error } = await authClient.POST(loginPath, {
             body: {
-              password: credentials.password
-            }
-          })
-          
+              password: credentials.password,
+            },
+          });
+
           if (error) {
-            throw new Error('Invalid username or password')
+            throw new Error('Invalid username or password');
           }
-          
+
           return {
             token: data?.auth?.client_token,
             tokenData: data,
-            method: 'userpass'
-          }
+            method: 'userpass',
+          };
         }
-        
+
         case 'ldap': {
           // LDAP authentication - use ldapUsername field
-          const path = mountPath || 'ldap'
-          const username = credentials.ldapUsername || credentials.username
-          const password = credentials.ldapPassword || credentials.password
-          const loginPath = `/auth/${path}/login/${username}` as any
-          
+          const path = mountPath || 'ldap';
+          const username = credentials.ldapUsername || credentials.username;
+          const password = credentials.ldapPassword || credentials.password;
+          const loginPath = `/auth/${path}/login/${username}` as any;
+
           const { data, error } = await authClient.POST(loginPath, {
             body: {
-              password: password
-            }
-          })
-          
+              password: password,
+            },
+          });
+
           if (error) {
-            throw new Error('LDAP authentication failed')
+            throw new Error('LDAP authentication failed');
           }
-          
+
           return {
             token: data?.auth?.client_token,
             tokenData: data,
-            method: 'ldap'
-          }
+            method: 'ldap',
+          };
         }
-        
+
         case 'approle': {
           // AppRole authentication - use roleId/secretId fields
-          const path = mountPath || 'approle'
-          const loginPath = `/auth/${path}/login` as any
-          
+          const path = mountPath || 'approle';
+          const loginPath = `/auth/${path}/login` as any;
+
           const { data, error } = await authClient.POST(loginPath, {
             body: {
               role_id: credentials.roleId,
-              secret_id: credentials.secretId
-            }
-          })
-          
+              secret_id: credentials.secretId,
+            },
+          });
+
           if (error) {
-            throw new Error('AppRole authentication failed')
+            throw new Error('AppRole authentication failed');
           }
-          
+
           return {
             token: data?.auth?.client_token,
             tokenData: data,
-            method: 'approle'
-          }
+            method: 'approle',
+          };
         }
-        
+
         default:
-          throw new Error(`Unsupported authentication method: ${authMethod}`)
+          throw new Error(`Unsupported authentication method: ${authMethod}`);
       }
     },
-  })
+  });
 }
 
 export function useTokenValidation() {
   return useMutation({
-    mutationFn: async ({ baseUrl, token, namespace }: {
-      baseUrl: string
-      token: string
-      namespace?: string
+    mutationFn: async ({
+      baseUrl,
+      token,
+      namespace,
+    }: {
+      baseUrl: string;
+      token: string;
+      namespace?: string;
     }) => {
-      const headers: Record<string, string> = {}
+      const headers: Record<string, string> = {};
       if (namespace && namespace !== '/') {
-        headers['X-Vault-Namespace'] = namespace
+        headers['X-Vault-Namespace'] = namespace;
       }
-      
-      const client = createOpenBaoClient(baseUrl, token, headers)
-      const { data, error } = await client.GET('/auth/token/lookup-self')
-      
+
+      const client = createOpenBaoClient(baseUrl, token, headers);
+      const { data, error } = await client.GET('/auth/token/lookup-self');
+
       if (error) {
-        throw new Error('Token validation failed')
+        throw new Error('Token validation failed');
       }
-      
-      return data
+
+      return data;
     },
-  })
+  });
 }
