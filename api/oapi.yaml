@@ -125,18 +125,25 @@
         "/auth/token/lookup": {
             "description": "This endpoint will lookup a token and its properties.",
             "get": {
-                "operationId": "token-look-up-2",
+                "operationId": "token-look-up-get",
                 "tags": [
                     "auth"
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenLookupResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "post": {
-                "operationId": "token-look-up",
+                "operationId": "token-look-up-post",
                 "tags": [
                     "auth"
                 ],
@@ -145,14 +152,21 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TokenLookUpRequest"
+                                "$ref": "#/components/schemas/TokenLookUpPostRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenLookupResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -160,7 +174,7 @@
         "/auth/token/lookup-accessor": {
             "description": "This endpoint will lookup a token associated with the given accessor and its properties. Response will not contain the token ID.",
             "post": {
-                "operationId": "token-look-up-accessor",
+                "operationId": "token-look-up-by-accessor",
                 "tags": [
                     "auth"
                 ],
@@ -169,14 +183,21 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TokenLookUpAccessorRequest"
+                                "$ref": "#/components/schemas/TokenLookUpByAccessorRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenLookupResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -184,18 +205,25 @@
         "/auth/token/lookup-self": {
             "description": "This endpoint will lookup a token and its properties.",
             "get": {
-                "operationId": "token-look-up-self",
+                "operationId": "token-look-up-self-get",
                 "tags": [
                     "auth"
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenLookupResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "post": {
-                "operationId": "token-look-up-self2",
+                "operationId": "token-look-up-self-post",
                 "tags": [
                     "auth"
                 ],
@@ -204,14 +232,21 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TokenLookUpSelf2Request"
+                                "$ref": "#/components/schemas/TokenLookUpSelfPostRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenLookupResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -6670,7 +6705,6 @@
             }
         },
         "/sys/rotate/config": {
-            "description": "Configures settings related to the backend encryption key management.",
             "get": {
                 "operationId": "encryption-key-read-rotation-configuration",
                 "tags": [
@@ -6727,7 +6761,6 @@
             }
         },
         "/sys/rotate/keyring/config": {
-            "description": "Configures settings related to the backend encryption key management.",
             "get": {
                 "operationId": "encryption-key-read-rotate-keyring-config",
                 "tags": [
@@ -6803,7 +6836,7 @@
             }
         },
         "/sys/rotate/recovery/init": {
-            "description": "Initialize, read status or cancel the process of the rotation of the root or recovery key",
+            "description": "Initialize, read status or cancel the process of the rotation of the root or recovery key.",
             "get": {
                 "summary": "Reads the configuration and progress of the current root rotate attempt.",
                 "operationId": "rotate-attempt-read-rotate-recovery-init",
@@ -6900,7 +6933,7 @@
             }
         },
         "/sys/rotate/recovery/verify": {
-            "description": "Read status of, progress or cancel the verification process of the rotation attempt",
+            "description": "Read status of, progress or cancel the verification process of the rotation attempt.",
             "get": {
                 "summary": "Read the configuration and progress of the current rotate verification attempt.",
                 "operationId": "rotate-verification-read-rotate-recovery-verify",
@@ -7020,7 +7053,7 @@
             }
         },
         "/sys/rotate/root/init": {
-            "description": "Initialize, read status or cancel the process of the rotation of the root or recovery key",
+            "description": "Initialize, read status or cancel the process of the rotation of the root or recovery key.",
             "get": {
                 "summary": "Reads the configuration and progress of the current root rotate attempt.",
                 "operationId": "rotate-attempt-read-progress",
@@ -7117,7 +7150,7 @@
             }
         },
         "/sys/rotate/root/verify": {
-            "description": "Read status of, progress or cancel the verification process of the rotation attempt",
+            "description": "Read status of, progress or cancel the verification process of the rotation attempt.",
             "get": {
                 "summary": "Read the configuration and progress of the current rotate verification attempt.",
                 "operationId": "rotate-verification-read-progress",
@@ -12713,7 +12746,7 @@
                     }
                 }
             },
-            "TokenLookUpAccessorRequest": {
+            "TokenLookUpByAccessorRequest": {
                 "type": "object",
                 "properties": {
                     "accessor": {
@@ -12722,7 +12755,7 @@
                     }
                 }
             },
-            "TokenLookUpRequest": {
+            "TokenLookUpPostRequest": {
                 "type": "object",
                 "properties": {
                     "token": {
@@ -12731,12 +12764,134 @@
                     }
                 }
             },
-            "TokenLookUpSelf2Request": {
+            "TokenLookUpSelfPostRequest": {
                 "type": "object",
                 "properties": {
                     "token": {
                         "type": "string",
                         "description": "Token to look up (unused, does not need to be set)"
+                    }
+                }
+            },
+            "TokenLookupResponse": {
+                "type": "object",
+                "properties": {
+                    "accessor": {
+                        "type": "string",
+                        "description": "Token accessor"
+                    },
+                    "bound_cidrs": {
+                        "type": "array",
+                        "description": "List of CIDR blocks bound to the token",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "creation_time": {
+                        "type": "integer",
+                        "description": "Token creation time (Unix timestamp)",
+                        "format": "int64"
+                    },
+                    "creation_ttl": {
+                        "type": "integer",
+                        "description": "Token creation TTL in seconds",
+                        "format": "int64"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "Display name of the token"
+                    },
+                    "entity_id": {
+                        "type": "string",
+                        "description": "Entity ID associated with the token"
+                    },
+                    "expire_time": {
+                        "type": "string",
+                        "description": "Token expiration time"
+                    },
+                    "explicit_max_ttl": {
+                        "type": "integer",
+                        "description": "Token explicit maximum TTL in seconds",
+                        "format": "int64"
+                    },
+                    "external_namespace_policies": {
+                        "type": "object",
+                        "description": "External namespace policies",
+                        "format": "map"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Token ID"
+                    },
+                    "identity_policies": {
+                        "type": "array",
+                        "description": "Identity policies associated with the token",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "issue_time": {
+                        "type": "string",
+                        "description": "Token issue time"
+                    },
+                    "last_renewal": {
+                        "type": "string",
+                        "description": "Last renewal time"
+                    },
+                    "last_renewal_time": {
+                        "type": "integer",
+                        "description": "Last renewal time (Unix timestamp)",
+                        "format": "int64"
+                    },
+                    "meta": {
+                        "type": "object",
+                        "description": "Token metadata",
+                        "format": "map"
+                    },
+                    "namespace_path": {
+                        "type": "string",
+                        "description": "Namespace path"
+                    },
+                    "num_uses": {
+                        "type": "integer",
+                        "description": "Number of uses remaining"
+                    },
+                    "orphan": {
+                        "type": "boolean",
+                        "description": "Whether the token is an orphan"
+                    },
+                    "path": {
+                        "type": "string",
+                        "description": "Path where the token was created"
+                    },
+                    "period": {
+                        "type": "integer",
+                        "description": "Token period in seconds",
+                        "format": "int64"
+                    },
+                    "policies": {
+                        "type": "array",
+                        "description": "List of policies associated with the token",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "renewable": {
+                        "type": "boolean",
+                        "description": "Whether the token is renewable"
+                    },
+                    "role": {
+                        "type": "string",
+                        "description": "Role name used to create the token"
+                    },
+                    "ttl": {
+                        "type": "integer",
+                        "description": "Token TTL in seconds",
+                        "format": "int64"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Token type"
                     }
                 }
             },

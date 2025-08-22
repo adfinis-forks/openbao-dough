@@ -78,9 +78,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["token-look-up-2"];
+        get: operations["token-look-up-get"];
         put?: never;
-        post: operations["token-look-up"];
+        post: operations["token-look-up-post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -96,7 +96,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["token-look-up-accessor"];
+        post: operations["token-look-up-by-accessor"];
         delete?: never;
         options?: never;
         head?: never;
@@ -110,9 +110,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["token-look-up-self"];
+        get: operations["token-look-up-self-get"];
         put?: never;
-        post: operations["token-look-up-self2"];
+        post: operations["token-look-up-self-post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -6349,17 +6349,93 @@ export interface components {
             /** @description Token type */
             type?: string;
         };
-        TokenLookUpAccessorRequest: {
+        TokenLookUpByAccessorRequest: {
             /** @description Accessor of the token to look up (request body) */
             accessor?: string;
         };
-        TokenLookUpRequest: {
+        TokenLookUpPostRequest: {
             /** @description Token to lookup (POST request body) */
             token?: string;
         };
-        TokenLookUpSelf2Request: {
+        TokenLookUpSelfPostRequest: {
             /** @description Token to look up (unused, does not need to be set) */
             token?: string;
+        };
+        TokenLookupResponse: {
+            /** @description Token accessor */
+            accessor?: string;
+            /** @description List of CIDR blocks bound to the token */
+            bound_cidrs?: string[];
+            /**
+             * Format: int64
+             * @description Token creation time (Unix timestamp)
+             */
+            creation_time?: number;
+            /**
+             * Format: int64
+             * @description Token creation TTL in seconds
+             */
+            creation_ttl?: number;
+            /** @description Display name of the token */
+            display_name?: string;
+            /** @description Entity ID associated with the token */
+            entity_id?: string;
+            /** @description Token expiration time */
+            expire_time?: string;
+            /**
+             * Format: int64
+             * @description Token explicit maximum TTL in seconds
+             */
+            explicit_max_ttl?: number;
+            /**
+             * Format: map
+             * @description External namespace policies
+             */
+            external_namespace_policies?: Record<string, never>;
+            /** @description Token ID */
+            id?: string;
+            /** @description Identity policies associated with the token */
+            identity_policies?: string[];
+            /** @description Token issue time */
+            issue_time?: string;
+            /** @description Last renewal time */
+            last_renewal?: string;
+            /**
+             * Format: int64
+             * @description Last renewal time (Unix timestamp)
+             */
+            last_renewal_time?: number;
+            /**
+             * Format: map
+             * @description Token metadata
+             */
+            meta?: Record<string, never>;
+            /** @description Namespace path */
+            namespace_path?: string;
+            /** @description Number of uses remaining */
+            num_uses?: number;
+            /** @description Whether the token is an orphan */
+            orphan?: boolean;
+            /** @description Path where the token was created */
+            path?: string;
+            /**
+             * Format: int64
+             * @description Token period in seconds
+             */
+            period?: number;
+            /** @description List of policies associated with the token */
+            policies?: string[];
+            /** @description Whether the token is renewable */
+            renewable?: boolean;
+            /** @description Role name used to create the token */
+            role?: string;
+            /**
+             * Format: int64
+             * @description Token TTL in seconds
+             */
+            ttl?: number;
+            /** @description Token type */
+            type?: string;
         };
         TokenRenewAccessorRequest: {
             /** @description Accessor of the token to renew (request body) */
@@ -6607,7 +6683,7 @@ export interface operations {
             };
         };
     };
-    "token-look-up-2": {
+    "token-look-up-get": {
         parameters: {
             query?: never;
             header?: never;
@@ -6621,11 +6697,13 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["TokenLookupResponse"];
+                };
             };
         };
     };
-    "token-look-up": {
+    "token-look-up-post": {
         parameters: {
             query?: never;
             header?: never;
@@ -6634,7 +6712,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TokenLookUpRequest"];
+                "application/json": components["schemas"]["TokenLookUpPostRequest"];
             };
         };
         responses: {
@@ -6643,11 +6721,13 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["TokenLookupResponse"];
+                };
             };
         };
     };
-    "token-look-up-accessor": {
+    "token-look-up-by-accessor": {
         parameters: {
             query?: never;
             header?: never;
@@ -6656,7 +6736,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TokenLookUpAccessorRequest"];
+                "application/json": components["schemas"]["TokenLookUpByAccessorRequest"];
             };
         };
         responses: {
@@ -6665,11 +6745,13 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["TokenLookupResponse"];
+                };
             };
         };
     };
-    "token-look-up-self": {
+    "token-look-up-self-get": {
         parameters: {
             query?: never;
             header?: never;
@@ -6683,11 +6765,13 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["TokenLookupResponse"];
+                };
             };
         };
     };
-    "token-look-up-self2": {
+    "token-look-up-self-post": {
         parameters: {
             query?: never;
             header?: never;
@@ -6696,7 +6780,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TokenLookUpSelf2Request"];
+                "application/json": components["schemas"]["TokenLookUpSelfPostRequest"];
             };
         };
         responses: {
@@ -6705,7 +6789,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["TokenLookupResponse"];
+                };
             };
         };
     };
