@@ -2,7 +2,7 @@
 
 # Configuration
 OPENBAO_ADDR ?= http://127.0.0.1:8200
-OPENBAO_TOKEN ?= 
+OPENBAO_TOKEN ?= myroot
 SPEC_FILE = api/oapi.yaml
 TYPES_FILE = src/types/api.ts
 
