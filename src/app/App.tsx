@@ -31,7 +31,6 @@ export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <FloatingThemeToggle />
     </QueryClientProvider>
   );
 };
