@@ -12,7 +12,7 @@ interface Policy {
   description: string;
   rules: number;
   lastModified: string;
-  type: 'built-in' | 'custom';
+  type: 'Built-in' | 'Custom';
   rulesContent?: string;
 }
 
@@ -56,7 +56,7 @@ export const PolicyEditModal: React.FC<PolicyEditModalProps> = ({
     name: '',
     description: '',
     rulesContent: defaultRules,
-    type: 'custom' as const,
+    type: 'Custom' as const,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -75,7 +75,7 @@ export const PolicyEditModal: React.FC<PolicyEditModalProps> = ({
         name: '',
         description: '',
         rulesContent: defaultRules,
-        type: 'custom',
+        type: 'Custom',
       });
     }
     setErrors({});
@@ -137,7 +137,7 @@ export const PolicyEditModal: React.FC<PolicyEditModalProps> = ({
                     setFormData({ ...formData, name: e.target.value })
                   }
                   placeholder="Enter policy name"
-                  disabled={isEditing && policy?.type === 'built-in'}
+                  disabled={isEditing && policy?.type === 'Built-in'}
                   className={errors.name ? 'error' : ''}
                 />
                 {errors.name && (
@@ -151,7 +151,7 @@ export const PolicyEditModal: React.FC<PolicyEditModalProps> = ({
                 <label className="form-label">Type</label>
                 <Badge
                   variant={
-                    formData.type === 'built-in' ? 'primary' : 'secondary'
+                    formData.type === 'Built-in' ? 'primary' : 'secondary'
                   }
                   size="medium"
                 >
@@ -222,7 +222,7 @@ export const PolicyEditModal: React.FC<PolicyEditModalProps> = ({
             variant="primary"
             onClick={handleSave}
             icon={<CheckCircle size={16} />}
-            disabled={isEditing && policy?.type === 'built-in'}
+            disabled={isEditing && policy?.type === 'Built-in'}
           >
             {isEditing ? 'Save Changes' : 'Create Policy'}
           </Button>

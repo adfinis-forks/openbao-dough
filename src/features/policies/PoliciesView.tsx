@@ -24,7 +24,7 @@ interface Policy {
   description: string;
   rules: number;
   lastModified: string;
-  type: 'built-in' | 'custom';
+  type: 'Built-in' | 'Custom';
   rulesContent?: string;
 }
 
@@ -35,7 +35,7 @@ const mockPolicies: Policy[] = [
     description: 'Full administrative access to all resources',
     rules: 15,
     lastModified: '1 day ago',
-    type: 'built-in',
+    type: 'Built-in',
     rulesContent: `# Admin policy - full access
 path "*" {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
@@ -52,7 +52,7 @@ path "sys/*" {
     description: 'Development environment access with read/write permissions',
     rules: 8,
     lastModified: '3 days ago',
-    type: 'custom',
+    type: 'Custom',
     rulesContent: `# Developer policy
 path "secret/data/dev/*" {
   capabilities = ["create", "read", "update", "delete"]
@@ -68,7 +68,7 @@ path "secret/data/shared/*" {
     description: 'Read-only access to secrets and configuration',
     rules: 3,
     lastModified: '1 week ago',
-    type: 'custom',
+    type: 'Custom',
     rulesContent: `# Read-only policy
 path "secret/data/*" {
   capabilities = ["read"]
@@ -84,7 +84,7 @@ path "auth/token/lookup-self" {
     description: 'Production deployment access with specific permissions',
     rules: 12,
     lastModified: '2 weeks ago',
-    type: 'custom',
+    type: 'Custom',
     rulesContent: `# Production deployment policy
 path "secret/data/prod/*" {
   capabilities = ["read"]
@@ -103,7 +103,7 @@ path "database/creds/prod-role" {
     description: 'Backup and restore operations',
     rules: 6,
     lastModified: '3 weeks ago',
-    type: 'custom',
+    type: 'Custom',
     rulesContent: `# Backup operator policy
 path "sys/storage/raft/snapshot" {
   capabilities = ["read"]
@@ -149,7 +149,7 @@ export const PoliciesView: React.FC = () => {
       ...policy,
       id: '',
       name: `${policy.name}-copy`,
-      type: 'custom',
+      type: 'Custom',
     });
     setIsCreateModalOpen(true);
   };
@@ -248,7 +248,7 @@ export const PoliciesView: React.FC = () => {
                       <h3 className="policy-card__name">{policy.name}</h3>
                       <Badge
                         variant={
-                          policy.type === 'built-in' ? 'primary' : 'secondary'
+                          policy.type === 'Built-in' ? 'primary' : 'secondary'
                         }
                         size="small"
                       >
@@ -283,7 +283,7 @@ export const PoliciesView: React.FC = () => {
                       <Eye size={16} />
                       View Policy
                     </DropdownMenuItem>
-                    {policy.type === 'custom' && (
+                    {policy.type === 'Custom' && (
                       <DropdownMenuItem
                         onClick={() => handleEditPolicy(policy)}
                       >
@@ -297,7 +297,7 @@ export const PoliciesView: React.FC = () => {
                       <Copy size={16} />
                       Duplicate
                     </DropdownMenuItem>
-                    {policy.type === 'custom' && (
+                    {policy.type === 'Custom' && (
                       <DropdownMenuItem
                         danger
                         onClick={() => handleDeletePolicy(policy)}

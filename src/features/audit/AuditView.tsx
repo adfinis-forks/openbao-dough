@@ -20,7 +20,7 @@ interface AuditEvent {
   user: string;
   action: string;
   path: string;
-  result: 'success' | 'failure';
+  result: 'Success' | 'Failure';
   ip: string;
   details?: string;
 }
@@ -38,9 +38,9 @@ const mockAuditEvents: AuditEvent[] = [
     id: '1',
     timestamp: '2024-01-15 14:30:25',
     user: 'john.doe',
-    action: 'READ',
+    action: 'Read',
     path: 'secret/prod/database',
-    result: 'success',
+    result: 'Success',
     ip: '192.168.1.100',
     details: 'Secret read successfully',
   },
@@ -48,9 +48,9 @@ const mockAuditEvents: AuditEvent[] = [
     id: '2',
     timestamp: '2024-01-15 14:28:12',
     user: 'admin',
-    action: 'CREATE',
+    action: 'Create',
     path: 'secret/dev/api-key',
-    result: 'success',
+    result: 'Success',
     ip: '192.168.1.50',
     details: 'New secret created',
   },
@@ -58,9 +58,9 @@ const mockAuditEvents: AuditEvent[] = [
     id: '3',
     timestamp: '2024-01-15 14:25:45',
     user: 'jane.smith',
-    action: 'UPDATE',
+    action: 'Update',
     path: 'auth/userpass/users/jane.smith',
-    result: 'success',
+    result: 'Success',
     ip: '192.168.1.75',
     details: 'User password updated',
   },
@@ -68,9 +68,9 @@ const mockAuditEvents: AuditEvent[] = [
     id: '4',
     timestamp: '2024-01-15 14:22:33',
     user: 'unknown',
-    action: 'AUTH',
+    action: 'Auth',
     path: 'auth/userpass/login/test',
-    result: 'failure',
+    result: 'Failure',
     ip: '10.0.0.123',
     details: 'Invalid credentials',
   },
@@ -78,9 +78,9 @@ const mockAuditEvents: AuditEvent[] = [
     id: '5',
     timestamp: '2024-01-15 14:20:18',
     user: 'admin',
-    action: 'DELETE',
+    action: 'Delete',
     path: 'secret/temp/test',
-    result: 'success',
+    result: 'Success',
     ip: '192.168.1.50',
     details: 'Temporary secret deleted',
   },
@@ -88,9 +88,9 @@ const mockAuditEvents: AuditEvent[] = [
     id: '6',
     timestamp: '2024-01-15 14:18:05',
     user: 'deploy-user',
-    action: 'READ',
+    action: 'Read',
     path: 'secret/prod/config',
-    result: 'success',
+    result: 'Success',
     ip: '192.168.1.200',
     details: 'Configuration accessed for deployment',
   },
@@ -123,7 +123,7 @@ const mockAuditDevices: AuditDevice[] = [
 export const AuditView: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<
-    'all' | 'success' | 'failure'
+    'all' | 'Success' | 'Failure'
   >('all');
   const [auditEvents] = useState<AuditEvent[]>(mockAuditEvents);
   const [auditDevices] = useState<AuditDevice[]>(mockAuditDevices);
@@ -245,7 +245,7 @@ export const AuditView: React.FC = () => {
             <Button variant="secondary" icon={<Filter size={16} />}>
               {selectedFilter === 'all'
                 ? 'All Events'
-                : selectedFilter === 'success'
+                : selectedFilter === 'Success'
                   ? 'Success Only'
                   : 'Failures Only'}
             </Button>
@@ -254,10 +254,10 @@ export const AuditView: React.FC = () => {
           <DropdownMenuItem onClick={() => setSelectedFilter('all')}>
             All Events
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setSelectedFilter('success')}>
+          <DropdownMenuItem onClick={() => setSelectedFilter('Success')}>
             Success Only
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setSelectedFilter('failure')}>
+          <DropdownMenuItem onClick={() => setSelectedFilter('Failure')}>
             Failures Only
           </DropdownMenuItem>
         </Dropdown>
@@ -329,7 +329,7 @@ export const AuditView: React.FC = () => {
                       <span className="audit-event__path">{event.path}</span>
                       <Badge
                         variant={
-                          event.result === 'success' ? 'success' : 'danger'
+                          event.result === 'Success' ? 'success' : 'danger'
                         }
                         size="small"
                       >
