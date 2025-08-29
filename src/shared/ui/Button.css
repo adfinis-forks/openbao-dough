@@ -241,21 +241,13 @@
 
 /* Variants */
 .btn--primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500),
-    var(--color-primary-600)
-  );
+  background-color: var(--color-primary-500);
   color: white;
   box-shadow: var(--shadow-lg);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-600),
-    var(--color-primary-700)
-  );
+  background-color: var(--color-primary-600);
   transform: translateY(-2px);
   box-shadow: var(--shadow-xl);
 }

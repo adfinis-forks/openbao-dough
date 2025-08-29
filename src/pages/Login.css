@@ -81,14 +81,7 @@
   font-family: var(--font-family-title);
   font-size: 2.25rem;
   font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-600) 0%,
-    var(--color-secondary-600) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-primary-600);
 }
 
 .login-subtitle {
@@ -315,11 +308,7 @@
   font-weight: 600;
   height: 2.875rem;
   font-size: 0.9375rem;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-600) 0%,
-    var(--color-primary-500) 100%
-  );
+  background-color: var(--color-primary-500);
   border: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -329,11 +318,7 @@
   box-shadow:
     0 10px 20px -5px rgba(34, 197, 94, 0.25),
     0 4px 6px -2px rgba(34, 197, 94, 0.15);
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500) 0%,
-    var(--color-primary-600) 100%
-  );
+  background-color: var(--color-primary-600);
 }
 
 .login-submit:disabled {
