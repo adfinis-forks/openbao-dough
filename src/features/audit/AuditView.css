@@ -190,6 +190,12 @@
   text-overflow: ellipsis;
 }
 
+.audit-events__column--action,
+.audit-events__column--result {
+  text-align: center;
+  justify-self: center;
+}
+
 .audit-event {
   display: flex;
   align-items: center;

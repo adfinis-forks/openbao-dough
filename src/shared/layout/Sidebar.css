@@ -73,17 +73,11 @@
   width: 4rem;
   height: 4rem;
   border-radius: var(--radius-xl);
-  box-shadow:
-    0 8px 25px -5px rgba(34, 197, 94, 0.25),
-    0 0 0 1px rgba(34, 197, 94, 0.1);
   transition: all 0.3s ease;
 }
 
 .sidebar__logo-icon:hover {
-  transform: scale(1.05) rotate(2deg);
-  box-shadow:
-    0 12px 35px -5px rgba(34, 197, 94, 0.35),
-    0 0 0 1px rgba(34, 197, 94, 0.2);
+  /* No animation on hover */
 }
 
 .sidebar__brand {
@@ -96,15 +90,7 @@
   font-family: "Ubuntu", "Segoe UI", Arial, sans-serif;
   font-size: 1.5rem;
   font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-600) 0%,
-    var(--color-primary-500) 30%,
-    var(--color-secondary-600) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-primary-600);
   margin: 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
