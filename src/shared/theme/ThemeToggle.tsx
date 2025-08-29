@@ -14,7 +14,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
 
   const defaultStyle: React.CSSProperties = {
     padding: '0.5rem',
-    borderRadius: 'var(--radius-md)',
+    borderRadius: '50%',
     backgroundColor: 'var(--color-surface)',
     color: 'var(--color-text-primary)',
     border: '1px solid var(--color-border)',
