@@ -1,0 +1,125 @@
+.enable-auth-method-view {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.enable-auth-method-view__header {
+  margin-bottom: 2rem;
+}
+
+.enable-auth-method-view__header .back-button {
+  margin-bottom: 1rem;
+}
+
+.enable-auth-method-view__header .back-button .btn__icon {
+  transform: rotate(90deg);
+}
+
+.enable-auth-method-view__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.enable-auth-method-view__subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.enable-auth-method-view__content {
+  margin-top: 2rem;
+}
+
+.auth-methods-sections {
+  max-width: 1200px;
+}
+
+.auth-methods-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.auth-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.auth-method-option {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--color-background);
+}
+
+.auth-method-option:hover {
+  border-color: var(--color-primary);
+  background: var(--color-background-hover);
+}
+
+.auth-method-option.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.auth-method-option__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-right: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.auth-method-option.selected .auth-method-option__icon {
+  color: var(--color-primary);
+}
+
+.auth-method-option__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.auth-method-option__name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.auth-method-option__description {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.auth-method-option__checkbox {
+  margin-left: 1rem;
+}
+
+.auth-method-option__checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+
+.enable-auth-method-view__actions {
+  margin-top: 2rem;
+  text-align: center;
+}
