@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useState } from 'react';
 import { Button } from '../../shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
+import { Input } from '../../shared/ui/Input';
 import { ChevronDown, Server, Users, FileText, Key, Globe, Shield } from '../../shared/ui/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import './EnableAuthMethodView.css';
@@ -30,18 +30,25 @@ const authMethodOptions: AuthMethodOption[] = [
 
 export const EnableAuthMethodView: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [methodEnabled, setMethodEnabled] = useState<boolean>(false);
+  const [path, setPath] = useState<string>('');
 
   const handleBack = () => {
     navigate({ to: '/auth' });
   };
 
-  const handleMethodToggle = (methodId: string) => {
-    setSelectedMethods(prev => 
-      prev.includes(methodId) 
-        ? prev.filter(id => id !== methodId)
-        : [...prev, methodId]
-    );
+  const handleMethodSelect = (methodId: string) => {
+    setSelectedMethod(methodId);
+  };
+
+  const handleEnableMethod = () => {
+    setMethodEnabled(true);
+    setPath(selectedMethod); // Set default path to the selected method ID
+  };
+
+  const handlePathChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPath(e.target.value);
   };
 
   return (
@@ -64,77 +71,98 @@ export const EnableAuthMethodView: React.FC = () => {
       </div>
 
       <div className="enable-auth-method-view__content">
-        <div className="auth-methods-sections">
-          {/* Generic Section */}
-          <div className="auth-methods-section">
-            <h2 className="section-title">Generic</h2>
-            <div className="auth-methods-grid">
-              {authMethodOptions
-                .filter(method => method.category === 'generic')
-                .map(method => (
-                  <div 
-                    key={method.id}
-                    className={`auth-method-option ${selectedMethods.includes(method.id) ? 'selected' : ''}`}
-                    onClick={() => handleMethodToggle(method.id)}
-                  >
-                    <div className="auth-method-option__icon">
-                      {method.icon}
-                    </div>
-                    <div className="auth-method-option__content">
-                      <div className="auth-method-option__name">{method.name}</div>
-                      <div className="auth-method-option__description">{method.description}</div>
-                    </div>
-                    <div className="auth-method-option__checkbox">
-                      <input
-                        type="checkbox"
-                        checked={selectedMethods.includes(method.id)}
-                        onChange={() => handleMethodToggle(method.id)}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
+        {!methodEnabled ? (
+          <>
+            <div className="auth-methods-sections">
+              {/* Generic Section */}
+              <div className="auth-methods-section">
+                <h2 className="section-title">Generic</h2>
+                <div className="auth-methods-grid">
+                  {authMethodOptions
+                    .filter(method => method.category === 'generic')
+                    .map(method => (
+                      <div 
+                        key={method.id}
+                        className={`auth-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
+                        onClick={() => handleMethodSelect(method.id)}
+                      >
+                        <div className="auth-method-option__icon">
+                          {method.icon}
+                        </div>
+                        <div className="auth-method-option__content">
+                          <div className="auth-method-option__name">{method.name}</div>
+                          <div className="auth-method-option__description">{method.description}</div>
+                        </div>
+                        <div className="auth-method-option__radio">
+                          <input
+                            type="radio"
+                            name="auth-method"
+                            value={method.id}
+                            checked={selectedMethod === method.id}
+                            onChange={() => handleMethodSelect(method.id)}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
 
-          {/* Infra Section */}
-          <div className="auth-methods-section">
-            <h2 className="section-title">Infra</h2>
-            <div className="auth-methods-grid">
-              {authMethodOptions
-                .filter(method => method.category === 'infra')
-                .map(method => (
-                  <div 
-                    key={method.id}
-                    className={`auth-method-option ${selectedMethods.includes(method.id) ? 'selected' : ''}`}
-                    onClick={() => handleMethodToggle(method.id)}
-                  >
-                    <div className="auth-method-option__icon">
-                      {method.icon}
-                    </div>
-                    <div className="auth-method-option__content">
-                      <div className="auth-method-option__name">{method.name}</div>
-                      <div className="auth-method-option__description">{method.description}</div>
-                    </div>
-                    <div className="auth-method-option__checkbox">
-                      <input
-                        type="checkbox"
-                        checked={selectedMethods.includes(method.id)}
-                        onChange={() => handleMethodToggle(method.id)}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </div>
-                  </div>
-                ))}
+              {/* Infra Section */}
+              <div className="auth-methods-section">
+                <h2 className="section-title">Infra</h2>
+                <div className="auth-methods-grid">
+                  {authMethodOptions
+                    .filter(method => method.category === 'infra')
+                    .map(method => (
+                      <div 
+                        key={method.id}
+                        className={`auth-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
+                        onClick={() => handleMethodSelect(method.id)}
+                      >
+                        <div className="auth-method-option__icon">
+                          {method.icon}
+                        </div>
+                        <div className="auth-method-option__content">
+                          <div className="auth-method-option__name">{method.name}</div>
+                          <div className="auth-method-option__description">{method.description}</div>
+                        </div>
+                        <div className="auth-method-option__radio">
+                          <input
+                            type="radio"
+                            name="auth-method"
+                            value={method.id}
+                            checked={selectedMethod === method.id}
+                            onChange={() => handleMethodSelect(method.id)}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        {selectedMethods.length > 0 && (
-          <div className="enable-auth-method-view__actions">
-            <Button variant="primary">
-              Enable Selected Methods
-            </Button>
+            {selectedMethod && (
+              <div className="enable-auth-method-view__actions">
+                <Button variant="primary" onClick={handleEnableMethod}>
+                  Enable Selected Method
+                </Button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="method-enabled-state">
+            <div className="path-configuration">
+              <div className="path-form">
+                <h3>Path</h3>
+                <Input
+                  value={path}
+                  onChange={handlePathChange}
+                  placeholder="Enter path for the authentication method"
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>

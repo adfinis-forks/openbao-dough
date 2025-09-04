@@ -9,7 +9,7 @@
 }
 
 .enable-auth-method-view__header .back-button {
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .enable-auth-method-view__header .back-button .btn__icon {
