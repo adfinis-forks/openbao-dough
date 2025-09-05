@@ -2,6 +2,7 @@ import type React from 'react';
 import { useState } from 'react';
 import { Button } from '../../shared/ui/Button';
 import { Input } from '../../shared/ui/Input';
+import { Card, CardContent } from '../../shared/ui/Card';
 import { ChevronDown, Server, Users, FileText, Key, Globe, Shield } from '../../shared/ui/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import './EnableAuthMethodView.css';
@@ -81,29 +82,32 @@ export const EnableAuthMethodView: React.FC = () => {
                   {authMethodOptions
                     .filter(method => method.category === 'generic')
                     .map(method => (
-                      <div 
+                      <Card 
                         key={method.id}
+                        variant="bordered"
                         className={`auth-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
                         onClick={() => handleMethodSelect(method.id)}
                       >
-                        <div className="auth-method-option__icon">
-                          {method.icon}
-                        </div>
-                        <div className="auth-method-option__content">
-                          <div className="auth-method-option__name">{method.name}</div>
-                          <div className="auth-method-option__description">{method.description}</div>
-                        </div>
-                        <div className="auth-method-option__radio">
-                          <input
-                            type="radio"
-                            name="auth-method"
-                            value={method.id}
-                            checked={selectedMethod === method.id}
-                            onChange={() => handleMethodSelect(method.id)}
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </div>
-                      </div>
+                        <CardContent className="auth-method-option__content">
+                          <div className="auth-method-option__icon">
+                            {method.icon}
+                          </div>
+                          <div className="auth-method-option__text">
+                            <div className="auth-method-option__name">{method.name}</div>
+                            <div className="auth-method-option__description">{method.description}</div>
+                          </div>
+                          <div className="auth-method-option__radio">
+                            <input
+                              type="radio"
+                              name="auth-method"
+                              value={method.id}
+                              checked={selectedMethod === method.id}
+                              onChange={() => handleMethodSelect(method.id)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                 </div>
               </div>
@@ -115,29 +119,32 @@ export const EnableAuthMethodView: React.FC = () => {
                   {authMethodOptions
                     .filter(method => method.category === 'infra')
                     .map(method => (
-                      <div 
+                      <Card 
                         key={method.id}
+                        variant="bordered"
                         className={`auth-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
                         onClick={() => handleMethodSelect(method.id)}
                       >
-                        <div className="auth-method-option__icon">
-                          {method.icon}
-                        </div>
-                        <div className="auth-method-option__content">
-                          <div className="auth-method-option__name">{method.name}</div>
-                          <div className="auth-method-option__description">{method.description}</div>
-                        </div>
-                        <div className="auth-method-option__radio">
-                          <input
-                            type="radio"
-                            name="auth-method"
-                            value={method.id}
-                            checked={selectedMethod === method.id}
-                            onChange={() => handleMethodSelect(method.id)}
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </div>
-                      </div>
+                        <CardContent className="auth-method-option__content">
+                          <div className="auth-method-option__icon">
+                            {method.icon}
+                          </div>
+                          <div className="auth-method-option__text">
+                            <div className="auth-method-option__name">{method.name}</div>
+                            <div className="auth-method-option__description">{method.description}</div>
+                          </div>
+                          <div className="auth-method-option__radio">
+                            <input
+                              type="radio"
+                              name="auth-method"
+                              value={method.id}
+                              checked={selectedMethod === method.id}
+                              onChange={() => handleMethodSelect(method.id)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                 </div>
               </div>

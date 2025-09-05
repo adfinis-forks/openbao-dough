@@ -53,15 +53,10 @@
 .auth-methods-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  gap: var(--spacing-lg);
 }
 
 .auth-method-option {
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   background: var(--color-background);
@@ -92,6 +87,12 @@
 }
 
 .auth-method-option__content {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg) !important;
+}
+
+.auth-method-option__text {
   flex: 1;
   min-width: 0;
 }
@@ -109,11 +110,11 @@
   line-height: 1.4;
 }
 
-.auth-method-option__checkbox {
+.auth-method-option__radio {
   margin-left: 1rem;
 }
 
-.auth-method-option__checkbox input[type="checkbox"] {
+.auth-method-option__radio input[type="radio"] {
   width: 18px;
   height: 18px;
   accent-color: var(--color-primary);
