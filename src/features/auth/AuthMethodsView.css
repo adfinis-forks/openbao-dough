@@ -31,9 +31,9 @@
 
 .auth-stats-card {
   flex: 1;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--color-surface-rgb), 0.3);
   box-shadow: none;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-surface-rgb), 0.7);
   backdrop-filter: blur(10px);
   border-radius: 20px;
 }
@@ -71,10 +71,10 @@
 }
 
 .auth-methods-section-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-surface-rgb), 0.7);
   backdrop-filter: blur(10px);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--color-surface-rgb), 0.3);
   box-shadow: none;
   padding: var(--spacing-sm);
 }
@@ -99,29 +99,29 @@
 }
 
 .auth-method-card {
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--color-surface-rgb), 0.3);
   box-shadow: none;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-surface-rgb), 0.7);
   backdrop-filter: blur(10px);
   border-radius: 20px;
 }
 
 .auth-method-card:hover {
   transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--color-surface-rgb), 0.9);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
 }
 
 .auth-method-card--disabled {
   opacity: 0.8;
-  background: rgba(230, 230, 230, 0.6);
+  background: rgba(var(--color-gray-300-rgb), 0.6);
 }
 
 .auth-method-card--disabled:hover {
   transform: translateY(0);
   box-shadow: none;
-  background: rgba(230, 230, 230, 0.6);
+  background: rgba(var(--color-gray-300-rgb), 0.6);
 }
 
 .auth-method-card__content {
@@ -234,7 +234,7 @@
   justify-content: space-between;
   gap: var(--spacing-md);
   padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(var(--color-surface-rgb), 0.5);
 }
 
 @media (max-width: 768px) {

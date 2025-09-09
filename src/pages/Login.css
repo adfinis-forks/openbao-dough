@@ -92,9 +92,9 @@
 
 /* Login Card */
 .login-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(var(--color-surface-rgb), 0.95);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(var(--color-surface-rgb), 0.8);
   border-radius: 1.25rem;
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.08),
@@ -142,8 +142,8 @@
 .namespace-field {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.04) 0%,
-    rgba(59, 130, 246, 0.02) 100%
+    rgba(var(--color-blue-500-rgb), 0.04) 0%,
+    rgba(var(--color-blue-500-rgb), 0.02) 100%
   );
   border: 1px solid var(--color-blue-100);
   border-radius: 0.75rem;
@@ -155,8 +155,8 @@
   border-color: var(--color-blue-200);
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.06) 0%,
-    rgba(59, 130, 246, 0.03) 100%
+    rgba(var(--color-blue-500-rgb), 0.06) 0%,
+    rgba(var(--color-blue-500-rgb), 0.03) 100%
   );
 }
 
@@ -191,14 +191,14 @@
 }
 
 .namespace-field__input input {
-  background: white;
+  background: var(--color-surface);
   border: 1px solid var(--color-gray-200);
   font-size: 0.9375rem;
 }
 
 .namespace-field__input input:focus {
   border-color: var(--color-blue-400);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--color-blue-500-rgb), 0.1);
 }
 
 .namespace-field__help {
@@ -316,8 +316,8 @@
 .login-submit:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow:
-    0 10px 20px -5px rgba(34, 197, 94, 0.25),
-    0 4px 6px -2px rgba(34, 197, 94, 0.15);
+    0 10px 20px -5px rgba(var(--color-primary-500-rgb), 0.25),
+    0 4px 6px -2px rgba(var(--color-primary-500-rgb), 0.15);
   background-color: var(--color-primary-600);
 }
 
