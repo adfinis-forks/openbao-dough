@@ -36,14 +36,14 @@
 .tabs__trigger--active,
 .tabs__trigger[data-state="active"] {
   background-color: var(--color-primary-500);
-  color: white;
+  color: var(--color-text-primary);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .tabs__trigger--active:hover,
 .tabs__trigger[data-state="active"]:hover {
   background-color: var(--color-primary-600);
-  color: white;
+  color: var(--color-text-primary);
 }
 
 .tabs__trigger:focus {

@@ -18,7 +18,7 @@
 
 .btn:focus-visible {
   box-shadow:
-    0 0 0 2px white,
+    0 0 0 2px var(--color-surface),
     0 0 0 4px var(--color-primary-500);
 }
 
@@ -245,7 +245,7 @@
 /* Variants */
 .btn--primary {
   background-color: var(--color-primary-500);
-  color: white;
+  color: var(--color-text-primary);
   box-shadow: var(--shadow-lg);
 }
 
@@ -256,7 +256,7 @@
 }
 
 .btn--secondary {
-  background-color: white;
+  background-color: var(--color-surface);
   color: var(--color-gray-800);
   border-color: var(--color-gray-200);
   box-shadow: var(--shadow-md);
@@ -282,7 +282,7 @@
 
 .btn--danger {
   background-color: var(--color-red-500);
-  color: white;
+  color: var(--color-text-primary);
   box-shadow: var(--shadow-lg);
 }
 
@@ -299,7 +299,7 @@
     var(--color-primary-500),
     var(--color-primary-600)
   );
-  color: white;
+  color: var(--color-text-primary);
   box-shadow: var(--shadow-md);
 }
 
@@ -364,7 +364,7 @@
 }
 
 .btn--overlay:hover {
-  color: white;
+  color: var(--color-text-primary);
   transform: translateY(-3px);
   box-shadow: 0 15px 35px rgba(var(--color-primary-500-rgb), 0.4);
 }
@@ -379,6 +379,6 @@
 
 .btn--overlay-danger:hover {
   background: var(--color-red-500);
-  color: white;
+  color: var(--color-text-primary);
   border-color: var(--color-red-600);
 }
