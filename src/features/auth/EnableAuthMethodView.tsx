@@ -40,7 +40,7 @@ export const EnableAuthMethodView: React.FC = () => {
   };
 
   const handleMethodSelect = (methodId: string) => {
-    setSelectedMethod(methodId);
+    setSelectedMethod(selectedMethod === methodId ? '' : methodId);
   };
 
   const handleEnableMethod = () => {
