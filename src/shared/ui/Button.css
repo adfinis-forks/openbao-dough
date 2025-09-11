@@ -92,7 +92,7 @@
   justify-content: flex-start;
   width: 100%;
   background-color: transparent;
-  color: var(--color-gray-800);
+  color: var(--color-text-primary);
   border-color: transparent;
   position: relative;
   overflow: hidden;

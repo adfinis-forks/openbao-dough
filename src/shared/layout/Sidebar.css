@@ -46,6 +46,7 @@
   );
   backdrop-filter: blur(8px);
   position: relative;
+  border-radius: 0 var(--radius-2xl) 0 0;
 }
 
 .sidebar__header::after {
@@ -161,6 +162,7 @@
   align-items: center;
   position: relative;
   margin-top: auto;
+  border-radius: 0 0 var(--radius-2xl) 0;
 }
 
 .sidebar__footer::before {
