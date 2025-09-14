@@ -245,7 +245,7 @@
 /* Variants */
 .btn--primary {
   background-color: var(--color-primary-500);
-  color: var(--color-text-primary);
+  color: white;
   box-shadow: var(--shadow-lg);
 }
 
@@ -282,7 +282,7 @@
 
 .btn--danger {
   background-color: var(--color-red-500);
-  color: var(--color-text-primary);
+  color: white;
   box-shadow: var(--shadow-lg);
 }
 
@@ -364,7 +364,7 @@
 }
 
 .btn--overlay:hover {
-  color: var(--color-text-primary);
+  color: white;
   transform: translateY(-3px);
   box-shadow: 0 15px 35px rgba(var(--color-primary-500-rgb), 0.4);
 }
@@ -379,6 +379,6 @@
 
 .btn--overlay-danger:hover {
   background: var(--color-red-500);
-  color: var(--color-text-primary);
+  color: white;
   border-color: var(--color-red-600);
 }
