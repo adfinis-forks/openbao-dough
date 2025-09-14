@@ -257,21 +257,21 @@
 
 .btn--secondary {
   background-color: var(--color-surface);
-  color: var(--color-gray-800);
-  border-color: var(--color-gray-200);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
   box-shadow: var(--shadow-md);
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background-color: var(--color-gray-50);
-  border-color: var(--color-gray-300);
+  background-color: var(--color-border-hover);
+  border-color: var(--color-border-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .btn--ghost {
   background-color: transparent;
-  color: var(--color-gray-700);
+  color: var(--color-text-secondary);
   border-color: transparent;
 }
 
