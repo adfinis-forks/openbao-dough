@@ -18,7 +18,7 @@
 
 .btn:focus-visible {
   box-shadow:
-    0 0 0 2px white,
+    0 0 0 2px var(--color-surface),
     0 0 0 4px var(--color-primary-500);
 }
 
@@ -92,7 +92,7 @@
   justify-content: flex-start;
   width: 100%;
   background-color: transparent;
-  color: var(--color-gray-800);
+  color: var(--color-text-primary);
   border-color: transparent;
   position: relative;
   overflow: hidden;
@@ -206,8 +206,8 @@
 }
 
 .btn--menu-item.btn--active .btn__icon {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-surface-rgb), 0.1);
+  border: 2px solid rgba(var(--color-surface-rgb), 0.7);
 }
 
 .btn--menu-item.btn--active .btn__icon img {
@@ -231,10 +231,10 @@
 
 .btn--menu-item.btn--active:hover:not(:disabled) .btn__icon {
   transform: scale(1.15) rotate(-3deg);
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--color-surface-rgb), 0.3);
   box-shadow:
-    0 0 25px rgba(255, 255, 255, 0.4),
-    inset 0 1px 3px rgba(255, 255, 255, 0.2);
+    0 0 25px rgba(var(--color-surface-rgb), 0.4),
+    inset 0 1px 3px rgba(var(--color-surface-rgb), 0.2);
   transition: all 0.3s cubic-bezier(0.52, 1.64, 0.37, 0.66);
 }
 
@@ -256,22 +256,22 @@
 }
 
 .btn--secondary {
-  background-color: white;
-  color: var(--color-gray-800);
-  border-color: var(--color-gray-200);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
   box-shadow: var(--shadow-md);
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background-color: var(--color-gray-50);
-  border-color: var(--color-gray-300);
+  background-color: var(--color-border-hover);
+  border-color: var(--color-border-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .btn--ghost {
   background-color: transparent;
-  color: var(--color-gray-700);
+  color: var(--color-text-secondary);
   border-color: transparent;
 }
 
@@ -299,7 +299,7 @@
     var(--color-primary-500),
     var(--color-primary-600)
   );
-  color: white;
+  color: var(--color-text-primary);
   box-shadow: var(--shadow-md);
 }
 

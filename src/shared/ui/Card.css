@@ -1,5 +1,5 @@
 .card {
-  background-color: white;
+  background-color: var(--color-surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: all var(--transition-base);
@@ -12,7 +12,7 @@
 }
 
 .card--bordered {
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--color-border);
   box-shadow: none;
 }
 
@@ -29,7 +29,7 @@
 /* Card Header */
 .card__header {
   padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .card__header:last-child {
@@ -41,7 +41,7 @@
 .card__title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--color-text-primary);
   margin: 0;
   display: flex;
   align-items: center;
@@ -51,7 +51,7 @@
 /* Card Description */
 .card__description {
   font-size: 0.875rem;
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   margin: var(--spacing-xs) 0 0;
   line-height: 1.5;
 }

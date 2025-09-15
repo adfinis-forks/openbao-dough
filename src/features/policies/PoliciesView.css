@@ -15,12 +15,12 @@
 .policies-view__title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: var(--color-gray-900);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
 .policies-view__subtitle {
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   margin: var(--spacing-xs) 0 0;
 }
 
@@ -42,7 +42,7 @@
   left: var(--spacing-sm);
   top: 50%;
   transform: translateY(-50%);
-  color: var(--color-gray-400);
+  color: var(--color-text-muted);
   z-index: 1;
 }
 
@@ -61,7 +61,7 @@
   border: none;
   box-shadow: var(--shadow-md);
   transition: all var(--transition-fast);
-  background: white;
+  background: var(--color-surface);
 }
 
 .policy-card:hover {
@@ -105,7 +105,7 @@
 .policy-card__name {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--color-text-primary);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -113,7 +113,7 @@
 }
 
 .policy-card__description {
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0;
@@ -125,7 +125,7 @@
   justify-content: space-between;
   gap: var(--spacing-md);
   padding-top: var(--spacing-sm);
-  border-top: 1px solid var(--color-gray-100);
+  border-top: 1px solid var(--color-border);
 }
 
 .policy-card__stats {
@@ -137,7 +137,7 @@
 
 .policy-card__modified {
   font-size: 0.75rem;
-  color: var(--color-gray-500);
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
@@ -149,9 +149,9 @@
   text-align: center;
   padding: var(--spacing-2xl);
   margin: var(--spacing-xl) 0;
-  background: var(--color-gray-50);
+  background: var(--color-border-hover);
   border-radius: var(--radius-xl);
-  border: 2px dashed var(--color-gray-200);
+  border: 2px dashed var(--color-border);
 }
 
 .empty-state__icon {
@@ -163,12 +163,12 @@
 .empty-state__title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--color-gray-700);
+  color: var(--color-text-primary);
   margin: 0 0 var(--spacing-sm);
 }
 
 .empty-state__description {
-  color: var(--color-gray-500);
+  color: var(--color-text-muted);
   margin: 0 0 var(--spacing-lg);
   max-width: 400px;
 }
@@ -210,7 +210,7 @@
 .form-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-gray-700);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -323,13 +323,13 @@
 .policy-name {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--color-text-primary);
   margin: 0;
   flex: 1;
 }
 
 .policy-description {
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   margin: 0;
   line-height: 1.5;
 }
@@ -350,12 +350,12 @@
 }
 
 .metadata-label {
-  color: var(--color-gray-500);
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
 .metadata-value {
-  color: var(--color-gray-900);
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 
@@ -373,7 +373,7 @@
 .content-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -395,7 +395,7 @@
   font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 0.875rem;
   line-height: 1.6;
-  color: var(--color-gray-800);
+  color: var(--color-text-primary);
   white-space: pre-wrap;
   word-wrap: break-word;
   max-height: 400px;
