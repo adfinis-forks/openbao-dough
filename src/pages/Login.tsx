@@ -7,12 +7,12 @@ import {
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
 import { useAuthenticate } from '../shared/api/auth-hooks';
-import { useAuthStore } from '../shared/stores/authStore';
 import { BAO_ADDR } from '../shared/config';
+import { useAuthStore } from '../shared/stores/authStore';
 import { ThemeToggle } from '../shared/theme/ThemeToggle';
 import { Button } from '../shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../shared/ui/Card';
-import { Eye, EyeOff, ChevronDown, ChevronUp, Globe } from '../shared/ui/Icons';
+import { ChevronDown, ChevronUp, Eye, EyeOff, Globe } from '../shared/ui/Icons';
 import { Input } from '../shared/ui/Input';
 import { Select } from '../shared/ui/Select';
 import './Login.css';
@@ -319,7 +319,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               {/* Submit Button */}
               <Button
                 type="submit"
-                variant="primary"
+                variant="overlay"
                 size="large"
                 fullWidth
                 disabled={!isFormValid || authenticateMutation.isPending}
