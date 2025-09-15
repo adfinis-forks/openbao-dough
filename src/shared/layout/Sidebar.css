@@ -1,11 +1,6 @@
 .sidebar {
   width: 18rem;
-  background: linear-gradient(
-    145deg,
-    rgba(var(--color-surface-rgb), 0.98) 0%,
-    rgba(var(--color-gray-50-rgb), 0.95) 50%,
-    rgba(var(--color-gray-100-rgb), 0.92) 100%
-  );
+  background: var(--color-surface);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(var(--color-border-rgb), 0.8);
   border-left: none;
@@ -27,11 +22,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    145deg,
-    rgba(var(--color-primary-500-rgb), 0.02) 0%,
-    rgba(var(--color-secondary-500-rgb), 0.01) 100%
-  );
+  background: transparent;
   border-radius: 0 var(--radius-2xl) var(--radius-2xl) 0;
   z-index: -1;
 }
@@ -39,11 +30,7 @@
 .sidebar__header {
   padding: var(--spacing-2xl) var(--spacing-xl);
   border-bottom: 1px solid rgba(var(--color-border-rgb), 0.6);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-surface-rgb), 0.8) 0%,
-    rgba(var(--color-gray-50-rgb), 0.4) 100%
-  );
+  background: var(--color-surface);
   backdrop-filter: blur(8px);
   position: relative;
   border-radius: 0 var(--radius-2xl) 0 0;
@@ -56,12 +43,7 @@
   left: var(--spacing-lg);
   right: var(--spacing-lg);
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-primary-200) 50%,
-    transparent 100%
-  );
+  background: var(--color-border);
 }
 
 .sidebar__logo {
@@ -77,9 +59,6 @@
   transition: all 0.3s ease;
 }
 
-.sidebar__logo-icon:hover {
-  /* No animation on hover */
-}
 
 .sidebar__brand {
   display: flex;
@@ -100,15 +79,7 @@
 .sidebar__version {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--color-gray-600);
-  background: linear-gradient(
-    90deg,
-    var(--color-gray-600) 0%,
-    var(--color-primary-500) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-text-secondary);
   margin: 0;
   letter-spacing: 0.025em;
   text-transform: uppercase;
@@ -151,11 +122,7 @@
 .sidebar__footer {
   padding: var(--spacing-md) var(--spacing-md);
   border-top: 1px solid rgba(var(--color-border-rgb), 0.6);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-surface-rgb), 0.6) 0%,
-    rgba(var(--color-gray-50-rgb), 0.3) 100%
-  );
+  background: var(--color-surface);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
@@ -172,12 +139,6 @@
   left: var(--spacing-lg);
   right: var(--spacing-lg);
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-primary-200) 50%,
-    transparent 100%
-  );
 }
 
 .sidebar__theme-toggle {
