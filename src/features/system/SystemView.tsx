@@ -20,7 +20,7 @@ import './SystemView.css';
 interface HealthItem {
   id: string;
   name: string;
-  status: 'healthy' | 'warning' | 'error';
+  status: 'Healthy' | 'Warning' | 'Error';
   message: string;
   lastCheck: string;
   details?: string;
@@ -37,7 +37,7 @@ const mockHealthItems: HealthItem[] = [
   {
     id: '1',
     name: 'Storage Backend',
-    status: 'healthy',
+    status: 'Healthy',
     message: 'Connected and operational',
     lastCheck: '30 seconds ago',
     details: 'Consul storage backend responding normally',
@@ -45,7 +45,7 @@ const mockHealthItems: HealthItem[] = [
   {
     id: '2',
     name: 'Replication',
-    status: 'healthy',
+    status: 'Healthy',
     message: 'In sync',
     lastCheck: '1 minute ago',
     details: 'Last sync: 45 seconds ago',
@@ -53,7 +53,7 @@ const mockHealthItems: HealthItem[] = [
   {
     id: '3',
     name: 'Performance',
-    status: 'warning',
+    status: 'Warning',
     message: 'High CPU usage',
     lastCheck: '2 minutes ago',
     details: 'CPU: 75%, Memory: 68%',
@@ -61,7 +61,7 @@ const mockHealthItems: HealthItem[] = [
   {
     id: '4',
     name: 'License',
-    status: 'healthy',
+    status: 'Healthy',
     message: 'Valid until 2025-12-31',
     lastCheck: '1 hour ago',
     details: 'Enterprise license active',
@@ -123,11 +123,11 @@ export const SystemView: React.FC = () => {
 
   const getHealthIcon = (status: string) => {
     switch (status) {
-      case 'healthy':
+      case 'Healthy':
         return CheckCircle;
-      case 'warning':
+      case 'Warning':
         return AlertTriangle;
-      case 'error':
+      case 'Error':
         return AlertTriangle;
       default:
         return Clock;
@@ -136,11 +136,11 @@ export const SystemView: React.FC = () => {
 
   const getHealthColor = (status: string) => {
     switch (status) {
-      case 'healthy':
+      case 'Healthy':
         return 'success';
-      case 'warning':
+      case 'Warning':
         return 'warning';
-      case 'error':
+      case 'Error':
         return 'danger';
       default:
         return 'default';
@@ -280,7 +280,7 @@ export const SystemView: React.FC = () => {
               return (
                 <div
                   key={item.id}
-                  className={`health-item health-item--${item.status}`}
+                  className={`health-item health-item--${item.status.toLowerCase()}`}
                 >
                   <div className="health-item__main">
                     <div className="health-item__info">

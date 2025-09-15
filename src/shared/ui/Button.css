@@ -13,11 +13,12 @@
   overflow: hidden;
   border: 1px solid transparent;
   gap: var(--spacing-sm);
+  line-height: 1;
 }
 
 .btn:focus-visible {
   box-shadow:
-    0 0 0 2px white,
+    0 0 0 2px var(--color-surface),
     0 0 0 4px var(--color-primary-500);
 }
 
@@ -40,6 +41,7 @@
 .btn__text {
   display: inline-flex;
   align-items: center;
+  line-height: 1;
 }
 
 /* Icon */
@@ -48,6 +50,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 /* Loader */
@@ -89,7 +92,7 @@
   justify-content: flex-start;
   width: 100%;
   background-color: transparent;
-  color: var(--color-gray-800);
+  color: var(--color-text-primary);
   border-color: transparent;
   position: relative;
   overflow: hidden;
@@ -104,11 +107,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--color-secondary-100),
-    var(--color-primary-100)
-  );
+  background: var(--color-gray-100);
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
   margin-right: var(--spacing-sm);
@@ -138,11 +137,7 @@
   right: 0;
   bottom: 0;
   height: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-50),
-    var(--color-primary-200)
-  );
+  background: var(--color-primary-50);
   z-index: 1;
   transform: translate3D(-101%, 0, 0);
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -204,19 +199,15 @@
 
 /* Active state */
 .btn--menu-item.btn--active {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500),
-    var(--color-secondary-500)
-  );
+  background: var(--color-primary-500);
   color: var(--color-gray-50);
   box-shadow: var(--shadow-md);
   transform: translateX(2px);
 }
 
 .btn--menu-item.btn--active .btn__icon {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-surface-rgb), 0.1);
+  border: 2px solid rgba(var(--color-surface-rgb), 0.7);
 }
 
 .btn--menu-item.btn--active .btn__icon img {
@@ -240,10 +231,10 @@
 
 .btn--menu-item.btn--active:hover:not(:disabled) .btn__icon {
   transform: scale(1.15) rotate(-3deg);
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--color-surface-rgb), 0.3);
   box-shadow:
-    0 0 25px rgba(255, 255, 255, 0.4),
-    inset 0 1px 3px rgba(255, 255, 255, 0.2);
+    0 0 25px rgba(var(--color-surface-rgb), 0.4),
+    inset 0 1px 3px rgba(var(--color-surface-rgb), 0.2);
   transition: all 0.3s cubic-bezier(0.52, 1.64, 0.37, 0.66);
 }
 
@@ -253,42 +244,34 @@
 
 /* Variants */
 .btn--primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500),
-    var(--color-primary-600)
-  );
+  background-color: var(--color-primary-500);
   color: white;
   box-shadow: var(--shadow-lg);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-600),
-    var(--color-primary-700)
-  );
+  background-color: var(--color-primary-600);
   transform: translateY(-2px);
   box-shadow: var(--shadow-xl);
 }
 
 .btn--secondary {
-  background-color: white;
-  color: var(--color-gray-800);
-  border-color: var(--color-gray-200);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
   box-shadow: var(--shadow-md);
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background-color: var(--color-gray-50);
-  border-color: var(--color-gray-300);
+  background-color: var(--color-border-hover);
+  border-color: var(--color-border-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .btn--ghost {
   background-color: transparent;
-  color: var(--color-gray-700);
+  color: var(--color-text-secondary);
   border-color: transparent;
 }
 
@@ -316,7 +299,7 @@
     var(--color-primary-500),
     var(--color-primary-600)
   );
-  color: white;
+  color: var(--color-text-primary);
   box-shadow: var(--shadow-md);
 }
 
@@ -391,59 +374,11 @@
   background: transparent;
   border: 1px solid var(--color-red-500);
   color: var(--color-red-500);
-  z-index: 1;
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.btn--overlay-danger::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-red-500-rgb), 0.1),
-    rgba(var(--color-red-600-rgb), 0.1)
-  );
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: var(--btn-border-radius);
-}
-
-.btn--overlay-danger:hover::before {
-  opacity: 0;
-  transform: scale(0.8) rotate(45deg);
-}
-
-.btn--overlay-danger::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0;
-  background: linear-gradient(
-    135deg,
-    var(--color-red-500),
-    var(--color-red-600)
-  );
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: var(--btn-border-radius);
-  transform: scale(1.2) rotate(-45deg);
-}
-
-.btn--overlay-danger:hover::after {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
+  transition: all 0.3s ease;
 }
 
 .btn--overlay-danger:hover {
+  background: var(--color-red-500);
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(var(--color-red-500-rgb), 0.4);
   border-color: var(--color-red-600);
 }

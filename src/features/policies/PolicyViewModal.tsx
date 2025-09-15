@@ -10,7 +10,7 @@ interface Policy {
   description: string;
   rules: number;
   lastModified: string;
-  type: 'built-in' | 'custom';
+  type: 'Built-in' | 'Custom';
   rulesContent?: string;
 }
 
@@ -86,7 +86,7 @@ export const PolicyViewModal: React.FC<PolicyViewModalProps> = ({
               />
               <h3 className="policy-name">{policy.name}</h3>
               <Badge
-                variant={policy.type === 'built-in' ? 'primary' : 'secondary'}
+                variant={policy.type === 'Built-in' ? 'primary' : 'secondary'}
                 size="medium"
               >
                 {policy.type}
@@ -143,7 +143,7 @@ export const PolicyViewModal: React.FC<PolicyViewModalProps> = ({
 
         <div className="modal-actions">
           <div className="actions-left">
-            {policy.type === 'custom' && (
+            {policy.type === 'Custom' && (
               <Button
                 variant="danger"
                 onClick={handleDelete}
@@ -161,7 +161,7 @@ export const PolicyViewModal: React.FC<PolicyViewModalProps> = ({
             >
               Duplicate
             </Button>
-            {policy.type === 'custom' && (
+            {policy.type === 'Custom' && (
               <Button
                 variant="primary"
                 onClick={handleEdit}

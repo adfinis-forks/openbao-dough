@@ -2,6 +2,7 @@ import { Link, useLocation } from '@tanstack/react-router';
 import React from 'react';
 import OpenBaoLogo from '../../../public/openbao.svg';
 import { Button } from '../ui/Button';
+import { ThemeToggle } from '../theme/ThemeToggle';
 import './Sidebar.css';
 
 const menuItems = [
@@ -61,6 +62,10 @@ const SidebarComponent: React.FC = () => {
           })}
         </div>
       </nav>
+
+      <div className="sidebar__footer">
+        <ThemeToggle className="sidebar__theme-toggle" />
+      </div>
     </div>
   );
 };

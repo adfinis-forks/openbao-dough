@@ -106,7 +106,7 @@ export const SecretsView: React.FC = () => {
             Manage your secrets and secret engines
           </p>
         </div>
-        <Button icon={<Plus size={16} />}>New Secret</Button>
+        <Button variant="primary" icon={<Plus size={16} />}>New Secret</Button>
       </div>
 
       <div className="secrets-view__controls">

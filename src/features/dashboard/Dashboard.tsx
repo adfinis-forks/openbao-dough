@@ -18,28 +18,28 @@ const mockActivities = [
     action: 'Secret created',
     path: 'secret/prod/database',
     time: '2 minutes ago',
-    type: 'create',
+    type: 'Create',
   },
   {
     id: '2',
     action: 'Policy updated',
     path: 'admin-policy',
     time: '15 minutes ago',
-    type: 'update',
+    type: 'Update',
   },
   {
     id: '3',
     action: 'User authenticated',
     path: 'userpass/john.doe',
     time: '1 hour ago',
-    type: 'auth',
+    type: 'Auth',
   },
   {
     id: '4',
     action: 'Secret deleted',
     path: 'secret/dev/api-key',
     time: '2 hours ago',
-    type: 'delete',
+    type: 'Delete',
   },
 ];
 
