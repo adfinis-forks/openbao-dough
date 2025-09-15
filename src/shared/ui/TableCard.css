@@ -1,0 +1,42 @@
+.table-card {
+  border: none;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-fast);
+  background: var(--color-surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.table-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-primary-500);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.table-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.table-card:hover::after {
+  opacity: 1;
+}
+
+.table-card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.table-card__title img {
+  filter: brightness(0) saturate(100%) invert(36%) sepia(74%) saturate(1204%)
+    hue-rotate(204deg) brightness(101%) contrast(101%);
+}

@@ -1,6 +1,7 @@
 import type React from 'react';
 import { Badge } from '../../shared/ui/Badge';
-import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
+import { Card, CardContent } from '../../shared/ui/Card';
+import { TableCard } from '../../shared/ui/TableCard';
 import { CheckCircle, Server, TrendingUp } from '../../shared/ui/Icons';
 import './Dashboard.css';
 
@@ -157,69 +158,61 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="dashboard__content">
-        <Card className="dashboard__card">
-          <CardHeader>
-            <CardTitle className="dashboard__card-title">
-              <img
-                src="/analytics-outline.svg"
-                alt="Activity"
-                width={20}
-                height={20}
-              />
-              Recent Activity
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="activity-list">
-              {mockActivities.map((activity) => (
-                <div key={activity.id} className="activity-item">
-                  <div
-                    className={`activity-dot activity-dot--${activity.type}`}
-                  />
-                  <div className="activity-content">
-                    <p className="activity-action">{activity.action}</p>
-                    <p className="activity-path">{activity.path}</p>
-                  </div>
-                  <p className="activity-time">{activity.time}</p>
+        <TableCard
+          title="Recent Activity"
+          icon={
+            <img
+              src="/analytics-outline.svg"
+              alt="Activity"
+              width={20}
+              height={20}
+            />
+          }
+        >
+          <div className="activity-list">
+            {mockActivities.map((activity) => (
+              <div key={activity.id} className="activity-item">
+                <div
+                  className={`activity-dot activity-dot--${activity.type}`}
+                />
+                <div className="activity-content">
+                  <p className="activity-action">{activity.action}</p>
+                  <p className="activity-path">{activity.path}</p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                <p className="activity-time">{activity.time}</p>
+              </div>
+            ))}
+          </div>
+        </TableCard>
 
-        <Card className="dashboard__card">
-          <CardHeader>
-            <CardTitle className="dashboard__card-title">
-              <Server size={20} />
-              System Status
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="system-status">
-              {mockSystemHealth.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.label}
-                    className={`system-status__item system-status__item--${item.status}`}
-                  >
-                    <div className="system-status__info">
-                      <Icon size={20} />
-                      <span className="system-status__label">{item.label}</span>
-                    </div>
-                    <Badge
-                      variant={
-                        item.status === 'healthy' ? 'success' : 'warning'
-                      }
-                    >
-                      {item.message}
-                    </Badge>
+        <TableCard
+          title="System Status"
+          icon={<Server size={20} />}
+        >
+          <div className="system-status">
+            {mockSystemHealth.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.label}
+                  className={`system-status__item system-status__item--${item.status}`}
+                >
+                  <div className="system-status__info">
+                    <Icon size={20} />
+                    <span className="system-status__label">{item.label}</span>
                   </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+                  <Badge
+                    variant={
+                      item.status === 'healthy' ? 'success' : 'warning'
+                    }
+                  >
+                    {item.message}
+                  </Badge>
+                </div>
+              );
+            })}
+          </div>
+        </TableCard>
       </div>
     </div>
   );
