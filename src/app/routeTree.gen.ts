@@ -15,6 +15,7 @@ import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticat
 import { Route as AuthenticatedSystemRouteImport } from './../routes/_authenticated/system'
 import { Route as AuthenticatedSecretsRouteImport } from './../routes/_authenticated/secrets'
 import { Route as AuthenticatedPoliciesRouteImport } from './../routes/_authenticated/policies'
+import { Route as AuthenticatedEnableAuthMethodRouteImport } from './../routes/_authenticated/enable-auth-method'
 import { Route as AuthenticatedDashboardRouteImport } from './../routes/_authenticated/dashboard'
 import { Route as AuthenticatedAuthRouteImport } from './../routes/_authenticated/auth'
 import { Route as AuthenticatedAuditRouteImport } from './../routes/_authenticated/audit'
@@ -48,6 +49,12 @@ const AuthenticatedPoliciesRoute = AuthenticatedPoliciesRouteImport.update({
   path: '/policies',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedEnableAuthMethodRoute =
+  AuthenticatedEnableAuthMethodRouteImport.update({
+    id: '/enable-auth-method',
+    path: '/enable-auth-method',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -69,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/audit': typeof AuthenticatedAuditRoute
   '/auth': typeof AuthenticatedAuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/policies': typeof AuthenticatedPoliciesRoute
   '/secrets': typeof AuthenticatedSecretsRoute
   '/system': typeof AuthenticatedSystemRoute
@@ -79,6 +87,7 @@ export interface FileRoutesByTo {
   '/audit': typeof AuthenticatedAuditRoute
   '/auth': typeof AuthenticatedAuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/policies': typeof AuthenticatedPoliciesRoute
   '/secrets': typeof AuthenticatedSecretsRoute
   '/system': typeof AuthenticatedSystemRoute
@@ -91,6 +100,7 @@ export interface FileRoutesById {
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
   '/_authenticated/auth': typeof AuthenticatedAuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/_authenticated/policies': typeof AuthenticatedPoliciesRoute
   '/_authenticated/secrets': typeof AuthenticatedSecretsRoute
   '/_authenticated/system': typeof AuthenticatedSystemRoute
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/auth'
     | '/dashboard'
+    | '/enable-auth-method'
     | '/policies'
     | '/secrets'
     | '/system'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/auth'
     | '/dashboard'
+    | '/enable-auth-method'
     | '/policies'
     | '/secrets'
     | '/system'
@@ -124,6 +136,7 @@ export interface FileRouteTypes {
     | '/_authenticated/audit'
     | '/_authenticated/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/enable-auth-method'
     | '/_authenticated/policies'
     | '/_authenticated/secrets'
     | '/_authenticated/system'
@@ -179,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPoliciesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/enable-auth-method': {
+      id: '/_authenticated/enable-auth-method'
+      path: '/enable-auth-method'
+      fullPath: '/enable-auth-method'
+      preLoaderRoute: typeof AuthenticatedEnableAuthMethodRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -207,6 +227,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
   AuthenticatedAuthRoute: typeof AuthenticatedAuthRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEnableAuthMethodRoute: typeof AuthenticatedEnableAuthMethodRoute
   AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRoute
   AuthenticatedSecretsRoute: typeof AuthenticatedSecretsRoute
   AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute
@@ -217,6 +238,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAuditRoute: AuthenticatedAuditRoute,
   AuthenticatedAuthRoute: AuthenticatedAuthRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEnableAuthMethodRoute: AuthenticatedEnableAuthMethodRoute,
   AuthenticatedPoliciesRoute: AuthenticatedPoliciesRoute,
   AuthenticatedSecretsRoute: AuthenticatedSecretsRoute,
   AuthenticatedSystemRoute: AuthenticatedSystemRoute,

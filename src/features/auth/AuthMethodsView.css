@@ -105,6 +105,7 @@
   background: rgba(var(--color-surface-rgb), 0.7);
   backdrop-filter: blur(10px);
   border-radius: 20px;
+  overflow: visible;
 }
 
 .auth-method-card:hover {
@@ -149,7 +150,7 @@
 }
 
 .auth-method-card:hover .auth-method-card__icon {
-  transform: scale(1.1) rotate(5deg);
+  transform: none;
 }
 
 .auth-method-card__icon--enabled {
@@ -167,8 +168,8 @@
 .auth-method-card:hover .auth-method-card__icon--enabled {
   background: linear-gradient(
     135deg,
-    var(--color-primary-500),
-    var(--color-primary-600)
+    var(--color-primary-600),
+    var(--color-primary-500)
   );
 }
 

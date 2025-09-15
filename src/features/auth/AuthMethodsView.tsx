@@ -4,6 +4,7 @@ import { Button } from '../../shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
 import { Lock, Plus, Unlock } from '../../shared/ui/Icons';
 import { AuthMethodCard } from './AuthMethodCard';
+import { useNavigate } from '@tanstack/react-router';
 import './AuthMethodsView.css';
 
 interface AuthMethod {
@@ -75,6 +76,7 @@ const mockAuthMethods: AuthMethod[] = [
 
 export const AuthMethodsView: React.FC = () => {
   const [authMethods, setAuthMethods] = useState<AuthMethod[]>(mockAuthMethods);
+  const navigate = useNavigate();
 
   const toggleAuthMethod = (id: string) => {
     setAuthMethods((methods) =>
@@ -96,7 +98,11 @@ export const AuthMethodsView: React.FC = () => {
             Configure and manage authentication methods for your vault
           </p>
         </div>
-        <Button variant="primary" icon={<Plus size={16} />}>
+        <Button 
+          variant="primary" 
+          icon={<Plus size={16} />}
+          onClick={() => navigate({ to: '/enable-auth-method' })}
+        >
           Enable Auth Method
         </Button>
       </div>
