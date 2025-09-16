@@ -5,7 +5,6 @@ import { Button } from '../../shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
 import { Dropdown, DropdownMenuItem } from '../../shared/ui/Dropdown';
 import { Input } from '../../shared/ui/Input';
-import { TableCard } from '../../shared/ui/TableCard';
 import {
   Download,
   Filter,
@@ -264,96 +263,100 @@ export const AuditView: React.FC = () => {
         </Dropdown>
       </div>
 
-      <TableCard
-        title={`Recent Audit Events (${filteredEvents.length})`}
-        className="audit-events-card"
-      >
-        <div className="audit-events">
-          {filteredEvents.length === 0 ? (
-            <div className="empty-state">
-              <img
-                src="/shield-outline.svg"
-                alt="Shield"
-                width={48}
-                height={48}
-                className="empty-state__icon"
-              />
-              <p className="empty-state__message">
-                {searchQuery || selectedFilter !== 'all'
-                  ? 'No events match your criteria'
-                  : 'No audit events available'}
-              </p>
-            </div>
-          ) : (
-            <div className="audit-events__table">
-              <div className="audit-events__header">
-                <span className="audit-events__column audit-events__column--timestamp">
-                  Timestamp
-                </span>
-                <span className="audit-events__column audit-events__column--user">
-                  User
-                </span>
-                <span className="audit-events__column audit-events__column--action">
-                  Action
-                </span>
-                <span className="audit-events__column audit-events__column--path">
-                  Path
-                </span>
-                <span className="audit-events__column audit-events__column--result">
-                  Result
-                </span>
-                <span className="audit-events__column audit-events__column--ip">
-                  IP Address
-                </span>
-                <span className="audit-events__column audit-events__column--actions">
-                  Actions
-                </span>
+      <Card variant="table" className="audit-events-card">
+        <CardHeader>
+          <CardTitle>
+            Recent Audit Events ({filteredEvents.length})
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="audit-events">
+            {filteredEvents.length === 0 ? (
+              <div className="empty-state">
+                <img
+                  src="/shield-outline.svg"
+                  alt="Shield"
+                  width={48}
+                  height={48}
+                  className="empty-state__icon"
+                />
+                <p className="empty-state__message">
+                  {searchQuery || selectedFilter !== 'all'
+                    ? 'No events match your criteria'
+                    : 'No audit events available'}
+                </p>
               </div>
-
-              {filteredEvents.map((event) => (
-                <div key={event.id} className="audit-event">
-                  <div
-                    className={`audit-event__status audit-event__status--${event.result}`}
-                  />
-                  <div className="audit-event__details">
-                    <span className="audit-event__timestamp">
-                      {event.timestamp}
-                    </span>
-                    <span className="audit-event__user">{event.user}</span>
-                    <Badge
-                      variant={getActionColor(event.action)}
-                      size="small"
-                    >
-                      {event.action}
-                    </Badge>
-                    <span className="audit-event__path">{event.path}</span>
-                    <Badge
-                      variant={
-                        event.result === 'Success' ? 'success' : 'danger'
-                      }
-                      size="small"
-                    >
-                      {event.result}
-                    </Badge>
-                    <span className="audit-event__ip">{event.ip}</span>
-                    <Dropdown
-                      trigger={
-                        <Button variant="ghost" size="small">
-                          <MoreHorizontal size={14} />
-                        </Button>
-                      }
-                      align="end"
-                    >
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
-                      <DropdownMenuItem>Export Event</DropdownMenuItem>
-                    </Dropdown>
-                  </div>
+            ) : (
+              <div className="audit-events__table">
+                <div className="audit-events__header">
+                  <span className="audit-events__column audit-events__column--timestamp">
+                    Timestamp
+                  </span>
+                  <span className="audit-events__column audit-events__column--user">
+                    User
+                  </span>
+                  <span className="audit-events__column audit-events__column--action">
+                    Action
+                  </span>
+                  <span className="audit-events__column audit-events__column--path">
+                    Path
+                  </span>
+                  <span className="audit-events__column audit-events__column--result">
+                    Result
+                  </span>
+                  <span className="audit-events__column audit-events__column--ip">
+                    IP Address
+                  </span>
+                  <span className="audit-events__column audit-events__column--actions">
+                    Actions
+                  </span>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </TableCard>
+
+                {filteredEvents.map((event) => (
+                  <div key={event.id} className="audit-event">
+                    <div
+                      className={`audit-event__status audit-event__status--${event.result}`}
+                    />
+                    <div className="audit-event__details">
+                      <span className="audit-event__timestamp">
+                        {event.timestamp}
+                      </span>
+                      <span className="audit-event__user">{event.user}</span>
+                      <Badge
+                        variant={getActionColor(event.action)}
+                        size="small"
+                      >
+                        {event.action}
+                      </Badge>
+                      <span className="audit-event__path">{event.path}</span>
+                      <Badge
+                        variant={
+                          event.result === 'Success' ? 'success' : 'danger'
+                        }
+                        size="small"
+                      >
+                        {event.result}
+                      </Badge>
+                      <span className="audit-event__ip">{event.ip}</span>
+                      <Dropdown
+                        trigger={
+                          <Button variant="ghost" size="small">
+                            <MoreHorizontal size={14} />
+                          </Button>
+                        }
+                        align="end"
+                      >
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem>Export Event</DropdownMenuItem>
+                      </Dropdown>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
