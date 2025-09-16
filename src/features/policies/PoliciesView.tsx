@@ -227,12 +227,12 @@ export const PoliciesView: React.FC = () => {
           />
         </div>
         <Button variant="secondary">Filter</Button>
-        <Button variant="outline">Export</Button>
+        <Button variant="secondary">Export</Button>
       </div>
 
       <div className="policies-grid">
         {filteredPolicies.map((policy) => (
-          <Card key={policy.id} className="policy-card">
+          <Card key={policy.id} variant="elevated" className="policy-card">
             <CardContent>
               <div className="policy-card__content">
                 <div className="policy-card__header">

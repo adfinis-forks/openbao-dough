@@ -31,6 +31,7 @@ export const AuthMethodCard: React.FC<AuthMethodCardProps> = ({
 
   return (
     <Card
+      variant="elevated"
       className={`auth-method-card ${!method.enabled ? 'auth-method-card--disabled' : ''}`}
     >
       <CardContent>
@@ -62,7 +63,7 @@ export const AuthMethodCard: React.FC<AuthMethodCardProps> = ({
 
           <div className="auth-method-card__actions">
             <Button
-              variant={method.enabled ? 'outline' : 'primary'}
+              variant={method.enabled ? 'secondary' : 'primary'}
               size="small"
               onClick={() => onToggle(method.id)}
               icon={method.enabled ? <Lock size={16} /> : <Unlock size={16} />}

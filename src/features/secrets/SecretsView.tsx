@@ -126,7 +126,7 @@ export const SecretsView: React.FC = () => {
           const color = getSecretColor(secret.type);
 
           return (
-            <Card key={secret.id} className="secret-card">
+            <Card key={secret.id} variant="elevated" className="secret-card">
               <CardContent>
                 <div className="secret-card__content">
                   <div className="secret-card__info">
