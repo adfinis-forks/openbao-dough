@@ -297,26 +297,6 @@
 /* Submit Button */
 .login-submit {
   margin-top: 0.5rem;
-  font-weight: 600;
-  height: 2.875rem;
-  font-size: 0.9375rem;
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.login-submit:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow:
-    0 10px 20px -5px rgba(var(--color-primary-500-rgb), 0.25),
-    0 4px 6px -2px rgba(var(--color-primary-500-rgb), 0.15);
-  background-color: var(--color-primary-hover);
-}
-
-.login-submit:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* Login Footer */
