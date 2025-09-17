@@ -35,7 +35,7 @@
 
 .input:focus:not(:disabled) {
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-10);
 }
 
 .input:disabled {
@@ -84,7 +84,7 @@
 }
 
 .input--error:focus {
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 0 3px var(--color-red-10);
 }
 
 /* Labels */

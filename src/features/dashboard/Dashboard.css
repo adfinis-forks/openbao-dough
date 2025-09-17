@@ -60,7 +60,7 @@
   bottom: 0;
   background: linear-gradient(
     45deg,
-    rgba(255, 255, 255, 0.1) 0%,
+    var(--color-surface-10) 0%,
     transparent 50%
   );
   opacity: 0;
