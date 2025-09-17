@@ -31,7 +31,12 @@
   --color-selection: var(--color-primary-100);
 
   /* Overlay */
-  --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-overlay: #00000080;
+
+  /* Theme-specific shadow colors */
+  --color-shadow-05: #0000000d;
+  --color-shadow-10: #0000001a;
+  --color-shadow-15: #00000026;
 }
 
 /* Dark Theme */
@@ -63,22 +68,30 @@
   --color-focus: var(--color-primary-400);
   --color-selection: var(--color-primary-800);
 
-  /* RGB values for dark theme */
-  --color-surface-rgb: 31, 41, 55;
-  --color-border-rgb: 55, 65, 81;
-  --color-gray-300-rgb: 75, 85, 99;
-  --color-blue-500-rgb: 59, 130, 246;
-  --color-gray-50-rgb: 17, 24, 39;
-  --color-gray-100-rgb: 31, 41, 55;
-  --color-secondary-500-rgb: 251, 146, 60;
+  /* Theme-specific shadow colors for dark theme */
+  --color-shadow-20: #00000033;
+  --color-shadow-30: #0000004d;
+  --color-shadow-40: #00000066;
+
+  /* Dark theme opacity color overrides */
+  --color-surface-10: #1f29371a;
+  --color-surface-30: #1f29374d;
+  --color-surface-50: #1f293780;
+  --color-surface-60: #1f293799;
+  --color-surface-70: #1f2937b3;
+  --color-surface-90: #1f2937e6;
+  --color-border-60: #37415199;
+  --color-border-80: #374151cc;
+  --color-border-90: #374151e6;
+  --color-gray-60: #4b556399;
 
   /* Shadows for dark theme */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 2px 0 var(--color-shadow-30);
+  --shadow-md: 0 4px 6px -1px var(--color-shadow-30), 0 2px 4px -2px var(--color-shadow-30);
   --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    0 10px 15px -3px var(--color-shadow-30), 0 4px 6px -4px var(--color-shadow-30);
   --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    0 20px 25px -5px var(--color-shadow-30), 0 8px 10px -6px var(--color-shadow-30);
 }
 
 /* Theme transition animations */

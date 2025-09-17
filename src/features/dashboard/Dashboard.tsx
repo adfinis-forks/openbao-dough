@@ -157,9 +157,9 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="dashboard__content">
-        <Card className="dashboard__card">
+        <Card variant="table">
           <CardHeader>
-            <CardTitle className="dashboard__card-title">
+            <CardTitle>
               <img
                 src="/analytics-outline.svg"
                 alt="Activity"
@@ -187,9 +187,9 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="dashboard__card">
+        <Card variant="table">
           <CardHeader>
-            <CardTitle className="dashboard__card-title">
+            <CardTitle>
               <Server size={20} />
               System Status
             </CardTitle>
