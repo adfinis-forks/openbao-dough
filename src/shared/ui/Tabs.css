@@ -37,7 +37,7 @@
 .tabs__trigger[data-state="active"] {
   background-color: var(--color-primary-500);
   color: var(--color-text-primary);
-  box-shadow: 0 1px 3px var(--color-shadow-10);
+  box-shadow: 0 1px 3px var(--color-shadow);
 }
 
 .tabs__trigger--active:hover,
@@ -48,7 +48,7 @@
 
 .tabs__trigger:focus {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-primary-200);
+  box-shadow: 0 0 0 2px var(--color-primary-100);
 }
 
 .tabs__trigger:disabled {

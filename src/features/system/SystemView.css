@@ -68,7 +68,7 @@
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-lg);
-  background: var(--color-primary-light);
+  background: var(--color-primary-600);
   border-radius: var(--radius-lg);
 }
 
@@ -83,7 +83,7 @@
 }
 
 .seal-status__icon--unsealed {
-  background: var(--color-primary-light);
+  background: var(--color-primary-600);
   color: var(--color-primary);
 }
 
@@ -202,7 +202,7 @@
 }
 
 .health-item--healthy {
-  background: var(--color-primary-light);
+  background: var(--color-primary-600);
   border-left: 4px solid var(--color-primary);
 }
 

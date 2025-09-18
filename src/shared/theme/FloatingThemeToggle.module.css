@@ -52,7 +52,7 @@
   bottom: 0;
   background: linear-gradient(
     135deg,
-    var(--color-primary-10) 0%,
+    var(--color-primary-600) 0%,
     var(--color-secondary-05) 100%
   );
   border-radius: inherit;
@@ -100,7 +100,7 @@
   background: radial-gradient(
     circle,
     var(--color-primary-30) 0%,
-    var(--color-primary-10) 50%,
+    var(--color-primary-600) 50%,
     transparent 100%
   );
 

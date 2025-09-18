@@ -69,7 +69,7 @@
 
 .auth-method-option.selected {
   border-color: var(--color-primary);
-  background: var(--color-primary-light);
+  background: var(--color-primary-600);
 }
 
 .auth-method-option__icon {
