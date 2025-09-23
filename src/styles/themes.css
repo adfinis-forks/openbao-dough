@@ -5,7 +5,7 @@
 [data-theme="light"] {
   /* Semantic Colors */
   --color-background: var(--color-gray-50);
-  --color-surface: #ffffff;
+  --color-surface: var(--color-white);
   --color-text-primary: var(--color-gray-900);
   --color-text-secondary: var(--color-gray-600);
   --color-text-muted: var(--color-gray-500);
@@ -66,13 +66,9 @@
   --color-focus: var(--color-primary-400);
   --color-selection: var(--color-primary-800);
 
-
   /* Dark theme opacity color overrides */
-  --color-surface-10: #1f29371a;
-  --color-surface-30: #1f29374d;
-  --color-surface-70: #1f2937b3;
-  --color-border: #37415199;
-  --color-gray: #4b556399;
+  --color-surface-10: var(--color-dark-surface-10);
+  --color-border: var(--color-dark-border);
 
   /* Shadows for dark theme */
   --shadow-sm: 0 1px 2px 0 var(--color-shadow);

@@ -116,8 +116,8 @@
 .namespace-field {
   background: linear-gradient(
     135deg,
-    var(--color-blue-light) 0%,
-    var(--color-blue-light) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
   border: 1px solid var(--color-blue-100);
   border-radius: 0.75rem;
@@ -129,16 +129,16 @@
   border-color: var(--color-blue-200);
   background: linear-gradient(
     135deg,
-    var(--color-blue-light) 0%,
-    var(--color-blue-light) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
 }
 
 [data-theme="dark"] .namespace-field {
   background: linear-gradient(
     135deg,
-    var(--color-blue-light) 0%,
-    var(--color-blue-light) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
   border: 1px solid var(--color-blue-800);
 }
@@ -147,8 +147,8 @@
   border-color: var(--color-blue-700);
   background: linear-gradient(
     135deg,
-    var(--color-blue-light) 0%,
-    var(--color-blue-light) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
 }
 
@@ -190,7 +190,7 @@
 
 .namespace-field__input input:focus {
   border-color: var(--color-blue-400);
-  box-shadow: 0 0 0 3px var(--color-blue-light);
+  box-shadow: 0 0 0 3px var(--color-blue-10);
 }
 
 .namespace-field__help {

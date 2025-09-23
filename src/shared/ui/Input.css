@@ -84,7 +84,7 @@
 }
 
 .input--error:focus {
-  box-shadow: 0 0 0 3px var(--color-red-light);
+  box-shadow: 0 0 0 3px var(--color-error);
 }
 
 /* Labels */
