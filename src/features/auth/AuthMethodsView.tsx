@@ -141,7 +141,7 @@ export const AuthMethodsView: React.FC = () => {
         <div className="auth-methods-section">
           <Card className="auth-methods-section-card">
             <CardHeader>
-              <CardTitle className="section-title">
+              <CardTitle className="auth-methods-section-title">
                 <Unlock size={20} className="section-icon" />
                 Enabled Methods ({enabledMethods.length})
               </CardTitle>
@@ -165,7 +165,7 @@ export const AuthMethodsView: React.FC = () => {
         <div className="auth-methods-section">
           <Card className="auth-methods-section-card">
             <CardHeader>
-              <CardTitle className="section-title">
+              <CardTitle className="auth-methods-section-title">
                 <Lock size={20} className="section-icon" />
                 Disabled Methods ({disabledMethods.length})
               </CardTitle>

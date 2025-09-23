@@ -41,7 +41,7 @@
   margin-bottom: 3rem;
 }
 
-.section-title {
+.enable-auth-method-section-title {
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -68,8 +68,8 @@
 }
 
 .auth-method-option.selected {
-  border-color: var(--color-primary);
-  background: var(--color-primary-600);
+  border-color: var(--color-primary-hover);
+  background: var(--color-primary);
 }
 
 .auth-method-option__icon {
@@ -80,10 +80,6 @@
   height: 48px;
   margin-right: 1rem;
   color: var(--color-text-secondary);
-}
-
-.auth-method-option.selected .auth-method-option__icon {
-  color: var(--color-primary);
 }
 
 .auth-method-option__content {

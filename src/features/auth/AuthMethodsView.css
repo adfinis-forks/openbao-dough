@@ -79,7 +79,7 @@
   padding: var(--spacing-sm);
 }
 
-.section-title {
+.auth-methods-section-title {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
