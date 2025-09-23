@@ -5,7 +5,7 @@
 [data-theme="light"] {
   /* Semantic Colors */
   --color-background: var(--color-gray-50);
-  --color-surface: #ffffff;
+  --color-surface: var(--color-white);
   --color-text-primary: var(--color-gray-900);
   --color-text-secondary: var(--color-gray-600);
   --color-text-muted: var(--color-gray-500);
@@ -31,7 +31,10 @@
   --color-selection: var(--color-primary-100);
 
   /* Overlay */
-  --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-overlay: #00000080;
+
+  /* Shadow color */
+  --color-shadow: #0000001a;
 }
 
 /* Dark Theme */
@@ -46,11 +49,11 @@
   --color-border-hover: var(--color-gray-600);
 
   /* Interactive Colors */
-  --color-primary: var(--color-primary-400);
-  --color-primary-hover: var(--color-primary-300);
-  --color-primary-light: var(--color-primary-900);
-  --color-secondary: var(--color-secondary-400);
-  --color-secondary-hover: var(--color-secondary-300);
+  --color-primary: var(--color-primary-500);
+  --color-primary-hover: var(--color-primary-600);
+  --color-primary-light: var(--color-primary-300);
+  --color-secondary: var(--color-secondary-500);
+  --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-light: var(--color-secondary-900);
 
   /* Status Colors */
@@ -63,22 +66,17 @@
   --color-focus: var(--color-primary-400);
   --color-selection: var(--color-primary-800);
 
-  /* RGB values for dark theme */
-  --color-surface-rgb: 31, 41, 55;
-  --color-border-rgb: 55, 65, 81;
-  --color-gray-300-rgb: 75, 85, 99;
-  --color-blue-500-rgb: 59, 130, 246;
-  --color-gray-50-rgb: 17, 24, 39;
-  --color-gray-100-rgb: 31, 41, 55;
-  --color-secondary-500-rgb: 251, 146, 60;
+  /* Dark theme opacity color overrides */
+  --color-surface-10: var(--color-dark-surface-10);
+  --color-border: var(--color-dark-border);
 
   /* Shadows for dark theme */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 2px 0 var(--color-shadow);
+  --shadow-md: 0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
   --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
   --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
 }
 
 /* Theme transition animations */

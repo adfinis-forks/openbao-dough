@@ -77,7 +77,7 @@ export const EnableAuthMethodView: React.FC = () => {
             <div className="auth-methods-sections">
               {/* Generic Section */}
               <div className="auth-methods-section">
-                <h2 className="section-title">Generic</h2>
+                <h2 className="enable-auth-method-section-title">Generic</h2>
                 <div className="auth-methods-grid">
                   {authMethodOptions
                     .filter(method => method.category === 'generic')
@@ -114,7 +114,7 @@ export const EnableAuthMethodView: React.FC = () => {
 
               {/* Infra Section */}
               <div className="auth-methods-section">
-                <h2 className="section-title">Infra</h2>
+                <h2 className="enable-auth-method-section-title">Infra</h2>
                 <div className="auth-methods-grid">
                   {authMethodOptions
                     .filter(method => method.category === 'infra')

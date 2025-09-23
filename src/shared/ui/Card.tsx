@@ -4,7 +4,7 @@ import './Card.css';
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  variant?: 'default' | 'bordered' | 'elevated';
+  variant?: 'default' | 'bordered' | 'elevated' | 'table';
 }
 
 export const Card: React.FC<CardProps> = ({

@@ -5,9 +5,9 @@
   --font-family-body: "Source Sans 3", sans-serif;
 
   /* Color Palette */
+  --color-primary-10: #22c55e1a;
   --color-primary-50: #f0fdf4;
   --color-primary-100: #dcfce7;
-  --color-primary-200: #bbf7d0;
   --color-primary-300: #86efac;
   --color-primary-400: #4ade80;
   --color-primary-500: #22c55e;
@@ -18,14 +18,14 @@
 
   --color-secondary-50: #fff7ed;
   --color-secondary-100: #ffedd5;
-  --color-secondary-200: #fed7aa;
   --color-secondary-300: #fdba74;
   --color-secondary-400: #fb923c;
   --color-secondary-500: #f97316;
   --color-secondary-600: #ea580c;
-  --color-secondary-700: #c2410c;
   --color-secondary-800: #9a3412;
   --color-secondary-900: #7c2d12;
+  
+  --color-white: #ffffff;
 
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
@@ -38,38 +38,28 @@
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
 
-  --color-red-50: #fef2f2;
   --color-red-100: #fee2e2;
-  --color-red-200: #fecaca;
   --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
   --color-red-500: #ef4444;
   --color-red-600: #dc2626;
   --color-red-800: #991b1b;
 
+  --color-blue-10: #3b82f61a;
   --color-blue-50: #eff6ff;
   --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
   --color-blue-500: #3b82f6;
   --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
   --color-blue-800: #1e40af;
 
   --color-purple-50: #faf5ff;
   --color-purple-100: #f3e8ff;
-  --color-purple-500: #a855f7;
-  --color-purple-600: #9333ea;
+  --color-purple-800: #6b21a8;
 
-  --color-primary-500-rgb: 34, 197, 94;
-  --color-primary-600-rgb: 22, 163, 74;
-  --color-secondary-500-rgb: 249, 115, 22;
-  --color-red-500-rgb: 239, 68, 68;
-  --color-red-600-rgb: 220, 38, 38;
-  
-  /* RGB values for rgba() usage */
-  --color-surface-rgb: 255, 255, 255;
-  --color-border-rgb: 229, 231, 235;
-  --color-gray-300-rgb: 209, 213, 219;
-  --color-blue-500-rgb: 59, 130, 246;
-  --color-gray-50-rgb: 249, 250, 251;
-  --color-gray-100-rgb: 243, 244, 246;
+  --color-border: #e5e7eb99;
+  --color-dark-border: #37415199;
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -87,12 +77,12 @@
   --radius-2xl: 1rem;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-sm: 0 1px 2px 0 var(--color-shadow);
+  --shadow-md: 0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
   --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
   --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
 
   /* Transitions */
   --transition-fast: 150ms ease-in-out;

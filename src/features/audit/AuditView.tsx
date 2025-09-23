@@ -263,9 +263,11 @@ export const AuditView: React.FC = () => {
         </Dropdown>
       </div>
 
-      <Card className="audit-events-card">
+      <Card variant="table" className="audit-events-card">
         <CardHeader>
-          <CardTitle>Recent Audit Events ({filteredEvents.length})</CardTitle>
+          <CardTitle>
+            Recent Audit Events ({filteredEvents.length})
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="audit-events">

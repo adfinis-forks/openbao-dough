@@ -42,7 +42,7 @@
 .login-logo__img {
   width: 3.5rem;
   height: 3.5rem;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 4px 6px var(--color-shadow));
 }
 
 .login-logo__text {
@@ -65,14 +65,14 @@
   border: 1px solid var(--color-border);
   border-radius: 1.25rem;
   box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.08),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    0 20px 25px -5px var(--color-shadow),
+    0 10px 10px -5px var(--color-shadow);
 }
 
 [data-theme="dark"] .login-card {
   box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.3),
-    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    0 20px 25px -5px var(--color-shadow),
+    0 10px 10px -5px var(--color-shadow);
 }
 
 .login-card .card-header {
@@ -116,8 +116,8 @@
 .namespace-field {
   background: linear-gradient(
     135deg,
-    rgba(var(--color-blue-500-rgb), 0.04) 0%,
-    rgba(var(--color-blue-500-rgb), 0.02) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
   border: 1px solid var(--color-blue-100);
   border-radius: 0.75rem;
@@ -129,16 +129,16 @@
   border-color: var(--color-blue-200);
   background: linear-gradient(
     135deg,
-    rgba(var(--color-blue-500-rgb), 0.06) 0%,
-    rgba(var(--color-blue-500-rgb), 0.03) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
 }
 
 [data-theme="dark"] .namespace-field {
   background: linear-gradient(
     135deg,
-    rgba(var(--color-blue-500-rgb), 0.1) 0%,
-    rgba(var(--color-blue-500-rgb), 0.05) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
   border: 1px solid var(--color-blue-800);
 }
@@ -147,8 +147,8 @@
   border-color: var(--color-blue-700);
   background: linear-gradient(
     135deg,
-    rgba(var(--color-blue-500-rgb), 0.15) 0%,
-    rgba(var(--color-blue-500-rgb), 0.08) 100%
+    var(--color-blue-10) 0%,
+    var(--color-blue-10) 100%
   );
 }
 
@@ -190,7 +190,7 @@
 
 .namespace-field__input input:focus {
   border-color: var(--color-blue-400);
-  box-shadow: 0 0 0 3px rgba(var(--color-blue-500-rgb), 0.1);
+  box-shadow: 0 0 0 3px var(--color-blue-10);
 }
 
 .namespace-field__help {
@@ -330,21 +330,13 @@
   width: 2.5rem;
   height: 2.5rem;
   font-size: 1.125rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--color-shadow);
   transition: all 0.2s ease;
 }
 
 .login-theme-toggle__button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="dark"] .login-theme-toggle__button {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .login-theme-toggle__button:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 8px var(--color-shadow);
 }
 
 /* Responsive Design */

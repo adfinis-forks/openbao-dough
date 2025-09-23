@@ -24,8 +24,8 @@
 
   /* Effects */
   box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
+    0 10px 15px -3px #0000001a,
+    0 4px 6px -4px #0000001a;
   backdrop-filter: blur(20px);
 
   /* Interaction */
@@ -52,8 +52,8 @@
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(34, 197, 94, 0.05) 0%,
-    rgba(249, 115, 22, 0.03) 100%
+    var(--color-primary-600) 0%,
+    var(--color-red-400) 100%
   );
   border-radius: inherit;
   opacity: 0;
@@ -67,8 +67,8 @@
 .toggle.toggle.toggle:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow:
-    0 20px 25px -5px rgb(0 0 0 / 0.1),
-    0 8px 10px -6px rgb(0 0 0 / 0.1);
+    0 20px 25px -5px #0000001a,
+    0 8px 10px -6px #0000001a;
   border-color: var(--color-border-hover, #d1d5db);
 }
 
@@ -99,8 +99,8 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(var(--color-primary-500-rgb), 0.3) 0%,
-    rgba(var(--color-primary-500-rgb), 0.1) 50%,
+    var(--color-primary-30) 0%,
+    var(--color-primary-600) 50%,
     transparent 100%
   );
 
