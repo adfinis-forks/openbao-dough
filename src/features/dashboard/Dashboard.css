@@ -130,7 +130,6 @@
   gap: var(--spacing-xl);
 }
 
-
 .activity-list {
   display: flex;
   flex-direction: column;

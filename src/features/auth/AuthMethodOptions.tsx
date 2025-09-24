@@ -32,7 +32,7 @@ export const AuthMethodOptions: React.FC<AuthMethodOptionsProps> = ({
         >
           {isOpen ? 'Hide Method Options' : 'Method Options'}
         </Button>
-        
+
         {isOpen && (
           <CardContent className="auth-method-options__content">
             {children}

@@ -3,7 +3,15 @@ import { useState } from 'react';
 import { Button } from '../../shared/ui/Button';
 import { Input } from '../../shared/ui/Input';
 import { Card, CardContent } from '../../shared/ui/Card';
-import { ChevronDown, Server, Users, FileText, Key, Globe, Shield } from '../../shared/ui/Icons';
+import {
+  ChevronDown,
+  Server,
+  Users,
+  FileText,
+  Key,
+  Globe,
+  Shield,
+} from '../../shared/ui/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import './EnableAuthMethodView.css';
 
@@ -17,16 +25,64 @@ interface AuthMethodOption {
 
 const authMethodOptions: AuthMethodOption[] = [
   // Generic methods
-  { id: 'approle', name: 'AppRole', description: 'Application role-based authentication', icon: <Server size={20} />, category: 'generic' },
-  { id: 'jwt', name: 'JWT', description: 'JSON Web Token authentication', icon: <Users size={20} />, category: 'generic' },
-  { id: 'oidc', name: 'OIDC', description: 'OpenID Connect authentication', icon: <Users size={20} />, category: 'generic' },
-  { id: 'tls', name: 'TLS Certificates', description: 'TLS certificate-based authentication', icon: <FileText size={20} />, category: 'generic' },
-  { id: 'userpass', name: 'Username & Password', description: 'Traditional username and password', icon: <Key size={20} />, category: 'generic' },
-  
+  {
+    id: 'approle',
+    name: 'AppRole',
+    description: 'Application role-based authentication',
+    icon: <Server size={20} />,
+    category: 'generic',
+  },
+  {
+    id: 'jwt',
+    name: 'JWT',
+    description: 'JSON Web Token authentication',
+    icon: <Users size={20} />,
+    category: 'generic',
+  },
+  {
+    id: 'oidc',
+    name: 'OIDC',
+    description: 'OpenID Connect authentication',
+    icon: <Users size={20} />,
+    category: 'generic',
+  },
+  {
+    id: 'tls',
+    name: 'TLS Certificates',
+    description: 'TLS certificate-based authentication',
+    icon: <FileText size={20} />,
+    category: 'generic',
+  },
+  {
+    id: 'userpass',
+    name: 'Username & Password',
+    description: 'Traditional username and password',
+    icon: <Key size={20} />,
+    category: 'generic',
+  },
+
   // Infra methods
-  { id: 'kubernetes', name: 'Kubernetes', description: 'Kubernetes service account authentication', icon: <Globe size={20} />, category: 'infra' },
-  { id: 'ldap', name: 'LDAP', description: 'LDAP directory authentication', icon: <Users size={20} />, category: 'infra' },
-  { id: 'radius', name: 'RADIUS', description: 'RADIUS server authentication', icon: <Shield size={20} />, category: 'infra' },
+  {
+    id: 'kubernetes',
+    name: 'Kubernetes',
+    description: 'Kubernetes service account authentication',
+    icon: <Globe size={20} />,
+    category: 'infra',
+  },
+  {
+    id: 'ldap',
+    name: 'LDAP',
+    description: 'LDAP directory authentication',
+    icon: <Users size={20} />,
+    category: 'infra',
+  },
+  {
+    id: 'radius',
+    name: 'RADIUS',
+    description: 'RADIUS server authentication',
+    icon: <Shield size={20} />,
+    category: 'infra',
+  },
 ];
 
 export const EnableAuthMethodView: React.FC = () => {
@@ -55,8 +111,8 @@ export const EnableAuthMethodView: React.FC = () => {
   return (
     <div className="enable-auth-method-view">
       <div className="enable-auth-method-view__header">
-        <Button 
-          variant="secondary" 
+        <Button
+          variant="secondary"
           icon={<ChevronDown size={16} />}
           onClick={handleBack}
           className="back-button"
@@ -64,7 +120,9 @@ export const EnableAuthMethodView: React.FC = () => {
           Back to Auth Methods
         </Button>
         <div>
-          <h1 className="enable-auth-method-view__title">Enable an Authentication Method</h1>
+          <h1 className="enable-auth-method-view__title">
+            Enable an Authentication Method
+          </h1>
           <p className="enable-auth-method-view__subtitle">
             Configure a new authentication method for your vault
           </p>
@@ -80,9 +138,9 @@ export const EnableAuthMethodView: React.FC = () => {
                 <h2 className="enable-auth-method-section-title">Generic</h2>
                 <div className="auth-methods-grid">
                   {authMethodOptions
-                    .filter(method => method.category === 'generic')
-                    .map(method => (
-                      <Card 
+                    .filter((method) => method.category === 'generic')
+                    .map((method) => (
+                      <Card
                         key={method.id}
                         variant="bordered"
                         className={`auth-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
@@ -93,8 +151,12 @@ export const EnableAuthMethodView: React.FC = () => {
                             {method.icon}
                           </div>
                           <div className="auth-method-option__text">
-                            <div className="auth-method-option__name">{method.name}</div>
-                            <div className="auth-method-option__description">{method.description}</div>
+                            <div className="auth-method-option__name">
+                              {method.name}
+                            </div>
+                            <div className="auth-method-option__description">
+                              {method.description}
+                            </div>
                           </div>
                           <div className="auth-method-option__radio">
                             <input
@@ -117,9 +179,9 @@ export const EnableAuthMethodView: React.FC = () => {
                 <h2 className="enable-auth-method-section-title">Infra</h2>
                 <div className="auth-methods-grid">
                   {authMethodOptions
-                    .filter(method => method.category === 'infra')
-                    .map(method => (
-                      <Card 
+                    .filter((method) => method.category === 'infra')
+                    .map((method) => (
+                      <Card
                         key={method.id}
                         variant="bordered"
                         className={`auth-method-option ${selectedMethod === method.id ? 'selected' : ''}`}
@@ -130,8 +192,12 @@ export const EnableAuthMethodView: React.FC = () => {
                             {method.icon}
                           </div>
                           <div className="auth-method-option__text">
-                            <div className="auth-method-option__name">{method.name}</div>
-                            <div className="auth-method-option__description">{method.description}</div>
+                            <div className="auth-method-option__name">
+                              {method.name}
+                            </div>
+                            <div className="auth-method-option__description">
+                              {method.description}
+                            </div>
                           </div>
                           <div className="auth-method-option__radio">
                             <input

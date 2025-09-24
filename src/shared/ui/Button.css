@@ -201,7 +201,7 @@
 .btn--menu-item.btn--active {
   background: transparent;
   color: var(--color-primary-900);
-    box-shadow:
+  box-shadow:
     var(--shadow-xl),
     0 4px 12px var(--color-primary-40);
   border: 2px solid var(--color-primary-500);
@@ -210,8 +210,7 @@
 .btn--menu-item.btn--active .btn__icon {
   background: var(--color-primary-50);
   border: 2px solid var(--color-primary-500);
-    box-shadow:
-    0 0 12px var(--color-primary-40);
+  box-shadow: 0 0 12px var(--color-primary-40);
 }
 
 .btn--menu-item.btn--active .btn__text {

@@ -98,8 +98,8 @@ export const AuthMethodsView: React.FC = () => {
             Configure and manage authentication methods for your vault
           </p>
         </div>
-        <Button 
-          variant="primary" 
+        <Button
+          variant="primary"
           icon={<Plus size={16} />}
           onClick={() => navigate({ to: '/enable-auth-method' })}
         >
