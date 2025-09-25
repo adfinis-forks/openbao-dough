@@ -54,7 +54,7 @@
   --color-primary: var(--color-primary-500);
   --color-primary-hover: var(--color-primary-600);
   --color-primary-light: var(--color-primary-300);
-  --color-secondary: var(--color-secondary-500);
+  --color-secondary: var(--color-secondary-200);
   --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-light: var(--color-secondary-900);
 
@@ -70,7 +70,6 @@
 
   /* Dark theme opacity color overrides */
   --color-surface-10: var(--color-dark-surface-10);
-  --color-border: var(--color-dark-border);
 
   /* Shadows for dark theme */
   --shadow-sm: 0 1px 2px 0 var(--color-shadow);

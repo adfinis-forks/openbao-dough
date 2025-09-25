@@ -343,7 +343,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </a>
           </p>
           <div className="login-theme-toggle">
-            <ThemeToggle className="login-theme-toggle__button" />
+            <ThemeToggle />
           </div>
         </div>
       </div>

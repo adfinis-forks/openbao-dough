@@ -1,0 +1,50 @@
+.theme-toggle {
+  background: transparent;
+  border: 2px solid var(--color-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary);
+  transition: all var(--transition-base);
+  min-width: 3rem;
+  min-height: 3rem;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.15);
+}
+
+.theme-toggle__icon-wrapper {
+  position: relative;
+  width: 80%;
+  height: 80%;
+}
+
+.theme-toggle__icon {
+  position: absolute;
+  transition: var(--transition-slow);
+}
+
+/* Icon states for smooth transitions */
+.theme-toggle__icon--sun {
+  opacity: 1;
+}
+
+.theme-toggle__icon--moon {
+  opacity: 0;
+  transform: rotate(-180deg) scale(0.5);
+}
+
+/* Dark mode - show sun, hide moon */
+[data-theme="dark"] .theme-toggle__icon--sun {
+  opacity: 0;
+  transform: rotate(-180deg) scale(0.5);
+}
+
+[data-theme="dark"] .theme-toggle__icon--moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}

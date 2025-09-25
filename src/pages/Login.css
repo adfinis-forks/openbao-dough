@@ -326,19 +326,6 @@
   margin-top: 1rem;
 }
 
-.login-theme-toggle__button {
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.125rem;
-  box-shadow: 0 2px 4px var(--color-shadow);
-  transition: all 0.2s ease;
-}
-
-.login-theme-toggle__button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px var(--color-shadow);
-}
-
 /* Responsive Design */
 @media (max-width: 480px) {
   .login-container {
