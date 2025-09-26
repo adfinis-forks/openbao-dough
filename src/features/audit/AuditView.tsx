@@ -1,17 +1,25 @@
+import { Badge } from '@common/Badge';
+import { Button } from '@common/Button';
 import type React from 'react';
 import { useState } from 'react';
-import { Badge } from '../../shared/ui/Badge';
-import { Button } from '../../shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
-import { Dropdown, DropdownMenuItem } from '../../shared/ui/Dropdown';
-import { Input } from '../../shared/ui/Input';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '../../shared/components/common/Card';
+import {
+  Dropdown,
+  DropdownMenuItem,
+} from '../../shared/components/common/Dropdown';
 import {
   Download,
   Filter,
   MoreHorizontal,
   Plus,
   Search,
-} from '../../shared/ui/Icons';
+} from '../../shared/components/common/Icons';
+import { Input } from '../../shared/components/common/Input';
 import './AuditView.css';
 
 interface AuditEvent {
@@ -167,7 +175,7 @@ export const AuditView: React.FC = () => {
           </p>
         </div>
         <div className="audit-view__actions">
-          <Button variant="outline" icon={<Download size={16} />}>
+          <Button variant="secondary" icon={<Download size={16} />}>
             Export Logs
           </Button>
           <Button variant="primary" icon={<Plus size={16} />}>

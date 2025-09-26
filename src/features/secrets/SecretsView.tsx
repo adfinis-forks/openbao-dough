@@ -1,9 +1,7 @@
-import type React from 'react';
-import { useState } from 'react';
-import { Badge } from '../../shared/ui/Badge';
-import { Button } from '../../shared/ui/Button';
-import { Card, CardContent } from '../../shared/ui/Card';
-import { Dropdown, DropdownMenuItem } from '../../shared/ui/Dropdown';
+import { Badge } from '@common/Badge';
+import { Button } from '@common/Button';
+import { Card, CardContent } from '@common/Card';
+import { Dropdown, DropdownMenuItem } from '@common/Dropdown';
 import {
   Copy,
   Database,
@@ -13,8 +11,10 @@ import {
   Plus,
   Search,
   Trash2,
-} from '../../shared/ui/Icons';
-import { Input } from '../../shared/ui/Input';
+} from '@common/Icons';
+import { Input } from '@common/Input';
+import type React from 'react';
+import { useState } from 'react';
 import './SecretsView.css';
 
 export interface Secret {

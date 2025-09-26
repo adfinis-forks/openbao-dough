@@ -1,18 +1,18 @@
-import type React from 'react';
-import { useState } from 'react';
-import { Button } from '../../shared/ui/Button';
-import { Input } from '../../shared/ui/Input';
-import { Card, CardContent } from '../../shared/ui/Card';
+import { Button } from '@common/Button';
+import { Card, CardContent } from '@common/Card';
 import {
   ChevronDown,
-  Server,
-  Users,
   FileText,
-  Key,
   Globe,
+  Key,
+  Server,
   Shield,
-} from '../../shared/ui/Icons';
+  Users,
+} from '@common/Icons';
+import { Input } from '@common/Input';
 import { useNavigate } from '@tanstack/react-router';
+import type React from 'react';
+import { useState } from 'react';
 import './EnableAuthMethodView.css';
 
 interface AuthMethodOption {

@@ -1,3 +1,8 @@
+import { Button } from '@common/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@common/Card';
+import { ChevronDown, ChevronUp, Eye, EyeOff, Globe } from '@common/Icons';
+import { Input } from '@common/Input';
+import { Select } from '@common/Select';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import OpenBaoLogo from '../../public/openbao.svg?react';
@@ -10,11 +15,6 @@ import { useAuthenticate } from '../shared/api/auth-hooks';
 import { BAO_ADDR } from '../shared/config';
 import { useAuthStore } from '../shared/stores/authStore';
 import { ThemeToggle } from '../shared/theme/ThemeToggle';
-import { Button } from '../shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../shared/ui/Card';
-import { ChevronDown, ChevronUp, Eye, EyeOff, Globe } from '../shared/ui/Icons';
-import { Input } from '../shared/ui/Input';
-import { Select } from '../shared/ui/Select';
 import './Login.css';
 
 export interface LoginProps {

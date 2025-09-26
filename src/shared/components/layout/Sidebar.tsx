@@ -1,8 +1,8 @@
+import { Button } from '@common/Button';
+import OpenBaoLogo from '@public/openbao.svg';
 import { Link, useLocation } from '@tanstack/react-router';
 import React from 'react';
-import OpenBaoLogo from '../../../public/openbao.svg';
-import { Button } from '../ui/Button';
-import { ThemeToggle } from '../theme/ThemeToggle';
+import { ThemeToggle } from '@/shared/theme/ThemeToggle';
 import './Sidebar.css';
 
 const menuItems = [

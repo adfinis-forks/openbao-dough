@@ -1,10 +1,10 @@
+import { Button } from '@common/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@common/Card';
+import { Lock, Plus, Unlock } from '@common/Icons';
+import { useNavigate } from '@tanstack/react-router';
 import type React from 'react';
 import { useState } from 'react';
-import { Button } from '../../shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
-import { Lock, Plus, Unlock } from '../../shared/ui/Icons';
 import { AuthMethodCard } from './AuthMethodCard';
-import { useNavigate } from '@tanstack/react-router';
 import './AuthMethodsView.css';
 
 interface AuthMethod {

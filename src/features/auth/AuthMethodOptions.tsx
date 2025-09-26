@@ -1,8 +1,8 @@
+import { Button } from '@common/Button';
+import { Card, CardContent } from '@common/Card';
+import { ChevronDown, ChevronUp } from '@common/Icons';
 import type React from 'react';
 import { useState } from 'react';
-import { Button } from '../../shared/ui/Button';
-import { Card, CardContent } from '../../shared/ui/Card';
-import { ChevronDown, ChevronUp } from '../../shared/ui/Icons';
 import './AuthMethodOptions.css';
 
 interface AuthMethodOptionsProps {

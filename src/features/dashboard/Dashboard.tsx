@@ -1,7 +1,7 @@
+import { Badge } from '@common/Badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@common/Card';
+import { CheckCircle, Server, TrendingUp } from '@common/Icons';
 import type React from 'react';
-import { Badge } from '../../shared/ui/Badge';
-import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
-import { CheckCircle, Server, TrendingUp } from '../../shared/ui/Icons';
 import './Dashboard.css';
 
 // Mock data

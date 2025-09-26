@@ -1,9 +1,9 @@
+import { Badge } from '@common/Badge';
+import { Button } from '@common/Button';
+import { Card, CardContent } from '@common/Card';
+import { Dropdown, DropdownMenuItem } from '@common/Dropdown';
+import { Lock, MoreHorizontal, Unlock } from '@common/Icons';
 import type React from 'react';
-import { Badge } from '../../shared/ui/Badge';
-import { Button } from '../../shared/ui/Button';
-import { Card, CardContent } from '../../shared/ui/Card';
-import { Dropdown, DropdownMenuItem } from '../../shared/ui/Dropdown';
-import { Lock, MoreHorizontal, Unlock } from '../../shared/ui/Icons';
 import { KNOWN_AUTH_METHODS } from './authMethods';
 
 interface AuthMethod {

@@ -1,10 +1,10 @@
+import { Badge } from '@common/Badge';
+import { Button } from '@common/Button';
+import { AlertTriangle, CheckCircle } from '@common/Icons';
+import { Input } from '@common/Input';
+import { Modal } from '@common/Modal';
 import type React from 'react';
-import { useState, useEffect } from 'react';
-import { Modal } from '../../shared/ui/Modal';
-import { Button } from '../../shared/ui/Button';
-import { Input } from '../../shared/ui/Input';
-import { Badge } from '../../shared/ui/Badge';
-import { CheckCircle, AlertTriangle } from '../../shared/ui/Icons';
+import { useEffect, useState } from 'react';
 
 interface Policy {
   id: string;

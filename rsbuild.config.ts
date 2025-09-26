@@ -16,6 +16,14 @@ export default defineConfig({
       ],
     },
   },
+  resolve: {
+    alias: {
+      '@': './src',
+      '@common': './src/shared/components/common',
+      '@layout': './src/shared/components/layout',
+      '@public': './public',
+    },
+  },
   html: {
     template: './src/index.html',
   },

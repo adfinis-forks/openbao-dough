@@ -13,6 +13,13 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@common/*": ["./src/shared/components/common/*"],
+      "@layout/*": ["./src/shared/components/layout/*"],
+      "@public/*": ["./public/*"]
+    },
 
     /* type checking */
     "strict": true,

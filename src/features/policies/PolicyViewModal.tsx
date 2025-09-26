@@ -1,8 +1,8 @@
+import { Badge } from '@common/Badge';
+import { Button } from '@common/Button';
+import { Clock, Copy, Edit, Trash2 } from '@common/Icons';
+import { Modal } from '@common/Modal';
 import type React from 'react';
-import { Modal } from '../../shared/ui/Modal';
-import { Button } from '../../shared/ui/Button';
-import { Badge } from '../../shared/ui/Badge';
-import { Edit, Copy, Trash2, Clock } from '../../shared/ui/Icons';
 
 interface Policy {
   id: string;

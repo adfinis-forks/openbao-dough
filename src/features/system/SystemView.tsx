@@ -1,9 +1,7 @@
-import type React from 'react';
-import { useState } from 'react';
-import { Badge } from '../../shared/ui/Badge';
-import { Button } from '../../shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../shared/ui/Card';
-import { Dropdown, DropdownMenuItem } from '../../shared/ui/Dropdown';
+import { Badge } from '@common/Badge';
+import { Button } from '@common/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@common/Card';
+import { Dropdown, DropdownMenuItem } from '@common/Dropdown';
 import {
   AlertTriangle,
   CheckCircle,
@@ -14,7 +12,9 @@ import {
   RefreshCw,
   Server,
   Unlock,
-} from '../../shared/ui/Icons';
+} from '@common/Icons';
+import type React from 'react';
+import { useState } from 'react';
 import './SystemView.css';
 
 interface HealthItem {
