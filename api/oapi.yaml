@@ -174,7 +174,7 @@
         "/auth/token/lookup-accessor": {
             "description": "This endpoint will lookup a token associated with the given accessor and its properties. Response will not contain the token ID.",
             "post": {
-                "operationId": "token-look-up-accessor",
+                "operationId": "token-look-up-by-accessor",
                 "tags": [
                     "auth"
                 ],
@@ -183,7 +183,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TokenLookUpAccessorRequest"
+                                "$ref": "#/components/schemas/TokenLookUpByAccessorRequest"
                             }
                         }
                     }
@@ -12746,7 +12746,7 @@
                     }
                 }
             },
-            "TokenLookUpAccessorRequest": {
+            "TokenLookUpByAccessorRequest": {
                 "type": "object",
                 "properties": {
                     "accessor": {

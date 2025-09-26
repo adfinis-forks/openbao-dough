@@ -3073,7 +3073,7 @@ export type TokenCreateRequest = {
     type?: string;
 };
 
-export type TokenLookUpAccessorRequest = {
+export type TokenLookUpByAccessorRequest = {
     /**
      * Accessor of the token to look up (request body)
      */
@@ -3495,21 +3495,21 @@ export type TokenLookUpPostResponses = {
 
 export type TokenLookUpPostResponse = TokenLookUpPostResponses[keyof TokenLookUpPostResponses];
 
-export type TokenLookUpAccessorData = {
-    body: TokenLookUpAccessorRequest;
+export type TokenLookUpByAccessorData = {
+    body: TokenLookUpByAccessorRequest;
     path?: never;
     query?: never;
     url: '/auth/token/lookup-accessor';
 };
 
-export type TokenLookUpAccessorResponses = {
+export type TokenLookUpByAccessorResponses = {
     /**
      * OK
      */
     200: TokenLookupResponse;
 };
 
-export type TokenLookUpAccessorResponse = TokenLookUpAccessorResponses[keyof TokenLookUpAccessorResponses];
+export type TokenLookUpByAccessorResponse = TokenLookUpByAccessorResponses[keyof TokenLookUpByAccessorResponses];
 
 export type TokenLookUpSelfGetData = {
     body?: never;
