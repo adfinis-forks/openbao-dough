@@ -1,3 +1,4 @@
+import { Layout } from '@layout/Layout';
 import {
   createRootRoute,
   createRoute,
@@ -13,7 +14,6 @@ import { PoliciesView } from '../features/policies/PoliciesView';
 import { SecretsView } from '../features/secrets/SecretsView';
 import { SystemView } from '../features/system/SystemView';
 import { Login } from '../pages/Login';
-import { Layout } from '../shared/layout/Layout';
 
 // Auth state - in a real app, this would come from context/store
 let isAuthenticated = false;

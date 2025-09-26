@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import type { AuthMethodType } from './authMethods';
 import { KNOWN_AUTH_METHODS } from './authMethods';
 import { ALLOWED_AUTH_TYPES, formatAuthMethodPath } from './authUtils';
-import { useAuthStore } from '../../shared/stores/authStore';
+import { useAuth } from '../../shared/hooks/useAuth';
+import { authListEnabledMethods } from '@/shared/client/sdk.gen';
 
 export interface EnabledAuth {
   path: string;
@@ -30,7 +31,7 @@ const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
 ];
 
 export function useEnabledAuthMethods() {
-  const { getClient, isAuthenticated } = useAuthStore();
+  const { isAuthenticated, getAuthenticatedClient } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,26 +45,22 @@ export function useEnabledAuthMethods() {
       setError(null);
 
       try {
-        const client = getClient();
-
-        // If no authenticated client, fall back to default auth methods
-        if (!client || !isAuthenticated) {
+        // If not authenticated, fall back to default auth methods
+        if (!isAuthenticated) {
           if (!cancelled) {
             setEnabled(DEFAULT_AUTH_METHODS);
           }
           return;
         }
 
-        const { data, error: apiError } = await client.GET('/sys/auth');
+        // Use generated SDK function with the authenticated client
+        const { data: list } = await authListEnabledMethods({
+          client: getAuthenticatedClient() ?? undefined,
+          throwOnError: true,
+        });
 
-        if (apiError) {
-          throw new Error(
-            `API Error: ${apiError.detail || 'Failed to fetch auth methods'}`,
-          );
-        }
-
-        if (data?.data) {
-          const authMethods: EnabledAuth[] = Object.entries(data.data).map(
+        if (list && typeof list === 'object') {
+          const authMethods: EnabledAuth[] = Object.entries(list as any).map(
             ([path, info]: [string, any]) => ({
               path,
               type: info.type as AuthMethodType,
@@ -99,7 +96,7 @@ export function useEnabledAuthMethods() {
     return () => {
       cancelled = true;
     };
-  }, [getClient, isAuthenticated]);
+  }, [getAuthenticatedClient, isAuthenticated]);
 
   const options = useMemo(() => {
     return enabled
