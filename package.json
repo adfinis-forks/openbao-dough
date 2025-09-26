@@ -9,20 +9,20 @@
     "dev": "rsbuild dev --open",
     "format": "biome format --write",
     "preview": "rsbuild preview",
-    "codegen": "openapi-typescript api/oapi.yaml -o src/types/api.ts",
     "gen:spec": "make spec",
-    "gen:types": "make codegen",
-    "gen:all": "make regen"
+    "gen:client": "make codegen",
+    "gen:all": "make spec-regen",
+    "openapi-ts": "openapi-ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.85.3",
     "@tanstack/react-router": "^1.130.2",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "zustand": "^5.0.7"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.6",
+    "@hey-api/openapi-ts": "0.84.3",
     "@rsbuild/core": "^1.4.3",
     "@rsbuild/plugin-react": "^1.3.3",
     "@rsbuild/plugin-svgr": "^1.2.2",
@@ -31,7 +31,6 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "openapi-fetch": "^0.14.0",
-    "openapi-typescript": "^7.9.1",
     "rspack": "link:@tanstack/router-plugin/rspack",
     "typescript": "^5.8.3"
   }

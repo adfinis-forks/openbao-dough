@@ -174,7 +174,7 @@
         "/auth/token/lookup-accessor": {
             "description": "This endpoint will lookup a token associated with the given accessor and its properties. Response will not contain the token ID.",
             "post": {
-                "operationId": "token-look-up-by-accessor",
+                "operationId": "token-look-up-accessor",
                 "tags": [
                     "auth"
                 ],
@@ -183,7 +183,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TokenLookUpByAccessorRequest"
+                                "$ref": "#/components/schemas/TokenLookUpAccessorRequest"
                             }
                         }
                     }
@@ -7925,7 +7925,7 @@
             }
         },
         "/{secret_mount_path}/detailed-metadata/{path}": {
-            "description": "Configures settings for the KV store",
+            "description": "Allows listing detailed information about key metadata in the KV store.",
             "parameters": [
                 {
                     "name": "path",
@@ -7974,7 +7974,7 @@
             }
         },
         "/{secret_mount_path}/metadata/{path}": {
-            "description": "Configures settings for the KV store",
+            "description": "Allows interaction with key metadata and settings in the KV store.",
             "parameters": [
                 {
                     "name": "path",
@@ -12746,7 +12746,7 @@
                     }
                 }
             },
-            "TokenLookUpByAccessorRequest": {
+            "TokenLookUpAccessorRequest": {
                 "type": "object",
                 "properties": {
                     "accessor": {
@@ -12807,7 +12807,8 @@
                     },
                     "expire_time": {
                         "type": "string",
-                        "description": "Token expiration time"
+                        "description": "Token expiration time",
+                        "format": "date-time"
                     },
                     "explicit_max_ttl": {
                         "type": "integer",
@@ -12816,27 +12817,29 @@
                     },
                     "external_namespace_policies": {
                         "type": "object",
-                        "description": "External namespace policies",
+                        "description": "Derived identity policies for external namespaces (present only when applicable)",
                         "format": "map"
                     },
                     "id": {
                         "type": "string",
-                        "description": "Token ID"
+                        "description": "Token ID (may be empty for self-lookup operations)"
                     },
                     "identity_policies": {
                         "type": "array",
-                        "description": "Identity policies associated with the token",
+                        "description": "Identity policies associated with the token (present only when token has an entity and derived policies)",
                         "items": {
                             "type": "string"
                         }
                     },
                     "issue_time": {
                         "type": "string",
-                        "description": "Token issue time"
+                        "description": "Token issue time",
+                        "format": "date-time"
                     },
                     "last_renewal": {
                         "type": "string",
-                        "description": "Last renewal time"
+                        "description": "Last renewal time",
+                        "format": "date-time"
                     },
                     "last_renewal_time": {
                         "type": "integer",
