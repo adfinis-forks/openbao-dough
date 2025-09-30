@@ -15,15 +15,11 @@ import { useAuthenticate } from '../shared/hooks/useAuthMethods';
 import { ThemeToggle } from '../shared/theme/ThemeToggle';
 import './Login.css';
 
-export interface LoginProps {
-  onLogin: () => void;
-}
-
 interface FormData {
   [key: string]: string;
 }
 
-export const Login: React.FC<LoginProps> = ({ onLogin }) => {
+export const Login: React.FC = () => {
   const { options, loading } = useEnabledAuthMethods();
   const [selected, setSelected] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +30,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [authError, setAuthError] = useState<string>('');
 
   const authenticateMutation = useAuthenticate();
-  
+
   // Load saved preferences
   useEffect(() => {
     const savedAuth = localStorage.getItem('openbao.lastAuth');
@@ -101,8 +97,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
         namespace: namespace || undefined,
         mountPath: mountPath || undefined,
       });
-
-      onLogin();
     } catch (error) {
       setAuthError(
         error instanceof Error ? error.message : 'Authentication failed',

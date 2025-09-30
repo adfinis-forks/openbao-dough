@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useEffect } from 'react';
-import { X } from './Icons';
 import { Button } from './Button';
+import { X } from './Icons';
 import './Modal.css';
 
 interface ModalProps {

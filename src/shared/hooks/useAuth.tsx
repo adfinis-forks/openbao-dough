@@ -3,142 +3,118 @@ import {
   createContext,
   useCallback,
   useContext,
-  useMemo,
+  useEffect,
+  useRef,
   useState,
 } from 'react';
 import type { Client } from '@/shared/client/client';
 import { createClient } from '@/shared/client/client';
-import { tokenLookUpSelfGet } from '@/shared/client/sdk.gen';
+import {
+  tokenLookUpSelfGet,
+  tokenRenewSelf,
+  tokenRevokeSelf,
+} from '@/shared/client/sdk.gen';
+import type { TokenLookupResponse } from '@/shared/client/types.gen';
 import { BAO_ADDR } from '@/shared/config';
 
-interface TokenInfo {
-  token: string;
-  accessor?: string;
-  ttl?: number;
-  renewable?: boolean;
-  policies?: string[];
-  metadata?: Record<string, any>;
-  expiresAt?: number;
-}
-
-interface AuthContextValue {
-  tokenInfo: TokenInfo | null;
+export interface AuthContextValue {
+  token: string | null;
+  tokenData: TokenLookupResponse | null;
   isAuthenticated: boolean;
-  namespace?: string;
   login: (token: string, namespace?: string) => Promise<void>;
-  logout: () => void;
-  setNamespace: (namespace?: string) => void;
-  getAuthenticatedClient: () => Client | null;
-  isTokenExpired: () => boolean;
+  logout: (namespace?: string) => Promise<void>;
+  getAuthenticatedClient: (namespace?: string) => Client | null;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+// Helper: Create authenticated client
+const createAuthClient = (token: string, namespace?: string): Client => {
+  const headers: Record<string, string> = { 'X-Vault-Token': token };
+  if (namespace && namespace !== '/') headers['X-Vault-Namespace'] = namespace;
+  return createClient({ baseUrl: BAO_ADDR, headers });
+};
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [tokenInfo, setTokenInfo] = useState<TokenInfo | null>(null);
-  const [namespace, setNamespaceState] = useState<string | undefined>();
+  const [token, setToken] = useState<string | null>(null);
+  const [tokenData, setTokenData] = useState<TokenLookupResponse | null>(null);
+  const renewalTimer = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  const isTokenExpired = useCallback(() => {
-    if (!tokenInfo?.expiresAt) return false;
-    const bufferMs = 5 * 60 * 1000; // 5 minute buffer
-    return Date.now() + bufferMs >= tokenInfo.expiresAt;
-  }, [tokenInfo]);
+  const isAuthenticated = !!token && !!tokenData;
 
-  const isAuthenticated = Boolean(tokenInfo && !isTokenExpired());
+  const getAuthenticatedClient = useCallback(
+    (namespace?: string) => {
+      return token ? createAuthClient(token, namespace) : null;
+    },
+    [token],
+  );
 
-  const getAuthenticatedClient = useCallback(() => {
-    if (!tokenInfo || isTokenExpired()) return null;
-
-    const headers: Record<string, string> = {
-      'X-Vault-Token': tokenInfo.token,
-    };
-
-    if (namespace && namespace !== '/') {
-      headers['X-Vault-Namespace'] = namespace;
-    }
-
-    return createClient({
-      baseUrl: BAO_ADDR,
-      headers,
-    });
-  }, [tokenInfo, namespace, isTokenExpired]);
-
-  const login = useCallback(async (token: string, ns?: string) => {
-    const headers: Record<string, string> = {
-      'X-Vault-Token': token,
-    };
-
-    if (ns && ns !== '/') {
-      headers['X-Vault-Namespace'] = ns;
-    }
-
-    const client = createClient({
-      baseUrl: BAO_ADDR,
-      headers,
-    });
-
+  const login = useCallback(async (newToken: string, namespace?: string) => {
     const { data, error } = await tokenLookUpSelfGet({
-      client,
+      client: createAuthClient(newToken, namespace),
       throwOnError: false,
     });
 
-    if (error || !data) {
-      throw new Error('Invalid token or authentication failed');
-    }
+    if (error || !data) throw new Error('Invalid token');
 
-    const expiresAt = data?.ttl ? Date.now() + data.ttl * 1000 : undefined;
-
-    setTokenInfo({
-      token,
-      accessor: data?.accessor,
-      ttl: data?.ttl,
-      renewable: data?.renewable,
-      policies: data?.policies,
-      metadata: (data as any)?.meta,
-      expiresAt,
-    });
-
-    setNamespaceState(ns);
+    setToken(newToken);
+    setTokenData(data);
   }, []);
 
-  const logout = useCallback(() => {
-    setTokenInfo(null);
-    setNamespaceState(undefined);
-  }, []);
-
-  const setNamespace = useCallback((ns?: string) => {
-    setNamespaceState(ns);
-  }, []);
-
-  const contextValue = useMemo(
-    () => ({
-      tokenInfo,
-      isAuthenticated,
-      namespace,
-      login,
-      logout,
-      setNamespace,
-      getAuthenticatedClient,
-      isTokenExpired,
-    }),
-    [
-      tokenInfo,
-      isAuthenticated,
-      namespace,
-      login,
-      logout,
-      setNamespace,
-      getAuthenticatedClient,
-      isTokenExpired,
-    ],
+  const logout = useCallback(
+    async (namespace?: string) => {
+      if (token) {
+        try {
+          await tokenRevokeSelf({
+            client: createAuthClient(token, namespace),
+            throwOnError: false,
+          });
+        } catch {}
+      }
+      setToken(null);
+      setTokenData(null);
+    },
+    [token],
   );
 
+  // Auto-renew renewable tokens
+  useEffect(() => {
+    if (!token || !tokenData?.renewable || !tokenData.ttl) return;
+
+    const renewAt = tokenData.ttl * 500; // 50% of TTL
+    renewalTimer.current = setTimeout(async () => {
+      try {
+        const { data } = await tokenRenewSelf({
+          client: createAuthClient(token),
+          body: {},
+          throwOnError: false,
+        });
+        if (data) setTokenData(data);
+      } catch {}
+    }, renewAt);
+
+    return () => {
+      if (renewalTimer.current) clearTimeout(renewalTimer.current);
+    };
+  }, [token, tokenData]);
+
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        token,
+        tokenData,
+        isAuthenticated,
+        login,
+        logout,
+        getAuthenticatedClient,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 
@@ -150,7 +126,7 @@ export function useAuth(): AuthContextValue {
   return context;
 }
 
-export function useAuthenticatedClient() {
+export function useAuthenticatedClient(namespace?: string) {
   const { getAuthenticatedClient } = useAuth();
-  return getAuthenticatedClient();
+  return getAuthenticatedClient(namespace);
 }

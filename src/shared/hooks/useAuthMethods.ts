@@ -166,9 +166,9 @@ export function useAuthenticate() {
           throw new Error(`Unsupported authentication method: ${method}`);
       }
     },
-    onSuccess: (tokenData, { namespace }) => {
+    onSuccess: (tokenData) => {
       if (tokenData.token) {
-        login(tokenData.token, namespace);
+        login(tokenData.token);
       }
     },
   });

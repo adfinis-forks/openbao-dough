@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { authListEnabledMethodsOptions } from '@/shared/client/@tanstack/react-query.gen';
+import { useAuth } from '../../shared/hooks/useAuth';
 import type { AuthMethodType } from './authMethods';
 import { KNOWN_AUTH_METHODS } from './authMethods';
 import { ALLOWED_AUTH_TYPES, formatAuthMethodPath } from './authUtils';
-import { useAuth } from '../../shared/hooks/useAuth';
-import { authListEnabledMethods } from '@/shared/client/sdk.gen';
 
 export interface EnabledAuth {
   path: string;
@@ -32,71 +33,34 @@ const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
 
 export function useEnabledAuthMethods() {
   const { isAuthenticated, getAuthenticatedClient } = useAuth();
+  const client = getAuthenticatedClient();
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [enabled, setEnabled] = useState<EnabledAuth[]>([]);
+  const {
+    data: list,
+    isLoading,
+    error: queryError,
+  } = useQuery({
+    ...authListEnabledMethodsOptions({
+      client: client ?? undefined,
+    }),
+    enabled: isAuthenticated && !!client,
+    retry: false,
+  });
 
-  useEffect(() => {
-    let cancelled = false;
+  const enabled = useMemo(() => {
+    // If not authenticated or no data, use defaults
+    if (!isAuthenticated || !list || typeof list !== 'object') {
+      return DEFAULT_AUTH_METHODS;
+    }
 
-    const fetchAuthMethods = async (): Promise<void> => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        // If not authenticated, fall back to default auth methods
-        if (!isAuthenticated) {
-          if (!cancelled) {
-            setEnabled(DEFAULT_AUTH_METHODS);
-          }
-          return;
-        }
-
-        // Use generated SDK function with the authenticated client
-        const { data: list } = await authListEnabledMethods({
-          client: getAuthenticatedClient() ?? undefined,
-          throwOnError: true,
-        });
-
-        if (list && typeof list === 'object') {
-          const authMethods: EnabledAuth[] = Object.entries(list as any).map(
-            ([path, info]: [string, any]) => ({
-              path,
-              type: info.type as AuthMethodType,
-              description: info.description,
-            }),
-          );
-
-          if (!cancelled) {
-            setEnabled(authMethods);
-          }
-        } else {
-          // Fall back to default methods if no data
-          if (!cancelled) {
-            setEnabled(DEFAULT_AUTH_METHODS);
-          }
-        }
-      } catch (err) {
-        if (!cancelled) {
-          const message =
-            err instanceof Error ? err.message : 'Failed to load auth methods';
-          setError(message);
-          setEnabled(DEFAULT_AUTH_METHODS);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchAuthMethods();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [getAuthenticatedClient, isAuthenticated]);
+    return Object.entries(list as any)
+      .filter(([, info]) => info && typeof info === 'object')
+      .map(([path, info]: [string, any]) => ({
+        path,
+        type: info.type as AuthMethodType,
+        description: info.description,
+      }));
+  }, [isAuthenticated, list]);
 
   const options = useMemo(() => {
     return enabled
@@ -117,5 +81,10 @@ export function useEnabledAuthMethods() {
       });
   }, [enabled]);
 
-  return { loading, error, enabled, options };
+  return {
+    loading: isLoading,
+    error: queryError?.message ?? null,
+    enabled,
+    options,
+  };
 }

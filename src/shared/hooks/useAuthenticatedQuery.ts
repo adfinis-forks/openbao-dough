@@ -23,6 +23,9 @@ export function useAuthenticatedMutationOptions() {
 
   return useMemo(() => {
     const client = getAuthenticatedClient();
-    return { client: client ?? undefined, enabled: isAuthenticated && !!client } satisfies Partial<Options> & { enabled: boolean };
+    return {
+      client: client ?? undefined,
+      enabled: isAuthenticated && !!client,
+    } satisfies Partial<Options> & { enabled: boolean };
   }, [getAuthenticatedClient, isAuthenticated]);
 }
