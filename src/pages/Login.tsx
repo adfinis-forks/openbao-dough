@@ -5,7 +5,6 @@ import { Input } from '@common/Input';
 import { Select } from '@common/Select';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
 import OpenBaoLogo from '../../public/openbao.svg?react';
 import {
   type AuthMethodType,
@@ -13,8 +12,6 @@ import {
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
 import { useAuthenticate } from '../shared/hooks/useAuthMethods';
-import { useAuth } from '../shared/hooks/useAuth';
-import { BAO_ADDR } from '../shared/config';
 import { ThemeToggle } from '../shared/theme/ThemeToggle';
 import './Login.css';
 
@@ -28,8 +25,6 @@ interface FormData {
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const { options, loading } = useEnabledAuthMethods();
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const [selected, setSelected] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({});
@@ -39,17 +34,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [authError, setAuthError] = useState<string>('');
 
   const authenticateMutation = useAuthenticate();
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate({ to: '/dashboard' });
-    }
-  }, [isAuthenticated, navigate]);
-
-  // Use BAO_ADDR from shared config (already includes /v1)
-  const baseUrl = BAO_ADDR;
-
+  
   // Load saved preferences
   useEffect(() => {
     const savedAuth = localStorage.getItem('openbao.lastAuth');
@@ -110,15 +95,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       localStorage.setItem('openbao.lastAuth', selected);
       localStorage.setItem('openbao.lastNamespace', namespace || '/');
 
-      // Debug logging
-      console.log('Authentication attempt:', {
-        baseUrl,
-        authMethod: selectedMeta.type,
-        credentials: formData,
-        namespace: namespace || undefined,
-        mountPath: mountPath || undefined,
-      });
-
       await authenticateMutation.mutateAsync({
         method: selectedMeta.type,
         credentials: formData,
@@ -126,7 +102,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
         mountPath: mountPath || undefined,
       });
 
-      // Authentication successful, onLogin callback or navigate will be handled by the mutation
       onLogin();
     } catch (error) {
       setAuthError(
