@@ -34,12 +34,10 @@
 }
 
 .input:focus:not(:disabled) {
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px var(--color-primary-600);
+  border: var(--border-active);
 }
 
 .input:disabled {
-  background-color: var(--color-gray-50);
   color: var(--color-text-muted);
   cursor: not-allowed;
 }

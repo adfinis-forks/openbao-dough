@@ -10,8 +10,9 @@
   --color-text-secondary: var(--color-gray-600);
   --color-text-muted: var(--color-gray-500);
   --color-text-blue: var(--color-blue-800);
-  --color-border: var(--color-gray-200);
-  --color-border-hover: var(--color-gray-300);
+  --color-border: var(--color-gray-300);
+  --color-border-hover: var(--color-gray-400);
+  --color-border-active: var(--color-gray-400);
 
   /* Interactive Colors */
   --color-primary: var(--color-primary-600);
@@ -37,6 +38,7 @@
   --border-primary: 2px solid var(--color-primary);
   --border-secondary: 2px solid var(--color-secondary);
   --border-red: 2px solid var(--color-red);
+  --border-active: 2px solid var(--color-border-active);
 }
 
 /* Dark Theme */
@@ -48,8 +50,9 @@
   --color-text-secondary: var(--color-gray-300);
   --color-text-muted: var(--color-gray-400);
   --color-text-blue: var(--color-blue-200);
-  --color-border: var(--color-gray-700);
-  --color-border-hover: var(--color-gray-600);
+  --color-border: var(--color-gray-600);
+  --color-border-hover: var(--color-gray-700);
+   --color-border-active: var(--color-gray-300);
 
   /* Interactive Colors */
   --color-primary: var(--color-primary-300);
