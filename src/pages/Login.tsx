@@ -285,7 +285,7 @@ export const Login: React.FC = () => {
               {/* Submit Button */}
               <Button
                 type="submit"
-                variant="overlay"
+                variant="outlined"
                 size="large"
                 fullWidth
                 disabled={!isFormValid || authenticateMutation.isPending}

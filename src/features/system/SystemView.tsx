@@ -213,7 +213,7 @@ export const SystemView: React.FC = () => {
               </div>
 
               {!sealStatus.sealed && (
-                <Button variant="overlay-danger" icon={<Lock size={16} />}>
+                <Button variant="outlined-danger" icon={<Lock size={16} />}>
                   Seal Vault
                 </Button>
               )}

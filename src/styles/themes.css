@@ -14,18 +14,14 @@
   --color-border-hover: var(--color-gray-300);
 
   /* Interactive Colors */
-  --color-primary: var(--color-primary-500);
+  --color-primary: var(--color-primary-600);
   --color-primary-hover: var(--color-primary-600);
   --color-primary-light: var(--color-primary-50);
   --color-secondary: var(--color-secondary-500);
   --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-light: var(--color-secondary-50);
 
-  /* Status Colors */
-  --color-success: var(--color-primary-500);
-  --color-error: var(--color-red-500);
-  --color-warning: var(--color-secondary-500);
-  --color-info: var(--color-blue-500);
+  --color-red: var(--color-red-500);
 
   /* Focus & Selection */
   --color-focus: var(--color-primary-500);
@@ -36,6 +32,11 @@
 
   /* Shadow color */
   --color-shadow: #0000001a;
+
+  /* Borders */
+  --border-primary: 2px solid var(--color-primary);
+  --border-secondary: 2px solid var(--color-secondary);
+  --border-red: 2px solid var(--color-red);
 }
 
 /* Dark Theme */
@@ -51,18 +52,14 @@
   --color-border-hover: var(--color-gray-600);
 
   /* Interactive Colors */
-  --color-primary: var(--color-primary-500);
+  --color-primary: var(--color-primary-300);
   --color-primary-hover: var(--color-primary-600);
   --color-primary-light: var(--color-primary-300);
   --color-secondary: var(--color-secondary-200);
   --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-light: var(--color-secondary-900);
 
-  /* Status Colors */
-  --color-success: var(--color-primary-400);
-  --color-error: var(--color-red-400);
-  --color-warning: var(--color-secondary-400);
-  --color-info: var(--color-blue-400);
+  --color-red: var(--color-red-400);
 
   /* Focus & Selection */
   --color-focus: var(--color-primary-400);

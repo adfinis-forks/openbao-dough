@@ -7,8 +7,8 @@ export type ButtonVariant =
   | 'secondary'
   | 'ghost'
   | 'danger'
-  | 'overlay'
-  | 'overlay-danger'
+  | 'outlined'
+  | 'outlined-danger'
   | 'menu-item';
 export type ButtonSize = 'small' | 'medium' | 'large';
 

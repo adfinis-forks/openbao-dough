@@ -271,72 +271,31 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Overlay variants */
-.btn--overlay,
-.btn--overlay-danger {
+/* Outlined variants */
+.btn--outlined {
   background: transparent;
-  z-index: 1;
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 1px solid var(--overlay-color);
-  color: var(--overlay-color);
+  color: var(--color-primary);
+  border: var(--border-primary);
 }
 
-.btn--overlay {
-  --overlay-color: var(--color-primary-600);
-  --overlay-color-hover: var(--color-primary-600);
-}
-
-.btn--overlay-danger {
-  --overlay-color: var(--color-red-500);
-  --overlay-color-hover: var(--color-red-600);
-}
-
-.btn--overlay::before,
-.btn--overlay-danger::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-color: var(--color-surface);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: var(--btn-border-radius);
-}
-
-.btn--overlay:hover:not(:disabled)::before,
-.btn--overlay-danger:hover:not(:disabled)::before {
-  opacity: 0;
-  transform: scale(0.8) rotate(45deg);
-}
-
-.btn--overlay::after,
-.btn--overlay-danger::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0;
-  background-color: var(--overlay-color);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: var(--btn-border-radius);
-  transform: scale(1.2) rotate(-45deg);
-}
-
-.btn--overlay:hover:not(:disabled)::after,
-.btn--overlay-danger:hover:not(:disabled)::after {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-}
-
-.btn--overlay:hover:not(:disabled),
-.btn--overlay-danger:hover:not(:disabled) {
+.btn--outlined:hover:not(:disabled) {
+  background: var(--color-primary);
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px var(--color-primary-40);
-  border-color: var(--overlay-color-hover);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn--outlined-danger {
+  background: transparent;
+  color: var(--color-red);
+  border: var(--border-red);
+}
+
+.btn--outlined-danger:hover:not(:disabled) {
+  background: var(--color-red);
+  color: white;
+  border-color: var(--color-red);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }

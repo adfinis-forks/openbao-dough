@@ -89,7 +89,7 @@
 
 .seal-status__icon--sealed {
   background: var(--color-background);
-  color: var(--color-error);
+  color: var(--color-red);
 }
 
 .seal-status__state {
@@ -213,7 +213,7 @@
 
 .health-item--error {
   background: var(--color-background);
-  border-left: 4px solid var(--color-error);
+  border-left: 4px solid var(--color-red);
 }
 
 .health-item:hover {
