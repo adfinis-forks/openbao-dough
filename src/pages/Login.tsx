@@ -31,21 +31,20 @@ export const Login: React.FC = () => {
 
   const authenticateMutation = useAuthenticate();
 
-  // Load saved preferences
-  useEffect(() => {
-    const savedAuth = localStorage.getItem('openbao.lastAuth');
-    const savedNamespace = localStorage.getItem('openbao.lastNamespace');
-
-    if (savedAuth) setSelected(savedAuth);
-    if (savedNamespace) setNamespace(savedNamespace);
-  }, []);
-
   // Set default auth method when loaded
   useEffect(() => {
-    if (!selected && options.length > 0 && !loading) {
+    if (options.length === 0 || loading) return;
+
+    const savedAuth = localStorage.getItem('openbao.lastAuth');
+
+    // If we have a saved auth method and it exists in options, use it
+    if (savedAuth && options.some(opt => opt.value === savedAuth)) {
+      setSelected(savedAuth);
+    } else if (!selected) {
+      // Otherwise, use the first option (token)
       setSelected(options[0].value);
     }
-  }, [options, loading, selected]);
+  }, [options, loading]);
 
   const selectedMeta = useMemo(() => {
     if (!selected) return null;
@@ -87,9 +86,8 @@ export const Login: React.FC = () => {
     if (!selectedMeta) return;
 
     try {
-      // Save preferences
+      // Save last used auth method
       localStorage.setItem('openbao.lastAuth', selected);
-      localStorage.setItem('openbao.lastNamespace', namespace || '/');
 
       await authenticateMutation.mutateAsync({
         method: selectedMeta.type,

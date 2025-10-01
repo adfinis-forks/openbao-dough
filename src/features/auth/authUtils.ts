@@ -6,7 +6,7 @@ export const ALLOWED_AUTH_TYPES: AuthMethodType[] = [
   'ldap',
   'jwt',
   'oidc',
-  'approle',
+  'radius',
 ];
 
 export const formatAuthMethodPath = (type: string, path: string): string =>

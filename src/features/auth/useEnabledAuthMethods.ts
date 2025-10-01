@@ -12,22 +12,37 @@ export interface EnabledAuth {
   description?: string;
 }
 
-// Default mock data for development
-const DEFAULT_AUTH_METHODS: EnabledAuth[] = [
-  {
-    path: 'userpass/',
-    type: 'userpass',
-    description: 'Username and password authentication',
-  },
+// Static auth methods that are always available on login page
+const STATIC_AUTH_METHODS: EnabledAuth[] = [
   {
     path: 'token/',
     type: 'token',
     description: 'Direct token authentication',
   },
   {
+    path: 'userpass/',
+    type: 'userpass',
+    description: 'Username and password authentication',
+  },
+  {
     path: 'ldap/',
     type: 'ldap',
     description: 'LDAP directory authentication',
+  },
+  {
+    path: 'jwt/',
+    type: 'jwt',
+    description: 'JWT authentication',
+  },
+  {
+    path: 'oidc/',
+    type: 'oidc',
+    description: 'OpenID Connect single sign-on',
+  },
+  {
+    path: 'radius/',
+    type: 'radius',
+    description: 'RADIUS server authentication',
   },
 ];
 
@@ -48,18 +63,24 @@ export function useEnabledAuthMethods() {
   });
 
   const enabled = useMemo(() => {
-    // If not authenticated or no data, use defaults
-    if (!isAuthenticated || !list || typeof list !== 'object') {
-      return DEFAULT_AUTH_METHODS;
+    // If not authenticated (on login page), always return static auth methods
+    if (!isAuthenticated) {
+      return STATIC_AUTH_METHODS;
     }
 
-    return Object.entries(list as any)
-      .filter(([, info]) => info && typeof info === 'object')
-      .map(([path, info]: [string, any]) => ({
-        path,
-        type: info.type as AuthMethodType,
-        description: info.description,
-      }));
+    // If authenticated and have list data, use that (for auth management pages)
+    if (list && typeof list === 'object') {
+      return Object.entries(list as any)
+        .filter(([, info]) => info && typeof info === 'object')
+        .map(([path, info]: [string, any]) => ({
+          path,
+          type: info.type as AuthMethodType,
+          description: info.description,
+        }));
+    }
+
+    // Fallback to static methods
+    return STATIC_AUTH_METHODS;
   }, [isAuthenticated, list]);
 
   const options = useMemo(() => {
