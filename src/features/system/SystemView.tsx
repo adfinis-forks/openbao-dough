@@ -9,10 +9,10 @@ import {
   Edit,
   Lock,
   MoreHorizontal,
-  RefreshCw,
   Server,
   Unlock,
 } from '@common/Icons';
+import RefreshIcon from '@public/refresh-outline.svg?react';
 import type React from 'react';
 import { useState } from 'react';
 import './SystemView.css';
@@ -158,7 +158,7 @@ export const SystemView: React.FC = () => {
         </div>
         <Button
           variant="primary"
-          icon={<RefreshCw size={16} />}
+          icon={<RefreshIcon width={20} height={20} />}
           onClick={refreshHealth}
         >
           Refresh Status
@@ -269,7 +269,7 @@ export const SystemView: React.FC = () => {
             <Server size={20} />
             System Health
             <Button variant="ghost" size="small" onClick={refreshHealth}>
-              <RefreshCw size={16} />
+              <RefreshIcon width={16} height={16} />
             </Button>
           </CardTitle>
         </CardHeader>
