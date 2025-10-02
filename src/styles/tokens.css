@@ -89,6 +89,7 @@
   --transition-fast: 150ms ease-in-out;
   --transition-base: 300ms ease-in-out;
   --transition-slow: 450ms ease-in-out;
+  --transition-very-slow: 600ms ease-in-out;
 
   /* Button Specific Variables */
   --btn-border-radius: 2rem;

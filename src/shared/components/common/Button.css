@@ -271,31 +271,124 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Outlined variants */
-.btn--outlined {
+/* Outlined variants - Base styles with CSS variables for theming */
+.btn--outlined,
+.btn--outlined-danger {
   background: transparent;
-  color: var(--color-primary);
-  border: var(--border-primary);
+  color: var(--btn-outlined-color);
+  border: var(--btn-outlined-border);
+  position: relative;
 }
 
-.btn--outlined:hover:not(:disabled) {
-  background: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
+.btn--outlined::after,
+.btn--outlined-danger::after {
+  --slice-0: inset(50% 50% 50% 50%);
+  --slice-1: inset(80% -6px 0 0);
+  --slice-2: inset(50% -6px 30% 0);
+  --slice-3: inset(10% -6px 85% 0);
+  --slice-4: inset(40% -6px 43% 0);
+  --slice-5: inset(80% -6px 5% 0);
+
+  content: attr(data-text);
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--btn-outlined-bg-hover);
+  color: var(--color-text-light);
+  text-shadow:
+    -2px -2px 0px var(--btn-outlined-shadow-light),
+    2px 2px 0px var(--btn-outlined-shadow-dark);
+  clip-path: var(--slice-0);
+  line-height: inherit;
+  padding: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--btn-border-radius);
+}
+
+.btn--outlined:hover:not(:disabled),
+.btn--outlined-danger:hover:not(:disabled) {
+  background: var(--btn-outlined-bg-hover);
+  color: var(--color-text-light);
+  border-color: var(--btn-outlined-border-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+  transition: var(--transition-very-slow);
+}
+
+.btn--outlined:hover:not(:disabled)::after,
+.btn--outlined-danger:hover:not(:disabled)::after {
+  animation: 1s glitch-effect;
+  animation-timing-function: steps(2, end);
+}
+
+/* Color variants - Only override the color variables */
+.btn--outlined {
+  --btn-outlined-color: var(--color-primary);
+  --btn-outlined-border: var(--border-primary);
+  --btn-outlined-bg-hover: var(--color-primary);
+  --btn-outlined-border-hover: var(--color-primary);
+  --btn-outlined-shadow-light: var(--color-secondary);
+  --btn-outlined-shadow-dark: var(--color-primary-300);
 }
 
 .btn--outlined-danger {
-  background: transparent;
-  color: var(--color-red);
-  border: var(--border-red);
+  --btn-outlined-color: var(--color-red);
+  --btn-outlined-border: var(--border-red);
+  --btn-outlined-bg-hover: var(--color-red);
+  --btn-outlined-border-hover: var(--color-red);
+  --btn-outlined-shadow-light: var(--color-red-300);
+  --btn-outlined-shadow-dark: var(--color-red-600);
 }
 
-.btn--outlined-danger:hover:not(:disabled) {
-  background: var(--color-red);
-  color: white;
-  border-color: var(--color-red);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+/* Glitch effect animation - Shared by all outlined variants */
+@keyframes glitch-effect {
+  0% {
+    clip-path: var(--slice-1);
+    transform: translate(-20px, -10px);
+  }
+  10% {
+    clip-path: var(--slice-3);
+    transform: translate(10px, 10px);
+  }
+  20% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 10px);
+  }
+  30% {
+    clip-path: var(--slice-3);
+    transform: translate(0px, 5px);
+  }
+  40% {
+    clip-path: var(--slice-2);
+    transform: translate(-5px, 0px);
+  }
+  50% {
+    clip-path: var(--slice-3);
+    transform: translate(5px, 0px);
+  }
+  60% {
+    clip-path: var(--slice-4);
+    transform: translate(5px, 10px);
+  }
+  70% {
+    clip-path: var(--slice-2);
+    transform: translate(-10px, 10px);
+  }
+  80% {
+    clip-path: var(--slice-5);
+    transform: translate(20px, -10px);
+  }
+  90% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 0px);
+  }
+  100% {
+    clip-path: var(--slice-1);
+    transform: translate(0);
+  }
 }

@@ -8,6 +8,7 @@
   --color-surface: var(--color-white);
   --color-text-primary: var(--color-gray-900);
   --color-text-secondary: var(--color-gray-600);
+  --color-text-light: var(--color-gray-50);
   --color-text-muted: var(--color-gray-500);
   --color-text-blue: var(--color-blue-800);
   --color-border: var(--color-gray-300);
@@ -49,6 +50,7 @@
   --color-text-primary: var(--color-gray-50);
   --color-text-secondary: var(--color-gray-300);
   --color-text-muted: var(--color-gray-400);
+  --color-text-light: var(--color-gray-600);
   --color-text-blue: var(--color-blue-200);
   --color-border: var(--color-gray-600);
   --color-border-hover: var(--color-gray-700);

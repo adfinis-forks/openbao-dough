@@ -67,7 +67,12 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button className={buttonClasses} disabled={disabled || loading} {...props}>
+    <button
+      className={buttonClasses}
+      disabled={disabled || loading}
+      data-text={typeof children === 'string' ? children : ''}
+      {...props}
+    >
       {renderContent()}
     </button>
   );
