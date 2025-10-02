@@ -3,7 +3,7 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 import type React from 'react';
 import { queryClient } from '../shared/api/queryClient';
 import { AuthProvider } from '../shared/hooks/useAuth';
-import { ThemeProvider } from '../shared/theme/ThemeProvider';
+import { ThemeProvider } from '../shared/components/theme/ThemeProvider';
 import { routeTree } from './routeTree.gen';
 import './App.css';
 

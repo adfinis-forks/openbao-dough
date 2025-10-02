@@ -2,7 +2,7 @@ import { Button } from '@common/Button';
 import OpenBaoLogo from '@public/openbao.svg';
 import { Link, useLocation } from '@tanstack/react-router';
 import React from 'react';
-import { ThemeToggle } from '@/shared/theme/ThemeToggle';
+import { ThemeToggle } from '@/shared/components/theme/ThemeToggle';
 import './Sidebar.css';
 
 const menuItems = [

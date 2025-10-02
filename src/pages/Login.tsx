@@ -12,7 +12,7 @@ import {
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
 import { useAuthenticate } from '../shared/hooks/useAuthMethods';
-import { ThemeToggle } from '../shared/theme/ThemeToggle';
+import { ThemeToggle } from '../shared/components/theme/ThemeToggle';
 import './Login.css';
 
 interface FormData {
