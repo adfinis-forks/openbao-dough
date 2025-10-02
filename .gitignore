@@ -18,6 +18,7 @@ dist/
 
 # Claude code
 .claude
+CLAUDE.md
 
 # Tanstack
 .tanstack
