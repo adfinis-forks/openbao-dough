@@ -42,7 +42,6 @@
 .login-logo__img {
   width: 3.5rem;
   height: 3.5rem;
-  filter: drop-shadow(0 4px 6px var(--color-shadow));
 }
 
 .login-logo__text {
@@ -64,16 +63,9 @@
   backdrop-filter: blur(20px);
   border: 1px solid var(--color-border);
   border-radius: 1.25rem;
-  box-shadow:
-    0 20px 25px -5px var(--color-shadow),
-    0 10px 10px -5px var(--color-shadow);
+  box-shadow: none;
 }
 
-[data-theme="dark"] .login-card {
-  box-shadow:
-    0 20px 25px -5px var(--color-shadow),
-    0 10px 10px -5px var(--color-shadow);
-}
 
 .login-card .card-header {
   border-bottom: 1px solid var(--color-border);

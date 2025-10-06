@@ -24,6 +24,7 @@
   --color-secondary-light: var(--color-secondary-50);
 
   --color-red: var(--color-red-500);
+  --color-blue: var(--color-blue-500);
 
   /* Focus & Selection */
   --color-focus: var(--color-primary-500);
@@ -33,13 +34,19 @@
   --color-overlay: #00000080;
 
   /* Shadow color */
-  --color-shadow: #0000001a;
+  --color-shadow: rgba(0, 0, 0, 0.15);
 
   /* Borders */
   --border-primary: 2px solid var(--color-primary);
   --border-secondary: 2px solid var(--color-secondary);
   --border-red: 2px solid var(--color-red);
   --border-active: 1px solid var(--color-border-active);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 var(--color-shadow);
+  --shadow-md: 0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
+  --shadow-lg: 0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
+  --shadow-xl: 0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
 }
 
 /* Dark Theme */
@@ -54,7 +61,7 @@
   --color-text-blue: var(--color-blue-200);
   --color-border: var(--color-gray-600);
   --color-border-hover: var(--color-gray-700);
-   --color-border-active: var(--color-gray-300);
+  --color-border-active: var(--color-gray-300);
 
   /* Interactive Colors */
   --color-primary: var(--color-primary-300);
@@ -65,22 +72,14 @@
   --color-secondary-light: var(--color-secondary-900);
 
   --color-red: var(--color-red-400);
+  --color-blue: var(--color-blue-300);
 
   /* Focus & Selection */
   --color-focus: var(--color-primary-400);
   --color-selection: var(--color-primary-800);
 
-  /* Dark theme opacity color overrides */
-  --color-surface-10: var(--color-dark-surface-10);
-
-  /* Shadows for dark theme */
-  --shadow-sm: 0 1px 2px 0 var(--color-shadow);
-  --shadow-md:
-    0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
-  --shadow-lg:
-    0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
-  --shadow-xl:
-    0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
+  /* Shadow color */
+  --color-shadow: rgba(255, 255, 255, 0.1);
 }
 
 /* Theme transition animations */

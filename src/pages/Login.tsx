@@ -3,16 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@common/Card';
 import { ChevronDown, ChevronUp, Eye, EyeOff, Globe } from '@common/Icons';
 import { Input } from '@common/Input';
 import { Select } from '@common/Select';
+import OpenBaoLogo from '@public/openbao.svg?react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import OpenBaoLogo from '../../public/openbao.svg?react';
 import {
   type AuthMethodType,
   KNOWN_AUTH_METHODS,
 } from '../features/auth/authMethods';
 import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
-import { useAuthenticate } from '../shared/hooks/useAuthMethods';
+import { useNotifications } from '../shared/components/common/Notification';
 import { ThemeToggle } from '../shared/components/theme/ThemeToggle';
+import { useAuthenticate } from '../shared/hooks/useAuthMethods';
 import './Login.css';
 
 interface FormData {
@@ -27,8 +28,8 @@ export const Login: React.FC = () => {
   const [namespace, setNamespace] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [mountPath, setMountPath] = useState<string>('');
-  const [authError, setAuthError] = useState<string>('');
 
+  const { addNotification } = useNotifications();
   const authenticateMutation = useAuthenticate();
 
   // Set default auth method when loaded
@@ -38,7 +39,7 @@ export const Login: React.FC = () => {
     const savedAuth = localStorage.getItem('openbao.lastAuth');
 
     // If we have a saved auth method and it exists in options, use it
-    if (savedAuth && options.some(opt => opt.value === savedAuth)) {
+    if (savedAuth && options.some((opt) => opt.value === savedAuth)) {
       setSelected(savedAuth);
     } else if (!selected) {
       // Otherwise, use the first option (token)
@@ -81,7 +82,6 @@ export const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAuthError('');
 
     if (!selectedMeta) return;
 
@@ -95,10 +95,21 @@ export const Login: React.FC = () => {
         namespace: namespace || undefined,
         mountPath: mountPath || undefined,
       });
+
+      addNotification({
+        type: 'success',
+        title: 'Authentication successful',
+        message: 'You have been successfully signed in',
+      });
     } catch (error) {
-      setAuthError(
-        error instanceof Error ? error.message : 'Authentication failed',
-      );
+      addNotification({
+        type: 'error',
+        title: 'Authentication failed',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Please check your credentials and try again',
+      });
     }
   };
 
@@ -259,24 +270,6 @@ export const Login: React.FC = () => {
                       </div>
                     </div>
                   )}
-                </div>
-              )}
-
-              {/* Authentication Error */}
-              {authError && (
-                <div
-                  className="auth-error"
-                  style={{
-                    padding: '12px',
-                    backgroundColor: 'var(--color-danger-50)',
-                    border: '1px solid var(--color-danger-200)',
-                    borderRadius: '6px',
-                    color: 'var(--color-danger-700)',
-                    fontSize: '14px',
-                    marginBottom: '16px',
-                  }}
-                >
-                  {authError}
                 </div>
               )}
 

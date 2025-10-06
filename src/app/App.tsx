@@ -4,6 +4,7 @@ import type React from 'react';
 import { queryClient } from '../shared/api/queryClient';
 import { AuthProvider } from '../shared/hooks/useAuth';
 import { ThemeProvider } from '../shared/components/theme/ThemeProvider';
+import { NotificationProvider } from '../shared/components/common/Notification';
 import { routeTree } from './routeTree.gen';
 import './App.css';
 
@@ -25,7 +26,9 @@ export const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ThemeProvider>
-          <RouterProvider router={router} />
+          <NotificationProvider>
+            <RouterProvider router={router} />
+          </NotificationProvider>
         </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>

@@ -51,6 +51,8 @@
   --color-blue-50: #eff6ff;
   --color-blue-100: #dbeafe;
   --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
   --color-blue-500: #3b82f6;
   --color-blue-600: #2563eb;
   --color-blue-700: #1d4ed8;
@@ -59,7 +61,6 @@
   --color-purple-50: #faf5ff;
   --color-purple-100: #f3e8ff;
   --color-purple-800: #6b21a8;
-
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -75,15 +76,6 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 var(--color-shadow);
-  --shadow-md:
-    0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
-  --shadow-lg:
-    0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
-  --shadow-xl:
-    0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
 
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
