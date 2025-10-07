@@ -8,8 +8,11 @@
   justify-content: center;
   color: var(--color-secondary);
   transition: all var(--transition-base);
+  width: 2.5rem;
+  height: 2.5rem;
   min-width: 2.5rem;
   min-height: 2.5rem;
+  flex-shrink: 0;
   position: relative;
 }
 
