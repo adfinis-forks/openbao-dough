@@ -107,6 +107,13 @@ a {
   font-family: var(--font-family-title);
 }
 
+.text-caption {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+}
+
 .gradient-bg {
   background: linear-gradient(
     135deg,

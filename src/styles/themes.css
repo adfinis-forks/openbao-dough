@@ -15,16 +15,21 @@
   --color-border-hover: var(--color-gray-400);
   --color-border-active: var(--color-gray-400);
 
-  /* Interactive Colors */
+  /* Primary Colors */
   --color-primary: var(--color-primary-600);
   --color-primary-hover: var(--color-primary-600);
   --color-primary-light: var(--color-primary-50);
+  --color-primary-bg-border: var(--color-primary-100);
+
+  /* Secondary Colors */
   --color-secondary: var(--color-secondary-500);
   --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-light: var(--color-secondary-50);
 
   --color-red: var(--color-red-500);
   --color-blue: var(--color-blue-500);
+  --color-blue-bg-border: var(--color-blue-100);
+  --color-blue-bg-border--hover: var(--color-blue-200);
 
   /* Focus & Selection */
   --color-focus: var(--color-primary-500);
@@ -44,9 +49,12 @@
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 var(--color-shadow);
-  --shadow-md: 0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
-  --shadow-lg: 0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
-  --shadow-xl: 0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
+  --shadow-md:
+    0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
+  --shadow-lg:
+    0 10px 15px -3px var(--color-shadow), 0 4px 6px -4px var(--color-shadow);
+  --shadow-xl:
+    0 20px 25px -5px var(--color-shadow), 0 8px 10px -6px var(--color-shadow);
 }
 
 /* Dark Theme */
@@ -63,16 +71,21 @@
   --color-border-hover: var(--color-gray-700);
   --color-border-active: var(--color-gray-300);
 
-  /* Interactive Colors */
+  /* Primary Colors */
   --color-primary: var(--color-primary-300);
   --color-primary-hover: var(--color-primary-600);
   --color-primary-light: var(--color-primary-300);
+  --color-primary-bg-border: var(--color-primary-900);
+
+  /* Secondary Colors */
   --color-secondary: var(--color-secondary-200);
   --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-light: var(--color-secondary-900);
 
   --color-red: var(--color-red-400);
   --color-blue: var(--color-blue-300);
+  --color-blue-bg-border: var(--color-blue-800);
+  --color-blue-bg-border--hover: var(--color-blue-700);
 
   /* Focus & Selection */
   --color-focus: var(--color-primary-400);
@@ -107,4 +120,28 @@ select:-webkit-autofill:active {
   -webkit-text-fill-color: var(--color-text-primary) !important;
   box-shadow: inset 0 0 0 1000px var(--color-surface) !important;
   caret-color: var(--color-text-primary);
+}
+
+/* Custom scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-background);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
 }
