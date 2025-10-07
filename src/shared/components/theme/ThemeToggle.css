@@ -8,13 +8,9 @@
   justify-content: center;
   color: var(--color-secondary);
   transition: all var(--transition-base);
-  min-width: 3rem;
-  min-height: 3rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
   position: relative;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.15);
 }
 
 .theme-toggle__icon-wrapper {
@@ -28,23 +24,24 @@
   transition: var(--transition-slow);
 }
 
-/* Icon states for smooth transitions */
-.theme-toggle__icon--sun {
-  opacity: 1;
-}
-
-.theme-toggle__icon--moon {
-  opacity: 0;
-  transform: rotate(-180deg) scale(0.5);
-}
-
-/* Dark mode - show sun, hide moon */
-[data-theme="dark"] .theme-toggle__icon--sun {
-  opacity: 0;
-  transform: rotate(-180deg) scale(0.5);
-}
-
-[data-theme="dark"] .theme-toggle__icon--moon {
+/* Visible icon state */
+.theme-toggle__icon--visible {
   opacity: 1;
   transform: rotate(0deg) scale(1);
+}
+
+/* Hidden icon state */
+.theme-toggle__icon--hidden {
+  opacity: 0;
+  transform: rotate(-180deg) scale(0.5);
+}
+
+/* Hover effect on visible icon */
+.theme-toggle:hover .theme-toggle__icon--visible {
+  transform: rotate(0deg) scale(1.15);
+}
+
+/* Hover effect on hidden icon */
+.theme-toggle:hover .theme-toggle__icon--hidden {
+  transform: rotate(-180deg) scale(0.6);
 }
