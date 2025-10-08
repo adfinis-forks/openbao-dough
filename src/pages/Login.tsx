@@ -1,8 +1,9 @@
 import { Button } from '@common/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@common/Card';
-import { ChevronDown, ChevronUp, Eye, EyeOff, Globe } from '@common/Icons';
+import { ChevronDown, ChevronUp, Eye, EyeOff } from '@common/Icons';
 import { Input } from '@common/Input';
 import { Select } from '@common/Select';
+import FileTrayStackedOutlineIcon from '@public/file-tray-stacked-outline.svg?react';
 import OpenBaoLogo from '@public/openbao.svg?react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
@@ -151,7 +152,11 @@ export const Login: React.FC = () => {
               {/* Namespace Field - Improved Design */}
               <div className="namespace-field">
                 <div className="namespace-field__header">
-                  <Globe size={16} className="namespace-field__icon" />
+                  <FileTrayStackedOutlineIcon
+                    width="16"
+                    height="16"
+                    className="namespace-field__icon"
+                  />
                   <span className="namespace-field__label">Namespace</span>
                   <span className="namespace-field__badge">Optional</span>
                 </div>
