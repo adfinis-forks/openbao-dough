@@ -1,7 +1,11 @@
 import { Button } from '@common/Button';
-import OpenBaoLogo from '@public/openbao.svg';
+import FileTrayStackedOutlineIcon from '@public/file-tray-stacked-outline.svg?react';
+import MenuIcon from '@public/menu.svg?react';
+import OpenBaoLogo from '@public/openbao.svg?react';
+import PersonOutlineIcon from '@public/person-outline.svg?react';
+import TerminalOutlineIcon from '@public/terminal-outline.svg?react';
 import { Link, useLocation } from '@tanstack/react-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/shared/components/theme/ThemeToggle';
 import './Sidebar.css';
 
@@ -14,60 +18,146 @@ const menuItems = [
   { path: '/system', label: 'System', icon: '/settings-outline.svg' },
 ];
 
-const SidebarComponent: React.FC = () => {
+function SidebarComponent() {
   const location = useLocation();
-  const currentPath = location.pathname;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
-    <div className="sidebar">
-      <div className="sidebar__header">
-        <div className="sidebar__logo">
-          <img
-            src={OpenBaoLogo}
-            alt="OpenBao Logo"
-            className="sidebar__logo-icon"
-          />
-          <div className="sidebar__brand">
-            <h2 className="sidebar__title">OpenBao</h2>
-            <p className="sidebar__version">v2.3.1</p>
+    <>
+      {/* Mobile Utility Bar - separate from sidebar */}
+      <div className="sidebar__utility-mobile">
+        <button
+          type="button"
+          className="sidebar__menu-toggle"
+          onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
+        >
+          <MenuIcon />
+        </button>
+        <ThemeToggle className="sidebar__utility-theme-toggle" />
+        <div className="sidebar__utility-actions">
+          <button
+            type="button"
+            className="sidebar__utility-btn"
+            aria-label="User settings"
+          >
+            <PersonOutlineIcon />
+          </button>
+          <button
+            type="button"
+            className="sidebar__utility-btn"
+            aria-label="Terminal"
+          >
+            <TerminalOutlineIcon />
+          </button>
+        </div>
+      </div>
+
+      {/* Sidebar - overlay on mobile */}
+      <div
+        className={`sidebar ${isMobileMenuOpen ? 'sidebar--mobile-open' : ''}`}
+      >
+        {/* Utility Bar */}
+        <div className="sidebar__utility">
+          <button
+            type="button"
+            className="sidebar__menu-toggle sidebar__utility-close"
+            onClick={toggleMobileMenu}
+            aria-label="Close menu"
+          >
+            <MenuIcon />
+          </button>
+          <ThemeToggle className="sidebar__utility-theme-toggle" />
+          <div className="sidebar__utility-actions">
+            <button
+              type="button"
+              className="sidebar__utility-btn"
+              aria-label="User settings"
+            >
+              <PersonOutlineIcon />
+            </button>
+            <button
+              type="button"
+              className="sidebar__utility-btn"
+              aria-label="Terminal"
+            >
+              <TerminalOutlineIcon />
+            </button>
+          </div>
+        </div>
+
+        {/* Header with Logo */}
+        <div className="sidebar__header">
+          <div className="sidebar__logo">
+            <OpenBaoLogo className="sidebar__logo-icon" />
+            <div className="sidebar__brand">
+              <h3 className="sidebar__title">OpenBao</h3>
+              <p className="text-caption">v2.3.1</p>
+            </div>
+          </div>
+        </div>
+
+        <nav className="sidebar__nav">
+          <div className="sidebar__menu">
+            {menuItems.map((item) => {
+              const isActive =
+                location.pathname === item.path ||
+                (location.pathname === '/' && item.path === '/dashboard');
+              return (
+                <Link key={item.path} to={item.path}>
+                  <Button
+                    variant="menu-item"
+                    size="medium"
+                    active={isActive}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    icon={
+                      <img
+                        src={item.icon}
+                        alt={item.label}
+                        width={18}
+                        height={18}
+                      />
+                    }
+                  >
+                    {item.label}
+                  </Button>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Footer with Namespace */}
+        <div className="sidebar__footer">
+          <div className="sidebar__namespace">
+            <div className="sidebar__namespace-label">
+              <FileTrayStackedOutlineIcon />
+              <span>namespace</span>
+            </div>
+            <p className="sidebar__namespace-value">/ (root)</p>
           </div>
         </div>
       </div>
-
-      <nav className="sidebar__nav">
-        <div className="sidebar__menu">
-          {menuItems.map((item) => {
-            const isActive =
-              currentPath === item.path ||
-              (currentPath === '/' && item.path === '/dashboard');
-            return (
-              <Link key={item.path} to={item.path}>
-                <Button
-                  variant="menu-item"
-                  size="medium"
-                  active={isActive}
-                  icon={
-                    <img
-                      src={item.icon}
-                      alt={item.label}
-                      width={18}
-                      height={18}
-                    />
-                  }
-                >
-                  {item.label}
-                </Button>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-
-      <div className="sidebar__footer">
-        <ThemeToggle className="sidebar__theme-toggle" />
-      </div>
-    </div>
+    </>
   );
-};
+}
 
 export const Sidebar = React.memo(SidebarComponent);
