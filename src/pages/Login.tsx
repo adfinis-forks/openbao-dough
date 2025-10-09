@@ -7,11 +7,8 @@ import FileTrayStackedOutlineIcon from '@public/file-tray-stacked-outline.svg?re
 import OpenBaoLogo from '@public/openbao.svg?react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  type AuthMethodType,
-  KNOWN_AUTH_METHODS,
-} from '../features/auth/authMethods';
-import { useEnabledAuthMethods } from '../features/auth/useEnabledAuthMethods';
+import type { AuthMethodType } from '../features/auth/authMethods';
+import { SUPPORTED_AUTH_BACKENDS } from '../features/auth/authMethods';
 import { useNotifications } from '../shared/components/common/Notification';
 import { ThemeToggle } from '../shared/components/theme/ThemeToggle';
 import { useAuthenticate } from '../shared/hooks/useAuthMethods';
@@ -21,9 +18,8 @@ interface FormData {
   [key: string]: string;
 }
 
-export const Login: React.FC = () => {
-  const { options, loading } = useEnabledAuthMethods();
-  const [selected, setSelected] = useState<string>('');
+export function Login() {
+  const [selected, setSelected] = useState<AuthMethodType>('token');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({});
   const [namespace, setNamespace] = useState<string>('');
@@ -33,48 +29,24 @@ export const Login: React.FC = () => {
   const { addNotification } = useNotifications();
   const authenticateMutation = useAuthenticate();
 
-  // Set default auth method when loaded
+  // Set default auth method from localStorage
   useEffect(() => {
-    if (options.length === 0 || loading) return;
-
-    const savedAuth = localStorage.getItem('openbao.lastAuth');
-
-    // If we have a saved auth method and it exists in options, use it
-    if (savedAuth && options.some((opt) => opt.value === savedAuth)) {
+    const savedAuth = localStorage.getItem('openbao.lastAuth') as AuthMethodType;
+    if (savedAuth && SUPPORTED_AUTH_BACKENDS.some((b) => b.type === savedAuth)) {
       setSelected(savedAuth);
-    } else if (!selected) {
-      // Otherwise, use the first option (token)
-      setSelected(options[0].value);
     }
-  }, [options, loading]);
+  }, []);
 
-  const selectedMeta = useMemo(() => {
-    if (!selected) return null;
-    const [type, path] = selected.split(':');
-    const option = options.find((o) => o.value === selected);
-    const meta = KNOWN_AUTH_METHODS[type as AuthMethodType];
-
-    return {
-      type: type as AuthMethodType,
-      path,
-      label: option?.label || meta?.label,
-      description: option?.description || meta?.description,
-      meta,
-      isExternal: meta?.external || false,
-    };
-  }, [selected, options]);
+  const selectedAuthMethod = SUPPORTED_AUTH_BACKENDS.find((b) => b.type === selected)!;
 
   // Update mount path when auth method changes
   useEffect(() => {
-    if (!selectedMeta) return;
-
-    if (selectedMeta.type !== 'token') {
-      const discoveredPath = (selectedMeta.path || '').replace(/\/$/, '');
-      setMountPath(discoveredPath || selectedMeta.type);
+    if (selected && selected !== 'token') {
+      setMountPath(selected);
     } else {
       setMountPath('');
     }
-  }, [selectedMeta]);
+  }, [selected]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -84,14 +56,12 @@ export const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedMeta) return;
-
     try {
       // Save last used auth method
       localStorage.setItem('openbao.lastAuth', selected);
 
       await authenticateMutation.mutateAsync({
-        method: selectedMeta.type,
+        method: selected,
         credentials: formData,
         namespace: namespace || undefined,
         mountPath: mountPath || undefined,
@@ -114,20 +84,16 @@ export const Login: React.FC = () => {
     }
   };
 
-  const fields = useMemo(() => {
-    if (!selectedMeta?.meta) return [];
-    return selectedMeta.meta.fields || [];
-  }, [selectedMeta]);
+  const fields = selectedAuthMethod.fields || [];
 
   const isFormValid = useMemo(() => {
-    if (!selectedMeta) return false;
-    if (selectedMeta.isExternal) return true;
+    if (selectedAuthMethod.external) return true;
 
     return fields.every((field) => {
       const value = formData[field.name];
       return value && value.trim().length > 0;
     });
-  }, [selectedMeta, fields, formData]);
+  }, [selectedAuthMethod, fields, formData]);
 
   return (
     <div className="login-page">
@@ -178,16 +144,21 @@ export const Login: React.FC = () => {
               <div className="auth-method-field">
                 <label className="field-label">Authentication Method</label>
                 <Select
-                  options={options}
+                  options={SUPPORTED_AUTH_BACKENDS.map((backend) => ({
+                    value: backend.type,
+                    label: backend.label,
+                    description: backend.description,
+                    icon: backend.icon,
+                  }))}
                   value={selected}
                   onChange={setSelected}
-                  placeholder={loading ? 'Loading...' : 'Select method'}
+                  placeholder="Select method"
                   fullWidth
                   searchable={false}
                   ariaLabel="Authentication method"
                 />
-                {selectedMeta?.description && (
-                  <p className="field-help">{selectedMeta.description}</p>
+                {selectedAuthMethod.description && (
+                  <p className="field-help">{selectedAuthMethod.description}</p>
                 )}
               </div>
 
@@ -233,7 +204,7 @@ export const Login: React.FC = () => {
               })}
 
               {/* External Auth Info */}
-              {selectedMeta?.isExternal && (
+              {selectedAuthMethod.external && (
                 <div className="external-auth-info">
                   <span className="external-auth-info__icon">🔗</span>
                   <span>You'll be redirected to complete authentication</span>
@@ -241,7 +212,7 @@ export const Login: React.FC = () => {
               )}
 
               {/* Advanced Options */}
-              {selectedMeta && selectedMeta.type !== 'token' && (
+              {selected && selected !== 'token' && (
                 <div className="advanced-options">
                   <button
                     type="button"
@@ -264,7 +235,7 @@ export const Login: React.FC = () => {
                         <Input
                           name="mountPath"
                           type="text"
-                          placeholder={selectedMeta.type}
+                          placeholder={selected}
                           value={mountPath}
                           onChange={(e) => setMountPath(e.target.value)}
                           fullWidth
@@ -289,7 +260,7 @@ export const Login: React.FC = () => {
               >
                 {authenticateMutation.isPending
                   ? 'Signing in...'
-                  : selectedMeta?.isExternal
+                  : selectedAuthMethod.external
                     ? 'Continue with Provider'
                     : 'Sign In'}
               </Button>
@@ -311,4 +282,4 @@ export const Login: React.FC = () => {
       </div>
     </div>
   );
-};
+}

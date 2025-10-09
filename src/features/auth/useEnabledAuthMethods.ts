@@ -3,8 +3,7 @@ import { useMemo } from 'react';
 import { authListEnabledMethodsOptions } from '@/shared/client/@tanstack/react-query.gen';
 import { useAuth } from '../../shared/hooks/useAuth';
 import type { AuthMethodType } from './authMethods';
-import { KNOWN_AUTH_METHODS } from './authMethods';
-import { ALLOWED_AUTH_TYPES, formatAuthMethodPath } from './authUtils';
+import { SUPPORTED_AUTH_BACKENDS } from './authMethods';
 
 export interface EnabledAuth {
   path: string;
@@ -12,42 +11,12 @@ export interface EnabledAuth {
   description?: string;
 }
 
-// Static auth methods that are always available on login page
-const STATIC_AUTH_METHODS: EnabledAuth[] = [
-  {
-    path: 'token/',
-    type: 'token',
-    description: 'Direct token authentication',
-  },
-  {
-    path: 'userpass/',
-    type: 'userpass',
-    description: 'Username and password authentication',
-  },
-  {
-    path: 'ldap/',
-    type: 'ldap',
-    description: 'LDAP directory authentication',
-  },
-  {
-    path: 'jwt/',
-    type: 'jwt',
-    description: 'JWT authentication',
-  },
-  {
-    path: 'oidc/',
-    type: 'oidc',
-    description: 'OpenID Connect single sign-on',
-  },
-  {
-    path: 'radius/',
-    type: 'radius',
-    description: 'RADIUS server authentication',
-  },
-];
-
+/**
+ * Hook to get enabled authentication methods from the server
+ * Used in authenticated pages (like /auth route) to display configured auth methods
+ */
 export function useEnabledAuthMethods() {
-  const { isAuthenticated, getAuthenticatedClient } = useAuth();
+  const { getAuthenticatedClient } = useAuth();
   const client = getAuthenticatedClient();
 
   const {
@@ -58,45 +27,37 @@ export function useEnabledAuthMethods() {
     ...authListEnabledMethodsOptions({
       client: client ?? undefined,
     }),
-    enabled: isAuthenticated && !!client,
+    enabled: !!client,
     retry: false,
   });
 
   const enabled = useMemo(() => {
-    // If not authenticated (on login page), always return static auth methods
-    if (!isAuthenticated) {
-      return STATIC_AUTH_METHODS;
+    if (!list || typeof list !== 'object') {
+      return [];
     }
 
-    // If authenticated and have list data, use that (for auth management pages)
-    if (list && typeof list === 'object') {
-      return Object.entries(list as any)
-        .filter(([, info]) => info && typeof info === 'object')
-        .map(([path, info]: [string, any]) => ({
-          path,
-          type: info.type as AuthMethodType,
-          description: info.description,
-        }));
-    }
-
-    // Fallback to static methods
-    return STATIC_AUTH_METHODS;
-  }, [isAuthenticated, list]);
+    return Object.entries(list as any)
+      .filter(([, info]) => info && typeof info === 'object')
+      .map(([path, info]: [string, any]) => ({
+        path,
+        type: info.type as AuthMethodType,
+        description: info.description,
+      }));
+  }, [list]);
 
   const options = useMemo(() => {
     return enabled
       .filter((method): method is EnabledAuth => {
-        const meta = KNOWN_AUTH_METHODS[method.type];
-        return Boolean(meta && ALLOWED_AUTH_TYPES.includes(method.type));
+        return SUPPORTED_AUTH_BACKENDS.some((b) => b.type === method.type);
       })
       .map((method) => {
-        const meta = KNOWN_AUTH_METHODS[method.type]!;
+        const backend = SUPPORTED_AUTH_BACKENDS.find((b) => b.type === method.type)!;
         return {
-          value: formatAuthMethodPath(method.type, method.path),
-          label: meta.label,
-          description: method.description || meta.description,
-          icon: meta.icon,
-          meta,
+          value: `${method.type}:${method.path}`,
+          label: backend.label,
+          description: method.description || backend.description,
+          icon: backend.icon,
+          backend,
           raw: method,
         };
       });

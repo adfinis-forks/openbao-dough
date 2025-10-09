@@ -4,7 +4,7 @@ import { Card, CardContent } from '@common/Card';
 import { Dropdown, DropdownMenuItem } from '@common/Dropdown';
 import { Lock, MoreHorizontal, Unlock } from '@common/Icons';
 import type React from 'react';
-import { KNOWN_AUTH_METHODS } from './authMethods';
+import { SUPPORTED_AUTH_BACKENDS } from './authMethods';
 
 interface AuthMethod {
   id: string;
@@ -25,8 +25,7 @@ export const AuthMethodCard: React.FC<AuthMethodCardProps> = ({
   method,
   onToggle,
 }) => {
-  const authMeta =
-    KNOWN_AUTH_METHODS[method.type as keyof typeof KNOWN_AUTH_METHODS];
+  const authMeta = SUPPORTED_AUTH_BACKENDS.find((b) => b.type === method.type);
   const icon = authMeta?.icon || '🔐';
 
   return (
