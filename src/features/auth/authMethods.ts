@@ -39,7 +39,12 @@ export const SUPPORTED_AUTH_BACKENDS: AuthMethod[] = [
     icon: '🔑',
     formAttributes: ['token'],
     fields: [
-      { name: 'token', label: 'Token', type: 'password', placeholder: 's.token' },
+      {
+        name: 'token',
+        label: 'Token',
+        type: 'password',
+        placeholder: 's.token',
+      },
     ],
   },
   {
@@ -49,8 +54,18 @@ export const SUPPORTED_AUTH_BACKENDS: AuthMethod[] = [
     icon: '👤',
     formAttributes: ['username', 'password'],
     fields: [
-      { name: 'username', label: 'Username', type: 'text', placeholder: 'jane.doe' },
-      { name: 'password', label: 'Password', type: 'password', placeholder: '••••••••' },
+      {
+        name: 'username',
+        label: 'Username',
+        type: 'text',
+        placeholder: 'jane.doe',
+      },
+      {
+        name: 'password',
+        label: 'Password',
+        type: 'password',
+        placeholder: '••••••••',
+      },
     ],
   },
   {
@@ -60,8 +75,18 @@ export const SUPPORTED_AUTH_BACKENDS: AuthMethod[] = [
     icon: '📇',
     formAttributes: ['username', 'password'],
     fields: [
-      { name: 'username', label: 'Username', type: 'text', placeholder: 'jane.doe' },
-      { name: 'password', label: 'Password', type: 'password', placeholder: '••••••••' },
+      {
+        name: 'username',
+        label: 'Username',
+        type: 'text',
+        placeholder: 'jane.doe',
+      },
+      {
+        name: 'password',
+        label: 'Password',
+        type: 'password',
+        placeholder: '••••••••',
+      },
     ],
   },
   {

@@ -1,8 +1,8 @@
 import type React from 'react';
 import { Theme, useTheme } from './ThemeProvider';
 import './ThemeToggle.css';
-import SunOutlineIcon from '@public/sun-outline.svg?react';
 import MoonOutlineIcon from '@public/moon-outline.svg?react';
+import SunOutlineIcon from '@public/sun-outline.svg?react';
 
 interface ThemeToggleProps {
   className?: string;
