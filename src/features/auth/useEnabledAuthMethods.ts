@@ -51,7 +51,9 @@ export function useEnabledAuthMethods() {
         return SUPPORTED_AUTH_BACKENDS.some((b) => b.type === method.type);
       })
       .map((method) => {
-        const backend = SUPPORTED_AUTH_BACKENDS.find((b) => b.type === method.type)!;
+        const backend = SUPPORTED_AUTH_BACKENDS.find(
+          (b) => b.type === method.type,
+        )!;
         return {
           value: `${method.type}:${method.path}`,
           label: backend.label,
