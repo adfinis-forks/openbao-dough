@@ -5,6 +5,7 @@ import { Input } from '@common/Input';
 import { Select } from '@common/Select';
 import FileTrayStackedOutlineIcon from '@public/file-tray-stacked-outline.svg?react';
 import OpenBaoLogo from '@public/openbao.svg?react';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import type { AuthMethodType } from '../features/auth/authMethods';
@@ -19,42 +20,82 @@ interface FormData {
 }
 
 export function Login() {
+  // Get URL search params first
+  const search = useSearch({ from: '/login' });
+  const navigate = useNavigate();
+
+  const authMethodFromUrl = search.with as AuthMethodType | undefined;
+
   const [selected, setSelected] = useState<AuthMethodType>('token');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({});
-  const [namespace, setNamespace] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [mountPath, setMountPath] = useState<string>('');
+
+  // Initialize namespace from URL or fallback to last-used from localStorage
+  const [namespaceInput, setNamespaceInput] = useState(
+    search.namespace || localStorage.getItem('openbao.lastNamespace') || '',
+  );
 
   const { addNotification } = useNotifications();
   const authenticateMutation = useAuthenticate();
 
-  // Set default auth method from localStorage
+  // Set auth method from URL parameter or localStorage
   useEffect(() => {
-    const savedAuth = localStorage.getItem('openbao.lastAuth') as AuthMethodType;
-    if (savedAuth && SUPPORTED_AUTH_BACKENDS.some((b) => b.type === savedAuth)) {
-      setSelected(savedAuth);
-    }
-  }, []);
+    const savedAuth = localStorage.getItem(
+      'openbao.lastAuth',
+    ) as AuthMethodType | null;
+    const initialAuth = authMethodFromUrl || savedAuth || 'token';
 
-  const selectedAuthMethod = SUPPORTED_AUTH_BACKENDS.find((b) => b.type === selected)!;
+    if (SUPPORTED_AUTH_BACKENDS.some((b) => b.type === initialAuth)) {
+      setSelected(initialAuth);
+    }
+  }, [authMethodFromUrl]);
 
   // Update mount path when auth method changes
-  useEffect(() => {
-    if (selected && selected !== 'token') {
-      setMountPath(selected);
-    } else {
-      setMountPath('');
-    }
-  }, [selected]);
+  const mountPath = selected !== 'token' ? selected : '';
+
+  const selectedAuthMethod = useMemo(
+    () =>
+      SUPPORTED_AUTH_BACKENDS.find((b) => b.type === selected) ||
+      SUPPORTED_AUTH_BACKENDS[0],
+    [selected],
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const normalized = namespaceInput.trim().replace(/^\/+|\/+$/g, '');
+
+      // Save last used namespace
+      if (normalized) {
+        localStorage.setItem('openbao.lastNamespace', normalized);
+      } else {
+        localStorage.removeItem('openbao.lastNamespace');
+      }
+
+      // Update URL if changed
+      if (normalized !== search.namespace) {
+        navigate({
+          to: '/login',
+          search: (prev) => ({
+            ...prev,
+            namespace: normalized || undefined,
+          }),
+          replace: true,
+        });
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [namespaceInput, search.namespace, navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const namespace = search.namespace || undefined;
 
     try {
       // Save last used auth method
@@ -63,7 +104,7 @@ export function Login() {
       await authenticateMutation.mutateAsync({
         method: selected,
         credentials: formData,
-        namespace: namespace || undefined,
+        namespace,
         mountPath: mountPath || undefined,
       });
 
@@ -130,10 +171,12 @@ export function Login() {
                   name="namespace"
                   type="text"
                   placeholder="/ (root namespace)"
-                  value={namespace}
-                  onChange={(e) => setNamespace(e.target.value)}
+                  value={namespaceInput}
+                  onChange={(e) => setNamespaceInput(e.target.value)}
                   fullWidth
                   className="namespace-field__input"
+                  autoComplete="off"
+                  spellCheck="false"
                 />
                 <p className="namespace-field__help">
                   Leave empty to use the root namespace
@@ -237,7 +280,6 @@ export function Login() {
                           type="text"
                           placeholder={selected}
                           value={mountPath}
-                          onChange={(e) => setMountPath(e.target.value)}
                           fullWidth
                         />
                         <p className="field-help">
