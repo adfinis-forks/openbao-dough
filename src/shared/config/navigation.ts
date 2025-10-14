@@ -1,5 +1,3 @@
-
-
 const accessSection = {
   label: 'Access',
   icon: '/document-text-outline.svg',
