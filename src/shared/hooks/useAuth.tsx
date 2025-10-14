@@ -15,7 +15,7 @@ import {
   tokenRevokeSelf,
 } from '@/shared/client/sdk.gen';
 import type { TokenLookupResponse } from '@/shared/client/types.gen';
-import { BAO_ADDR } from '@/shared/config';
+import { BAO_ADDR } from '@/shared/config/config';
 
 export interface AuthContextValue {
   token: string | null;

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { createClient } from '@/shared/client/client';
 import { tokenLookUpSelfGet } from '@/shared/client/sdk.gen';
-import { BAO_ADDR } from '@/shared/config';
+import { BAO_ADDR } from '@/shared/config/config';
 import { useAuth } from './useAuth';
 
 interface AuthCredentials {
