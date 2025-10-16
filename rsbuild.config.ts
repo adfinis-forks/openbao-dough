@@ -22,6 +22,7 @@ export default defineConfig({
       '@common': './src/shared/components/common',
       '@layout': './src/shared/components/layout',
       '@public': './public',
+      '@icons': './src/shared/assets/icons',
     },
   },
   html: {
