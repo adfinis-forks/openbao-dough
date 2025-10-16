@@ -5,6 +5,8 @@
  * Import icons using: import { KeyIcon, MenuIcon } from '@/shared/assets/icons';
  */
 
+import type { FC, SVGProps } from 'react';
+
 // Alert & Notifications
 export { default as AlertCircleIcon } from '@public/alert-circle-outline.svg?react';
 export { default as AlertIcon } from '@public/alert-outline.svg?react';
@@ -14,6 +16,7 @@ export { default as NotificationsIcon } from '@public/notifications-outline.svg?
 
 // Navigation & UI
 export { default as AnalyticsIcon } from '@public/analytics-outline.svg?react';
+export { default as ChevronForwardIcon } from '@public/chevron-forward-outline.svg?react';
 export { default as MenuIcon } from '@public/menu.svg?react';
 export { default as CloseIcon } from '@public/close-outline.svg?react';
 export { default as CloseCircleIcon } from '@public/close-circle-outline.svg?react';
@@ -58,3 +61,5 @@ export { default as ThumbsUpIcon } from '@public/thumbs-up-outline.svg?react';
 export { default as GithubLogoIcon } from '@public/logo-github.svg?react';
 export { default as OpenBaoIcon } from '@public/openbao.svg?react';
 export { default as OpenBaoSingleIcon } from '@public/openbao-single.svg?react';
+
+export type Icon = FC<SVGProps<SVGSVGElement>>;
