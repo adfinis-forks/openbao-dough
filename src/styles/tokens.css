@@ -76,6 +76,8 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
 
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
