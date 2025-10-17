@@ -1,6 +1,42 @@
-const accessSection = {
+import {
+  DocumentTextIcon,
+  FileTrayStackedIcon,
+  KeyIcon,
+  LockClosedIcon,
+  PeopleIcon,
+  PersonIcon,
+  RefreshIcon,
+  SettingsIcon,
+  ShieldIcon,
+  TerminalIcon,
+  type Icon,
+} from '@icons';
+
+export type NavigationLink = {
+  path: string;
+  label: string;
+  icon?: Icon;
+};
+
+export type NavigationSection = {
+  label: string;
+  icon?: Icon;
+  sections: Array<{
+    title: string;
+    items: NavigationLink[];
+  }>;
+};
+
+export type NavigationItem = NavigationLink | NavigationSection;
+
+export type NavigationGroup = {
+  title: string;
+  items: NavigationItem[];
+};
+
+const accessSection: NavigationSection = {
   label: 'Access',
-  icon: '/document-text-outline.svg',
+  icon: DocumentTextIcon,
   sections: [
     {
       title: 'Authentication',
@@ -8,17 +44,17 @@ const accessSection = {
         {
           path: '/access',
           label: 'Authentication methods',
-          icon: '/people-outline.svg',
+          icon: PeopleIcon,
         },
         {
           path: '/access/mfa',
           label: 'Multi-factor authentication',
-          icon: '/shield-outline.svg',
+          icon: ShieldIcon,
         },
         {
           path: '/access/oidc',
           label: 'OIDC provider',
-          icon: '/settings-outline.svg',
+          icon: SettingsIcon,
         },
       ],
     },
@@ -28,17 +64,17 @@ const accessSection = {
         {
           path: '/access/namespaces',
           label: 'Namespaces',
-          icon: '/file-tray-stacked-outline.svg',
+          icon: FileTrayStackedIcon,
         },
         {
           path: '/access/identity/groups',
           label: 'Groups',
-          icon: '/people-outline.svg',
+          icon: PeopleIcon,
         },
         {
           path: '/access/identity/entities',
           label: 'Entities',
-          icon: '/person-outline.svg',
+          icon: PersonIcon,
         },
       ],
     },
@@ -48,16 +84,16 @@ const accessSection = {
         {
           path: '/access/leases/list',
           label: 'Leases',
-          icon: '/refresh-outline.svg',
+          icon: RefreshIcon,
         },
       ],
     },
   ],
 };
 
-const policiesSection = {
+const policiesSection: NavigationSection = {
   label: 'Policies',
-  icon: '/document-text-outline.svg',
+  icon: DocumentTextIcon,
   sections: [
     {
       title: 'Policies',
@@ -65,16 +101,16 @@ const policiesSection = {
         {
           path: '/policies/acl',
           label: 'ACL Policies',
-          icon: '/document-text-outline.svg',
+          icon: DocumentTextIcon,
         },
       ],
     },
   ],
 };
 
-const toolsSection = {
+const toolsSection: NavigationSection = {
   label: 'Tools',
-  icon: '/terminal-outline.svg',
+  icon: TerminalIcon,
   sections: [
     {
       title: 'Tools',
@@ -108,14 +144,14 @@ const toolsSection = {
   ],
 };
 
-export const navigationConfig = [
+export const navigationConfig: NavigationGroup[] = [
   {
     title: 'OpenBao',
     items: [
       {
         path: '/secrets',
         label: 'Secrets engines',
-        icon: '/key-outline.svg',
+        icon: KeyIcon,
       },
       accessSection,
       policiesSection,
@@ -128,7 +164,7 @@ export const navigationConfig = [
       {
         path: '/settings/seal',
         label: 'Seal OpenBao',
-        icon: '/lock-closed-outline.svg',
+        icon: LockClosedIcon,
       },
     ],
   },

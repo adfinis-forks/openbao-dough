@@ -4,9 +4,9 @@
   align-items: center;
   gap: var(--spacing-md);
   width: 100%;
-  min-height: 5rem;
+  min-height: 3rem;
   padding: var(--btn-padding-y) var(--btn-padding-x);
-  border-radius: var(--radius-4xl);
+  border-radius: var(--radius-2xl);
   border: 1px solid transparent;
   background: transparent;
   color: var(--color-text-primary);

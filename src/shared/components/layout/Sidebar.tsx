@@ -1,26 +1,48 @@
-import { Button } from '@common/Button';
-import FileTrayStackedOutlineIcon from '@public/file-tray-stacked-outline.svg?react';
-import MenuIcon from '@public/menu.svg?react';
-import OpenBaoLogo from '@public/openbao.svg?react';
-import PersonOutlineIcon from '@public/person-outline.svg?react';
-import TerminalOutlineIcon from '@public/terminal-outline.svg?react';
+import { MenuItem } from '@common/MenuItem';
+import {
+  AnalyticsIcon,
+  ChevronBackIcon,
+  DocumentTextIcon,
+  FileTrayStackedIcon,
+  KeyIcon,
+  MenuIcon,
+  OpenBaoIcon,
+  PeopleIcon,
+  PersonIcon,
+  SettingsIcon,
+  ShieldIcon,
+  TerminalIcon,
+} from '@icons';
 import { Link, useLocation } from '@tanstack/react-router';
 import React, { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/shared/components/theme/ThemeToggle';
 import './Sidebar.css';
+import {
+  type NavigationItem,
+  type NavigationSection,
+  navigationConfig,
+} from '@/shared/config/navigation';
 
+/* TODO - REMOVE MENU ITEMS */
 const menuItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: '/analytics-outline.svg' },
-  { path: '/secrets', label: 'Secrets', icon: '/key-outline.svg' },
-  { path: '/policies', label: 'Policies', icon: '/document-text-outline.svg' },
-  { path: '/auth', label: 'Auth Methods', icon: '/people-outline.svg' },
-  { path: '/audit', label: 'Audit', icon: '/shield-outline.svg' },
-  { path: '/system', label: 'System', icon: '/settings-outline.svg' },
+  { path: '/dashboard', label: 'Dashboard', icon: AnalyticsIcon },
+  { path: '/secrets', label: 'Secrets', icon: KeyIcon },
+  { path: '/policies', label: 'Policies', icon: DocumentTextIcon },
+  { path: '/auth', label: 'Auth Methods', icon: PeopleIcon },
+  { path: '/audit', label: 'Audit', icon: ShieldIcon },
+  { path: '/system', label: 'System', icon: SettingsIcon },
 ];
+
+function isNavigationSection(item: NavigationItem): item is NavigationSection {
+  return 'sections' in item;
+}
 
 function SidebarComponent() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activePanel, setActivePanel] = useState<NavigationSection | null>(
+    null,
+  );
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -37,6 +59,22 @@ function SidebarComponent() {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  const openPanel = (section: NavigationSection) => {
+    setActivePanel(section);
+  };
+
+  const closePanel = () => {
+    setActivePanel(null);
+  };
+
+  const handleNavClick = () => {
+    closeMobileMenu();
   };
 
   return (
@@ -59,14 +97,14 @@ function SidebarComponent() {
             className="sidebar__utility-btn"
             aria-label="User settings"
           >
-            <PersonOutlineIcon />
+            <PersonIcon />
           </button>
           <button
             type="button"
             className="sidebar__utility-btn"
             aria-label="Terminal"
           >
-            <TerminalOutlineIcon />
+            <TerminalIcon />
           </button>
         </div>
       </div>
@@ -92,14 +130,14 @@ function SidebarComponent() {
               className="sidebar__utility-btn"
               aria-label="User settings"
             >
-              <PersonOutlineIcon />
+              <PersonIcon />
             </button>
             <button
               type="button"
               className="sidebar__utility-btn"
               aria-label="Terminal"
             >
-              <TerminalOutlineIcon />
+              <TerminalIcon />
             </button>
           </div>
         </div>
@@ -107,7 +145,7 @@ function SidebarComponent() {
         {/* Header with Logo */}
         <div className="sidebar__header">
           <div className="sidebar__logo">
-            <OpenBaoLogo className="sidebar__logo-icon" />
+            <OpenBaoIcon className="sidebar__logo-icon" />
             <div className="sidebar__brand">
               <h3 className="sidebar__title">OpenBao</h3>
               <p className="text-caption">v2.3.1</p>
@@ -116,40 +154,94 @@ function SidebarComponent() {
         </div>
 
         <nav className="sidebar__nav">
-          <div className="sidebar__menu">
-            {menuItems.map((item) => {
-              const isActive =
-                location.pathname === item.path ||
-                (location.pathname === '/' && item.path === '/dashboard');
-              return (
-                <Link key={item.path} to={item.path}>
-                  <Button
-                    variant="menu-item"
-                    size="medium"
-                    active={isActive}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    icon={
-                      <img
-                        src={item.icon}
-                        alt={item.label}
-                        width={18}
-                        height={18}
-                      />
-                    }
-                  >
-                    {item.label}
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
+          {/* Show sub-panel if active */}
+          {activePanel ? (
+            <div className="sidebar__panel sidebar__panel--sub">
+              {/* Back to main navigation button */}
+              <MenuItem
+                className="return-btn"
+                onClick={closePanel}
+                icon={<ChevronBackIcon />}
+              >
+                Back to main navigation
+              </MenuItem>
+
+              {/* Render all sections from the active panel */}
+              {activePanel.sections.map((section) => (
+                <div key={section.title} className="sidebar__menu-group">
+                  <h3 className="sidebar__group-title">{section.title}</h3>
+                  <div className="sidebar__menu">
+                    {section.items.map((item) => {
+                      const isActive = location.pathname === item.path;
+                      const IconComponent = item.icon;
+
+                      return (
+                        <MenuItem
+                          active={isActive}
+                          key={item.label}
+                          icon={IconComponent ? <IconComponent /> : undefined}
+                          onClick={handleNavClick}
+                        >
+                          {item.label}
+                        </MenuItem>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            // Show main navigation panel
+            <div className="sidebar__panel sidebar__panel--main">
+              {navigationConfig.map((group) => (
+                <div key={group.title} className="sidebar__menu-group">
+                  {/* e.g. OpenBao, Monitoring */}
+                  {group.title && (
+                    <h3 className="sidebar__group-title">{group.title}</h3>
+                  )}
+
+                  <div className="sidebar__menu">
+                    {group.items.map((item) => {
+                      if (isNavigationSection(item)) {
+                        const IconComponent = item.icon;
+                        return (
+                          <MenuItem
+                            variant="section"
+                            key={item.label}
+                            onClick={() => openPanel(item)}
+                            icon={IconComponent ? <IconComponent /> : undefined}
+                          >
+                            {item.label}
+                          </MenuItem>
+                        );
+                      }
+
+                      const isActive = location.pathname === item.path;
+                      const IconComponent = item.icon;
+
+                      return (
+                        <MenuItem
+                          active={isActive}
+                          key={item.label}
+                          onClick={handleNavClick}
+                          icon={IconComponent ? <IconComponent /> : undefined}
+                        >
+                          {item.label}
+                        </MenuItem>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </nav>
 
         {/* Footer with Namespace */}
         <div className="sidebar__footer">
           <div className="sidebar__namespace">
             <div className="sidebar__namespace-label">
-              <FileTrayStackedOutlineIcon />
+              <FileTrayStackedIcon />
               <span>namespace</span>
             </div>
             <p className="sidebar__namespace-value">/ (root)</p>
