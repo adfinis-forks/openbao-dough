@@ -8,8 +8,8 @@ export type ButtonVariant =
   | 'ghost'
   | 'danger'
   | 'outlined'
-  | 'outlined-danger'
-  | 'menu-item';
+  | 'outlined-danger';
+
 export type ButtonSize = 'small' | 'medium' | 'large';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
