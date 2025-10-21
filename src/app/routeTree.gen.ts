@@ -12,13 +12,13 @@ import { Route as rootRouteImport } from './../routes/__root'
 import { Route as LoginRouteImport } from './../routes/login'
 import { Route as AuthenticatedRouteImport } from './../routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index'
-import { Route as AuthenticatedSystemRouteImport } from './../routes/_authenticated/system'
 import { Route as AuthenticatedSecretsRouteImport } from './../routes/_authenticated/secrets'
-import { Route as AuthenticatedPoliciesRouteImport } from './../routes/_authenticated/policies'
 import { Route as AuthenticatedEnableAuthMethodRouteImport } from './../routes/_authenticated/enable-auth-method'
 import { Route as AuthenticatedDashboardRouteImport } from './../routes/_authenticated/dashboard'
-import { Route as AuthenticatedAuthRouteImport } from './../routes/_authenticated/auth'
 import { Route as AuthenticatedAuditRouteImport } from './../routes/_authenticated/audit'
+import { Route as AuthenticatedAccessRouteImport } from './../routes/_authenticated/access'
+import { Route as AuthenticatedSettingsSealRouteImport } from './../routes/_authenticated/settings.seal'
+import { Route as AuthenticatedPoliciesAclRouteImport } from './../routes/_authenticated/policies.acl'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -34,19 +34,9 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedSystemRoute = AuthenticatedSystemRouteImport.update({
-  id: '/system',
-  path: '/system',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedSecretsRoute = AuthenticatedSecretsRouteImport.update({
   id: '/secrets',
   path: '/secrets',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedPoliciesRoute = AuthenticatedPoliciesRouteImport.update({
-  id: '/policies',
-  path: '/policies',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedEnableAuthMethodRoute =
@@ -60,87 +50,99 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedAuthRoute = AuthenticatedAuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
   id: '/audit',
   path: '/audit',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAccessRoute = AuthenticatedAccessRouteImport.update({
+  id: '/access',
+  path: '/access',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSettingsSealRoute =
+  AuthenticatedSettingsSealRouteImport.update({
+    id: '/settings/seal',
+    path: '/settings/seal',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedPoliciesAclRoute =
+  AuthenticatedPoliciesAclRouteImport.update({
+    id: '/policies/acl',
+    path: '/policies/acl',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
+  '/access': typeof AuthenticatedAccessRoute
   '/audit': typeof AuthenticatedAuditRoute
-  '/auth': typeof AuthenticatedAuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
-  '/policies': typeof AuthenticatedPoliciesRoute
   '/secrets': typeof AuthenticatedSecretsRoute
-  '/system': typeof AuthenticatedSystemRoute
   '/': typeof AuthenticatedIndexRoute
+  '/policies/acl': typeof AuthenticatedPoliciesAclRoute
+  '/settings/seal': typeof AuthenticatedSettingsSealRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/access': typeof AuthenticatedAccessRoute
   '/audit': typeof AuthenticatedAuditRoute
-  '/auth': typeof AuthenticatedAuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
-  '/policies': typeof AuthenticatedPoliciesRoute
   '/secrets': typeof AuthenticatedSecretsRoute
-  '/system': typeof AuthenticatedSystemRoute
   '/': typeof AuthenticatedIndexRoute
+  '/policies/acl': typeof AuthenticatedPoliciesAclRoute
+  '/settings/seal': typeof AuthenticatedSettingsSealRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/_authenticated/access': typeof AuthenticatedAccessRoute
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
-  '/_authenticated/auth': typeof AuthenticatedAuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
-  '/_authenticated/policies': typeof AuthenticatedPoliciesRoute
   '/_authenticated/secrets': typeof AuthenticatedSecretsRoute
-  '/_authenticated/system': typeof AuthenticatedSystemRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/policies/acl': typeof AuthenticatedPoliciesAclRoute
+  '/_authenticated/settings/seal': typeof AuthenticatedSettingsSealRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/login'
+    | '/access'
     | '/audit'
-    | '/auth'
     | '/dashboard'
     | '/enable-auth-method'
-    | '/policies'
     | '/secrets'
-    | '/system'
     | '/'
+    | '/policies/acl'
+    | '/settings/seal'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/access'
     | '/audit'
-    | '/auth'
     | '/dashboard'
     | '/enable-auth-method'
-    | '/policies'
     | '/secrets'
-    | '/system'
     | '/'
+    | '/policies/acl'
+    | '/settings/seal'
   id:
     | '__root__'
     | '/_authenticated'
     | '/login'
+    | '/_authenticated/access'
     | '/_authenticated/audit'
-    | '/_authenticated/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/enable-auth-method'
-    | '/_authenticated/policies'
     | '/_authenticated/secrets'
-    | '/_authenticated/system'
     | '/_authenticated/'
+    | '/_authenticated/policies/acl'
+    | '/_authenticated/settings/seal'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,25 +173,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/system': {
-      id: '/_authenticated/system'
-      path: '/system'
-      fullPath: '/system'
-      preLoaderRoute: typeof AuthenticatedSystemRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/secrets': {
       id: '/_authenticated/secrets'
       path: '/secrets'
       fullPath: '/secrets'
       preLoaderRoute: typeof AuthenticatedSecretsRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/policies': {
-      id: '/_authenticated/policies'
-      path: '/policies'
-      fullPath: '/policies'
-      preLoaderRoute: typeof AuthenticatedPoliciesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/enable-auth-method': {
@@ -206,13 +194,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/auth': {
-      id: '/_authenticated/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthenticatedAuthRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/audit': {
       id: '/_authenticated/audit'
       path: '/audit'
@@ -220,29 +201,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAuditRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/access': {
+      id: '/_authenticated/access'
+      path: '/access'
+      fullPath: '/access'
+      preLoaderRoute: typeof AuthenticatedAccessRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/settings/seal': {
+      id: '/_authenticated/settings/seal'
+      path: '/settings/seal'
+      fullPath: '/settings/seal'
+      preLoaderRoute: typeof AuthenticatedSettingsSealRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/policies/acl': {
+      id: '/_authenticated/policies/acl'
+      path: '/policies/acl'
+      fullPath: '/policies/acl'
+      preLoaderRoute: typeof AuthenticatedPoliciesAclRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAccessRoute: typeof AuthenticatedAccessRoute
   AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
-  AuthenticatedAuthRoute: typeof AuthenticatedAuthRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEnableAuthMethodRoute: typeof AuthenticatedEnableAuthMethodRoute
-  AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRoute
   AuthenticatedSecretsRoute: typeof AuthenticatedSecretsRoute
-  AuthenticatedSystemRoute: typeof AuthenticatedSystemRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedPoliciesAclRoute: typeof AuthenticatedPoliciesAclRoute
+  AuthenticatedSettingsSealRoute: typeof AuthenticatedSettingsSealRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAccessRoute: AuthenticatedAccessRoute,
   AuthenticatedAuditRoute: AuthenticatedAuditRoute,
-  AuthenticatedAuthRoute: AuthenticatedAuthRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEnableAuthMethodRoute: AuthenticatedEnableAuthMethodRoute,
-  AuthenticatedPoliciesRoute: AuthenticatedPoliciesRoute,
   AuthenticatedSecretsRoute: AuthenticatedSecretsRoute,
-  AuthenticatedSystemRoute: AuthenticatedSystemRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedPoliciesAclRoute: AuthenticatedPoliciesAclRoute,
+  AuthenticatedSettingsSealRoute: AuthenticatedSettingsSealRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

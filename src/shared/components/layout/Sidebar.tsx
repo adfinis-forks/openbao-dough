@@ -1,20 +1,14 @@
 import { MenuItem } from '@common/MenuItem';
 import {
-  AnalyticsIcon,
   ChevronBackIcon,
-  DocumentTextIcon,
   FileTrayStackedIcon,
-  KeyIcon,
   MenuIcon,
   OpenBaoIcon,
-  PeopleIcon,
   PersonIcon,
-  SettingsIcon,
-  ShieldIcon,
   TerminalIcon,
 } from '@icons';
-import { Link, useLocation } from '@tanstack/react-router';
-import React, { useEffect, useState } from 'react';
+import { useLocation } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/shared/components/theme/ThemeToggle';
 import './Sidebar.css';
 import {
@@ -23,21 +17,11 @@ import {
   navigationConfig,
 } from '@/shared/config/navigation';
 
-/* TODO - REMOVE MENU ITEMS */
-const menuItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: AnalyticsIcon },
-  { path: '/secrets', label: 'Secrets', icon: KeyIcon },
-  { path: '/policies', label: 'Policies', icon: DocumentTextIcon },
-  { path: '/auth', label: 'Auth Methods', icon: PeopleIcon },
-  { path: '/audit', label: 'Audit', icon: ShieldIcon },
-  { path: '/system', label: 'System', icon: SettingsIcon },
-];
-
 function isNavigationSection(item: NavigationItem): item is NavigationSection {
   return 'sections' in item;
 }
 
-function SidebarComponent() {
+export function Sidebar() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<NavigationSection | null>(
@@ -180,6 +164,7 @@ function SidebarComponent() {
                           active={isActive}
                           key={item.label}
                           icon={IconComponent ? <IconComponent /> : undefined}
+                          to={item.path}
                           onClick={handleNavClick}
                         >
                           {item.label}
@@ -223,6 +208,7 @@ function SidebarComponent() {
                         <MenuItem
                           active={isActive}
                           key={item.label}
+                          to={item.path}
                           onClick={handleNavClick}
                           icon={IconComponent ? <IconComponent /> : undefined}
                         >
@@ -251,5 +237,3 @@ function SidebarComponent() {
     </>
   );
 }
-
-export const Sidebar = React.memo(SidebarComponent);
