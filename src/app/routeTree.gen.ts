@@ -17,8 +17,10 @@ import { Route as AuthenticatedEnableAuthMethodRouteImport } from './../routes/_
 import { Route as AuthenticatedDashboardRouteImport } from './../routes/_authenticated/dashboard'
 import { Route as AuthenticatedAuditRouteImport } from './../routes/_authenticated/audit'
 import { Route as AuthenticatedAccessRouteImport } from './../routes/_authenticated/access'
+import { Route as AuthenticatedAccessIndexRouteImport } from './../routes/_authenticated/access.index'
 import { Route as AuthenticatedSettingsSealRouteImport } from './../routes/_authenticated/settings.seal'
 import { Route as AuthenticatedPoliciesAclRouteImport } from './../routes/_authenticated/policies.acl'
+import { Route as AuthenticatedAccessNamespacesRouteImport } from './../routes/_authenticated/access.namespaces'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -60,6 +62,12 @@ const AuthenticatedAccessRoute = AuthenticatedAccessRouteImport.update({
   path: '/access',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAccessIndexRoute =
+  AuthenticatedAccessIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAccessRoute,
+  } as any)
 const AuthenticatedSettingsSealRoute =
   AuthenticatedSettingsSealRouteImport.update({
     id: '/settings/seal',
@@ -72,41 +80,52 @@ const AuthenticatedPoliciesAclRoute =
     path: '/policies/acl',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAccessNamespacesRoute =
+  AuthenticatedAccessNamespacesRouteImport.update({
+    id: '/namespaces',
+    path: '/namespaces',
+    getParentRoute: () => AuthenticatedAccessRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
-  '/access': typeof AuthenticatedAccessRoute
+  '/access': typeof AuthenticatedAccessRouteWithChildren
   '/audit': typeof AuthenticatedAuditRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/secrets': typeof AuthenticatedSecretsRoute
   '/': typeof AuthenticatedIndexRoute
+  '/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
   '/policies/acl': typeof AuthenticatedPoliciesAclRoute
   '/settings/seal': typeof AuthenticatedSettingsSealRoute
+  '/access/': typeof AuthenticatedAccessIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/access': typeof AuthenticatedAccessRoute
   '/audit': typeof AuthenticatedAuditRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/secrets': typeof AuthenticatedSecretsRoute
   '/': typeof AuthenticatedIndexRoute
+  '/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
   '/policies/acl': typeof AuthenticatedPoliciesAclRoute
   '/settings/seal': typeof AuthenticatedSettingsSealRoute
+  '/access': typeof AuthenticatedAccessIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/access': typeof AuthenticatedAccessRoute
+  '/_authenticated/access': typeof AuthenticatedAccessRouteWithChildren
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/_authenticated/secrets': typeof AuthenticatedSecretsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
   '/_authenticated/policies/acl': typeof AuthenticatedPoliciesAclRoute
   '/_authenticated/settings/seal': typeof AuthenticatedSettingsSealRoute
+  '/_authenticated/access/': typeof AuthenticatedAccessIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -118,19 +137,22 @@ export interface FileRouteTypes {
     | '/enable-auth-method'
     | '/secrets'
     | '/'
+    | '/access/namespaces'
     | '/policies/acl'
     | '/settings/seal'
+    | '/access/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
-    | '/access'
     | '/audit'
     | '/dashboard'
     | '/enable-auth-method'
     | '/secrets'
     | '/'
+    | '/access/namespaces'
     | '/policies/acl'
     | '/settings/seal'
+    | '/access'
   id:
     | '__root__'
     | '/_authenticated'
@@ -141,8 +163,10 @@ export interface FileRouteTypes {
     | '/_authenticated/enable-auth-method'
     | '/_authenticated/secrets'
     | '/_authenticated/'
+    | '/_authenticated/access/namespaces'
     | '/_authenticated/policies/acl'
     | '/_authenticated/settings/seal'
+    | '/_authenticated/access/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -208,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccessRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/access/': {
+      id: '/_authenticated/access/'
+      path: '/'
+      fullPath: '/access/'
+      preLoaderRoute: typeof AuthenticatedAccessIndexRouteImport
+      parentRoute: typeof AuthenticatedAccessRoute
+    }
     '/_authenticated/settings/seal': {
       id: '/_authenticated/settings/seal'
       path: '/settings/seal'
@@ -222,11 +253,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPoliciesAclRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/access/namespaces': {
+      id: '/_authenticated/access/namespaces'
+      path: '/namespaces'
+      fullPath: '/access/namespaces'
+      preLoaderRoute: typeof AuthenticatedAccessNamespacesRouteImport
+      parentRoute: typeof AuthenticatedAccessRoute
+    }
   }
 }
 
+interface AuthenticatedAccessRouteChildren {
+  AuthenticatedAccessNamespacesRoute: typeof AuthenticatedAccessNamespacesRoute
+  AuthenticatedAccessIndexRoute: typeof AuthenticatedAccessIndexRoute
+}
+
+const AuthenticatedAccessRouteChildren: AuthenticatedAccessRouteChildren = {
+  AuthenticatedAccessNamespacesRoute: AuthenticatedAccessNamespacesRoute,
+  AuthenticatedAccessIndexRoute: AuthenticatedAccessIndexRoute,
+}
+
+const AuthenticatedAccessRouteWithChildren =
+  AuthenticatedAccessRoute._addFileChildren(AuthenticatedAccessRouteChildren)
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedAccessRoute: typeof AuthenticatedAccessRoute
+  AuthenticatedAccessRoute: typeof AuthenticatedAccessRouteWithChildren
   AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEnableAuthMethodRoute: typeof AuthenticatedEnableAuthMethodRoute
@@ -237,7 +288,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAccessRoute: AuthenticatedAccessRoute,
+  AuthenticatedAccessRoute: AuthenticatedAccessRouteWithChildren,
   AuthenticatedAuditRoute: AuthenticatedAuditRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEnableAuthMethodRoute: AuthenticatedEnableAuthMethodRoute,

@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { AuthMethodsView } from '../../features/auth/AuthMethodsView';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_authenticated/access')({
-  component: AuthMethodsView,
+  component: Outlet,
 });
