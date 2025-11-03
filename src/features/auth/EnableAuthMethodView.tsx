@@ -92,7 +92,7 @@ export const EnableAuthMethodView: React.FC = () => {
   const [path, setPath] = useState<string>('');
 
   const handleBack = () => {
-    navigate({ to: '/auth' });
+    navigate({ to: '/access' });
   };
 
   const handleMethodSelect = (methodId: string) => {
