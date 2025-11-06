@@ -7,7 +7,7 @@
   padding: var(--btn-padding-y) var(--btn-padding-x);
   font-size: var(--btn-font-size);
   cursor: pointer;
-  transition: var(--btn-transition);
+  transition: var(--transition-base);
   outline: none;
   position: relative;
   overflow: hidden;

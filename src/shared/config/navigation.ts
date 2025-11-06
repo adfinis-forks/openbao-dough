@@ -168,7 +168,7 @@ export const navigationConfig: NavigationGroup[] = [
     title: 'Monitoring',
     items: [
       {
-        path: 'audit',
+        path: '/audit',
         label: 'Audit Logs',
         icon: ShieldIcon,
       },
