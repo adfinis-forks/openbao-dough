@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useState, useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@common/Button';
 import { Input } from '@common/Input';
 import {
@@ -11,14 +12,20 @@ import {
   Database,
   Search,
   Plus,
+  ChevronDown,
 } from '../../shared/components/common/Icons';
+import RefreshIcon from '@public/refresh-outline.svg?react';
 import './Namespaces.css';
-import { useNamespaces, useDeleteNamespace } from './useNamespaces';
+import { useNamespaces, useDeleteNamespace, useCreateNamespace } from './useNamespaces';
 
 export const Namespaces: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  const [namespacePath, setNamespacePath] = useState('');
   const { namespaces, loading, error } = useNamespaces();
   const deleteNamespace = useDeleteNamespace();
+  const createNamespace = useCreateNamespace();
+  const queryClient = useQueryClient();
 
   const getNestingLevel = (path: string): number => {
     return path.split('/').length - 1;
@@ -63,6 +70,94 @@ export const Namespaces: React.FC = () => {
     }
   };
 
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({
+      queryKey: ['namespacesListNamespaces'],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['namespaces', 'details'],
+    });
+  };
+
+  const handleCreateClick = () => {
+    setIsCreating(true);
+  };
+
+  const handleBack = () => {
+    setIsCreating(false);
+    setNamespacePath('');
+  };
+
+  const handlePathChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNamespacePath(e.target.value);
+  };
+
+  const handleCreateNamespace = async () => {
+    if (!namespacePath.trim()) {
+      return;
+    }
+
+    try {
+      await createNamespace.mutateAsync({
+        path: { path: namespacePath.trim() },
+        body: {},
+      });
+      setIsCreating(false);
+      setNamespacePath('');
+    } catch (error) {
+      console.error('Failed to create namespace:', error);
+    }
+  };
+
+  if (isCreating) {
+    return (
+      <div className="create-namespace-view">
+        <div className="create-namespace-view__header">
+          <Button
+            variant="secondary"
+            icon={<ChevronDown size={16} />}
+            onClick={handleBack}
+            className="back-button"
+          >
+            Back to Namespaces
+          </Button>
+          <div>
+            <h1 className="create-namespace-view__title">
+              Create a New Namespace
+            </h1>
+            <p className="create-namespace-view__subtitle">
+              Configure a new namespace for your vault
+            </p>
+          </div>
+        </div>
+
+        <div className="create-namespace-view__content">
+          <div className="namespace-creation-state">
+            <div className="path-configuration">
+              <div className="path-form">
+                <h3>Path</h3>
+                <Input
+                  value={namespacePath}
+                  onChange={handlePathChange}
+                  placeholder="Enter path for the namespace"
+                />
+                <div className="create-namespace-view__actions">
+                  <Button
+                    variant="primary"
+                    onClick={handleCreateNamespace}
+                    disabled={!namespacePath.trim() || createNamespace.isPending}
+                  >
+                    {createNamespace.isPending ? 'Creating...' : 'Create Namespace'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="namespaces-view">
       <div className="namespaces-view__header">
@@ -80,7 +175,14 @@ export const Namespaces: React.FC = () => {
             icon={<Search size={16} />}
             className="namespaces-search"
           />
-          <Button variant="primary" icon={<Plus size={16} />}>
+          <Button
+            variant="secondary"
+            icon={<RefreshIcon width={16} height={16} />}
+            onClick={handleRefresh}
+          >
+            Refresh namespaces
+          </Button>
+          <Button variant="primary" icon={<Plus size={16} />} onClick={handleCreateClick}>
             Create new namespace
           </Button>
         </div>

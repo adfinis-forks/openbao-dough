@@ -129,6 +129,66 @@
   align-items: center;
 }
 
+.create-namespace-view {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.create-namespace-view__header {
+  margin-bottom: 2rem;
+}
+
+.create-namespace-view__header .back-button {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.create-namespace-view__header .back-button .btn__icon {
+  transform: rotate(90deg);
+}
+
+.create-namespace-view__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.create-namespace-view__subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.create-namespace-view__content {
+  margin-top: 2rem;
+}
+
+.namespace-creation-state {
+  max-width: 1200px;
+}
+
+.path-configuration {
+  margin-top: 2rem;
+}
+
+.path-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.path-form h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.create-namespace-view__actions {
+  margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
   .namespaces-view__header {
     flex-direction: column;
