@@ -13,7 +13,6 @@ import {
   Plus,
 } from '../../shared/components/common/Icons';
 import './Namespaces.css';
-import { Card, CardHeader, CardContent } from '@/shared/components/common/Card';
 import { useNamespaces, useDeleteNamespace } from './useNamespaces';
 
 export const Namespaces: React.FC = () => {
@@ -72,8 +71,8 @@ export const Namespaces: React.FC = () => {
         </div>
       </div>
 
-      <Card variant="table">
-        <CardHeader className="namespaces-header">
+      <div>
+        <div className="namespaces-header">
           <Input
             placeholder="Search namespaces..."
             value={searchQuery}
@@ -84,8 +83,8 @@ export const Namespaces: React.FC = () => {
           <Button variant="primary" icon={<Plus size={16} />}>
             Create new namespace
           </Button>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           {loading ? (
             <div className="namespaces-empty-state">
               <p className="namespaces-empty-state__message">
@@ -156,8 +155,8 @@ export const Namespaces: React.FC = () => {
               })}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
