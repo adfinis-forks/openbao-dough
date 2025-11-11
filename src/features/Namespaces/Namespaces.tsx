@@ -15,8 +15,13 @@ import {
   ChevronDown,
 } from '../../shared/components/common/Icons';
 import RefreshIcon from '@public/refresh-outline.svg?react';
+import { useNotifications } from '../../shared/components/common/Notification';
 import './Namespaces.css';
-import { useNamespaces, useDeleteNamespace, useCreateNamespace } from './useNamespaces';
+import {
+  useNamespaces,
+  useDeleteNamespace,
+  useCreateNamespace,
+} from './useNamespaces';
 
 export const Namespaces: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,6 +31,7 @@ export const Namespaces: React.FC = () => {
   const deleteNamespace = useDeleteNamespace();
   const createNamespace = useCreateNamespace();
   const queryClient = useQueryClient();
+  const { addNotification } = useNotifications();
 
   const getNestingLevel = (path: string): number => {
     return path.split('/').length - 1;
@@ -102,10 +108,22 @@ export const Namespaces: React.FC = () => {
         path: { path: namespacePath.trim() },
         body: {},
       });
+      addNotification({
+        type: 'success',
+        title: 'Namespace created',
+        message: `Namespace "${namespacePath.trim()}" has been successfully created`,
+      });
       setIsCreating(false);
       setNamespacePath('');
     } catch (error) {
-      console.error('Failed to create namespace:', error);
+      addNotification({
+        type: 'error',
+        title: 'Failed to create namespace',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while creating the namespace',
+      });
     }
   };
 
@@ -145,9 +163,13 @@ export const Namespaces: React.FC = () => {
                   <Button
                     variant="primary"
                     onClick={handleCreateNamespace}
-                    disabled={!namespacePath.trim() || createNamespace.isPending}
+                    disabled={
+                      !namespacePath.trim() || createNamespace.isPending
+                    }
                   >
-                    {createNamespace.isPending ? 'Creating...' : 'Create Namespace'}
+                    {createNamespace.isPending
+                      ? 'Creating...'
+                      : 'Create Namespace'}
                   </Button>
                 </div>
               </div>
@@ -182,7 +204,11 @@ export const Namespaces: React.FC = () => {
           >
             Refresh namespaces
           </Button>
-          <Button variant="primary" icon={<Plus size={16} />} onClick={handleCreateClick}>
+          <Button
+            variant="primary"
+            icon={<Plus size={16} />}
+            onClick={handleCreateClick}
+          >
             Create new namespace
           </Button>
         </div>
