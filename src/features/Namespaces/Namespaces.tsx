@@ -1,125 +1,141 @@
-import type React from 'react';
-import { useState, useMemo } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@common/Button';
 import { Input } from '@common/Input';
+import RefreshIcon from '@public/refresh-outline.svg?react';
+import type React from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   Dropdown,
   DropdownMenuItem,
 } from '../../shared/components/common/Dropdown';
 import {
-  MoreHorizontal,
-  Search,
-  Plus,
   ChevronDown,
+  MoreHorizontal,
+  Plus,
+  Search,
 } from '../../shared/components/common/Icons';
-import RefreshIcon from '@public/refresh-outline.svg?react';
 import { useNotifications } from '../../shared/components/common/Notification';
 import './Namespaces.css';
 import {
-  useNamespaces,
-  useDeleteNamespace,
   useCreateNamespace,
+  useDeleteNamespace,
+  useNamespaces,
 } from './useNamespaces';
 
 export const Namespaces: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [namespacePath, setNamespacePath] = useState('');
-  const { namespaces, loading, error } = useNamespaces();
+
+  const { namespaces, loading, error, isFetching, refetch } = useNamespaces();
+
   const deleteNamespace = useDeleteNamespace();
   const createNamespace = useCreateNamespace();
-  const queryClient = useQueryClient();
   const { addNotification } = useNotifications();
 
-  const getNestingLevel = (path: string): number => {
-    return path.split('/').length - 1;
-  };
-
-  const sortedNamespaces = useMemo(() => {
-    return [...namespaces].sort((a, b) => {
-      if (a.path.startsWith(`${b.path}/`)) {
-        return 1;
-      }
-      if (b.path.startsWith(`${a.path}/`)) {
-        return -1;
-      }
-      return a.path.localeCompare(b.path);
-    });
-  }, [namespaces]);
+  const sortedNamespaces = useMemo(
+    () =>
+      [...namespaces].sort((a, b) => {
+        if (a.path.startsWith(`${b.path}/`)) return 1;
+        if (b.path.startsWith(`${a.path}/`)) return -1;
+        return a.path.localeCompare(b.path);
+      }),
+    [namespaces],
+  );
 
   const filteredNamespaces = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return sortedNamespaces;
-    }
-    const query = searchQuery.toLowerCase();
-    return sortedNamespaces.filter((namespace) =>
-      namespace.path.toLowerCase().includes(query),
-    );
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return sortedNamespaces;
+
+    return sortedNamespaces.filter((ns) => ns.path.toLowerCase().includes(q));
   }, [sortedNamespaces, searchQuery]);
 
-  const handleDelete = async (path: string) => {
-    if (confirm(`Are you sure you want to delete namespace "${path}"?`)) {
+  const getNestingLevel = (path: string): number =>
+    Math.max(path.split('/').length - 1, 0);
+
+  const handleDelete = useCallback(
+    async (path: string) => {
+      const confirmed = window.confirm(
+        `Are you sure you want to delete namespace "${path}"?`,
+      );
+      if (!confirmed) return;
+
       try {
-        await deleteNamespace.mutateAsync({
-          path: { path },
+        await deleteNamespace.mutateAsync({ path: { path } });
+        addNotification({
+          type: 'success',
+          title: 'Namespace deleted',
+          message: `Namespace "${path}" has been deleted`,
         });
-      } catch (error) {
-        console.error('Failed to delete namespace:', error);
+
+        await refetch();
+      } catch (err) {
+        console.error('Failed to delete namespace:', err);
+        addNotification({
+          type: 'error',
+          title: 'Failed to delete namespace',
+          message:
+            err instanceof Error
+              ? err.message
+              : 'An error occurred while deleting the namespace',
+        });
       }
-    }
-  };
+    },
+    [deleteNamespace, addNotification, refetch],
+  );
 
-  const handleRefresh = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['namespacesListNamespaces'],
-    });
-    queryClient.invalidateQueries({
-      queryKey: ['namespaces', 'details'],
-    });
-  };
+  const handleRefresh = useCallback(() => {
+    // This now uses the exact same queries as the hook
+    refetch();
+  }, [refetch]);
 
-  const handleCreateClick = () => {
+  const handleCreateClick = useCallback(() => {
     setIsCreating(true);
-  };
+  }, []);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     setIsCreating(false);
     setNamespacePath('');
-  };
+  }, []);
 
-  const handlePathChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNamespacePath(e.target.value);
-  };
+  const handlePathChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setNamespacePath(e.target.value);
+    },
+    [],
+  );
 
-  const handleCreateNamespace = async () => {
-    if (!namespacePath.trim()) {
-      return;
-    }
+  const handleCreateNamespace = useCallback(async () => {
+    const trimmed = namespacePath.trim();
+    if (!trimmed) return;
 
     try {
       await createNamespace.mutateAsync({
-        path: { path: namespacePath.trim() },
+        path: { path: trimmed },
         body: {},
       });
+
       addNotification({
         type: 'success',
         title: 'Namespace created',
-        message: `Namespace "${namespacePath.trim()}" has been successfully created`,
+        message: `Namespace "${trimmed}" has been successfully created`,
       });
+
       setIsCreating(false);
       setNamespacePath('');
-    } catch (error) {
+
+      await refetch();
+    } catch (err) {
+      console.error('Failed to create namespace:', err);
       addNotification({
         type: 'error',
         title: 'Failed to create namespace',
         message:
-          error instanceof Error
-            ? error.message
+          err instanceof Error
+            ? err.message
             : 'An error occurred while creating the namespace',
       });
     }
-  };
+  }, [namespacePath, createNamespace, addNotification, refetch]);
 
   if (isCreating) {
     return (
@@ -174,12 +190,12 @@ export const Namespaces: React.FC = () => {
     );
   }
 
+  const hasNamespaces = filteredNamespaces.length > 0;
+
   return (
     <div className="namespaces-view">
       <div className="namespaces-view__header">
-        <div>
-          <h1 className="namespaces-view__title">Namespaces</h1>
-        </div>
+        <h1 className="namespaces-view__title">Namespaces</h1>
       </div>
 
       <div>
@@ -191,13 +207,16 @@ export const Namespaces: React.FC = () => {
             icon={<Search size={16} />}
             className="namespaces-search"
           />
+
           <Button
             variant="secondary"
             icon={<RefreshIcon width={16} height={16} />}
             onClick={handleRefresh}
+            disabled={isFetching}
           >
-            Refresh namespaces
+            {isFetching ? 'Refreshing...' : 'Refresh namespaces'}
           </Button>
+
           <Button
             variant="primary"
             icon={<Plus size={16} />}
@@ -206,6 +225,7 @@ export const Namespaces: React.FC = () => {
             Create new namespace
           </Button>
         </div>
+
         <div>
           {loading ? (
             <div className="namespaces-empty-state">
@@ -220,7 +240,7 @@ export const Namespaces: React.FC = () => {
               </p>
               <p className="namespaces-empty-state__description">{error}</p>
             </div>
-          ) : filteredNamespaces.length === 0 ? (
+          ) : !hasNamespaces ? (
             <div className="namespaces-empty-state">
               <p className="namespaces-empty-state__message">
                 {searchQuery ? 'No namespaces found' : 'No namespaces yet'}
@@ -233,23 +253,19 @@ export const Namespaces: React.FC = () => {
             </div>
           ) : (
             <div className="namespaces-list">
-              {filteredNamespaces.map((namespace) => {
-                const nestingLevel = getNestingLevel(namespace.path);
-
+              {filteredNamespaces.map((ns) => {
+                const nestingLevel = getNestingLevel(ns.path);
                 return (
                   <div
-                    key={namespace.path || namespace.uuid}
+                    key={ns.uuid ?? ns.path}
                     className={`namespace-item namespace-item--level-${nestingLevel}`}
                   >
                     <div className="namespace-item__info">
                       {nestingLevel > 0 && (
                         <span className="namespace-item__indent" />
                       )}
-                      <span
-                        className="namespace-item__label"
-                        title={namespace.path}
-                      >
-                        {namespace.path}
+                      <span className="namespace-item__label" title={ns.path}>
+                        {ns.path}
                       </span>
                     </div>
                     <div className="namespace-item__actions">
@@ -264,7 +280,7 @@ export const Namespaces: React.FC = () => {
                         <DropdownMenuItem>Switch to Namespace</DropdownMenuItem>
                         <DropdownMenuItem
                           danger
-                          onClick={() => handleDelete(namespace.path)}
+                          onClick={() => handleDelete(ns.path)}
                         >
                           Delete
                         </DropdownMenuItem>

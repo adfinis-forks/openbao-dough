@@ -1,12 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  namespacesDeleteNamespacesPathMutation,
   namespacesListNamespacesOptions,
   namespacesWriteNamespacesPathMutation,
-  namespacesDeleteNamespacesPathMutation,
 } from '@/shared/client/@tanstack/react-query.gen';
+import { namespacesReadNamespacesPath } from '@/shared/client/sdk.gen';
 import type { NamespacesListNamespacesResponse } from '@/shared/client/types.gen';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { namespacesReadNamespacesPath } from '@/shared/client/sdk.gen';
 
 export interface Namespace {
   path: string;
@@ -17,6 +17,15 @@ export interface Namespace {
   custom_metadata?: Record<string, unknown>;
 }
 
+const extractListResponse = (
+  raw: unknown,
+): NamespacesListNamespacesResponse | undefined => {
+  if (!raw) return undefined;
+  const maybeWrapped = raw as { data?: NamespacesListNamespacesResponse };
+  if (maybeWrapped.data) return maybeWrapped.data;
+  return raw as NamespacesListNamespacesResponse;
+};
+
 /**
  * Hook to list all namespaces from the server
  */
@@ -24,68 +33,92 @@ export function useNamespaces() {
   const { getAuthenticatedClient } = useAuth();
   const client = getAuthenticatedClient();
 
-  const {
-    data: listResponse,
-    isLoading,
-    error: queryError,
-  } = useQuery({
+  // 1. Base "list" query – returns keys & maybe key_info
+  const listQuery = useQuery({
     ...namespacesListNamespacesOptions({
       client: client ?? undefined,
-      query: {
-        list: 'true',
-      },
+      query: { list: 'true' },
     }),
     enabled: !!client,
     retry: false,
   });
 
-  // Fetch details for each namespace
-  // First try to use key_info if available, otherwise fetch individual details
-  const namespaces = useQuery({
+  const responseData = extractListResponse(listQuery.data);
+
+  const hasKeys =
+    !!responseData &&
+    Array.isArray(responseData.keys) &&
+    responseData.keys.length > 0;
+
+  const basicNamespaces: Namespace[] =
+    hasKeys && responseData?.keys
+      ? responseData.keys.map((path) => ({ path }))
+      : [];
+
+  // 2. Details query – enrich each namespace
+  const detailsQuery = useQuery<Namespace[]>({
     queryKey: [
       'namespaces',
       'details',
-      listResponse?.keys,
-      listResponse?.key_info,
+      responseData?.keys,
+      responseData?.key_info,
     ],
+    enabled: !!client && hasKeys,
     queryFn: async () => {
-      // Handle potential nested data structure (backend may wrap response in 'data' property)
-      const responseData: NamespacesListNamespacesResponse | undefined = 
-        (listResponse as { data?: NamespacesListNamespacesResponse })?.data || 
-        (listResponse as NamespacesListNamespacesResponse | undefined);
-      
       if (!responseData?.keys || !client) {
         return [];
       }
 
-      // If key_info exists and has data, use it
       const keyInfo = responseData.key_info;
-      if (keyInfo && typeof keyInfo === 'object' && Object.keys(keyInfo).length > 0) {
+
+      // Case 1: key_info already contains everything
+      if (
+        keyInfo &&
+        typeof keyInfo === 'object' &&
+        Object.keys(keyInfo).length > 0
+      ) {
         return responseData.keys.map((path: string) => {
           const info = keyInfo[path] as Record<string, unknown> | undefined;
           if (info && typeof info === 'object') {
+            const infoPath =
+              typeof info.path === 'string' ? (info.path as string) : path;
+
+            const id =
+              typeof info.id === 'string' ? (info.id as string) : undefined;
+            const uuid =
+              typeof info.uuid === 'string'
+                ? (info.uuid as string)
+                : (id ?? undefined);
+
+            const customMetadata =
+              info.custom_metadata &&
+              typeof info.custom_metadata === 'object' &&
+              !Array.isArray(info.custom_metadata)
+                ? (info.custom_metadata as Record<string, unknown>)
+                : undefined;
+
             return {
-              path: (typeof info.path === 'string' ? info.path : path) || path,
-              id: typeof info.id === 'string' ? info.id : undefined,
-              locked: typeof info.locked === 'boolean' ? info.locked : undefined,
-              tainted: typeof info.tainted === 'boolean' ? info.tainted : undefined,
-              uuid: typeof info.uuid === 'string' ? info.uuid : (typeof info.id === 'string' ? info.id : undefined),
-              custom_metadata: info.custom_metadata && typeof info.custom_metadata === 'object' && !Array.isArray(info.custom_metadata) 
-                ? info.custom_metadata as Record<string, unknown> 
-                : undefined,
+              path: infoPath || path,
+              id,
+              locked:
+                typeof info.locked === 'boolean'
+                  ? (info.locked as boolean)
+                  : undefined,
+              tainted:
+                typeof info.tainted === 'boolean'
+                  ? (info.tainted as boolean)
+                  : undefined,
+              uuid,
+              custom_metadata: customMetadata,
             } as Namespace;
           }
-          // Fallback to basic info if key_info doesn't have expected structure
-          return {
-            path,
-            id: undefined,
-            locked: undefined,
-            tainted: undefined,
-          } as Namespace;
+
+          // fallback – basic
+          return { path } as Namespace;
         });
       }
 
-      // Otherwise, fetch details for each namespace
+      // Case 2: call read endpoint for each namespace
       const namespaceDetails = await Promise.all(
         responseData.keys.map(async (path: string) => {
           try {
@@ -106,71 +139,40 @@ export function useNamespaces() {
               } as Namespace;
             }
           } catch {
-            // Ignore errors when fetching individual namespace details
+            // ignore individual failures
           }
 
-          return {
-            path,
-            id: undefined,
-            locked: undefined,
-            tainted: undefined,
-          } as Namespace;
+          return { path } as Namespace;
         }),
       );
 
       return namespaceDetails;
     },
-    enabled: !!listResponse && !!client && (
-      ((listResponse as { data?: NamespacesListNamespacesResponse })?.data?.keys?.length ?? 0) > 0 || 
-      ((listResponse as NamespacesListNamespacesResponse)?.keys?.length ?? 0) > 0
-    ),
   });
 
-  // Handle potential nested data structure for determining if we have keys
-  const responseData: NamespacesListNamespacesResponse | undefined = 
-    listResponse 
-      ? ((listResponse as { data?: NamespacesListNamespacesResponse })?.data || 
-         (listResponse as NamespacesListNamespacesResponse | undefined))
-      : undefined;
+  // Prefer detailed data only when it's "complete"
+  const finalNamespaces: Namespace[] =
+    hasKeys &&
+    Array.isArray(detailsQuery.data) &&
+    detailsQuery.data.length === basicNamespaces.length
+      ? detailsQuery.data
+      : basicNamespaces;
 
-  // Determine if we have namespaces from the list response
-  const hasKeys =
-    responseData &&
-    responseData.keys !== undefined &&
-    Array.isArray(responseData.keys) &&
-    responseData.keys.length > 0;
-
-  // Create basic namespace objects from the keys
-  // These are always available when we have keys from the list response
-  const basicNamespaces =
-    hasKeys && responseData && responseData.keys
-      ? responseData.keys.map((path) => ({ path } as Namespace))
-      : [];
-
-  // Return namespaces: prefer detailed data if available and complete, otherwise use basic
-  // The details query might return fewer items if some fetches fail, so we ensure
-  // we always show all namespaces from the list response
-  let finalNamespaces: Namespace[] = [];
-  
-  if (hasKeys) {
-    // We have keys, so we should show namespaces
-    if (namespaces.data !== undefined && namespaces.data.length === basicNamespaces.length) {
-      // Details query completed and returned all namespaces, use detailed data
-      finalNamespaces = namespaces.data;
-    } else {
-      // Details query hasn't completed, failed, or returned incomplete data
-      // Use basic namespaces to ensure all are shown
-      finalNamespaces = basicNamespaces;
-    }
-  } else {
-    // No keys from list response, no namespaces to show
-    finalNamespaces = [];
-  }
+  const errorMessage =
+    (listQuery.error as Error | null)?.message ??
+    (detailsQuery.error as Error | null)?.message ??
+    null;
 
   return {
-    loading: isLoading || (hasKeys && namespaces.isLoading),
-    error: queryError?.message ?? namespaces.error?.message ?? null,
     namespaces: finalNamespaces,
+    loading: listQuery.isLoading || (hasKeys && detailsQuery.isLoading),
+    error: errorMessage,
+    isFetching: listQuery.isFetching || detailsQuery.isFetching,
+    // IMPORTANT: one place to refresh everything
+    refetch: async () => {
+      await listQuery.refetch();
+      await detailsQuery.refetch();
+    },
   };
 }
 
@@ -187,8 +189,9 @@ export function useCreateNamespace() {
       client: client ?? undefined,
     }),
     onSuccess: () => {
-      // Invalidate and refetch namespaces list
+      // Invalidate both list & details to be safe
       queryClient.invalidateQueries({
+        // this should match the key prefix used in namespacesListNamespacesOptions
         queryKey: ['namespacesListNamespaces'],
       });
       queryClient.invalidateQueries({
@@ -211,7 +214,6 @@ export function useDeleteNamespace() {
       client: client ?? undefined,
     }),
     onSuccess: () => {
-      // Invalidate and refetch namespaces list
       queryClient.invalidateQueries({
         queryKey: ['namespacesListNamespaces'],
       });
