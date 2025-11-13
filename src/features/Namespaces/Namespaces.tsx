@@ -9,7 +9,6 @@ import {
 } from '../../shared/components/common/Dropdown';
 import {
   MoreHorizontal,
-  Database,
   Search,
   Plus,
   ChevronDown,
@@ -35,11 +34,6 @@ export const Namespaces: React.FC = () => {
 
   const getNestingLevel = (path: string): number => {
     return path.split('/').length - 1;
-  };
-
-  const getDisplayPath = (path: string): string => {
-    const parts = path.split('/');
-    return parts[parts.length - 1];
   };
 
   const sortedNamespaces = useMemo(() => {
@@ -241,7 +235,6 @@ export const Namespaces: React.FC = () => {
             <div className="namespaces-list">
               {filteredNamespaces.map((namespace) => {
                 const nestingLevel = getNestingLevel(namespace.path);
-                const displayPath = getDisplayPath(namespace.path);
 
                 return (
                   <div
@@ -252,12 +245,11 @@ export const Namespaces: React.FC = () => {
                       {nestingLevel > 0 && (
                         <span className="namespace-item__indent" />
                       )}
-                      <Database size={20} />
                       <span
                         className="namespace-item__label"
                         title={namespace.path}
                       >
-                        {displayPath}
+                        {namespace.path}
                       </span>
                     </div>
                     <div className="namespace-item__actions">
