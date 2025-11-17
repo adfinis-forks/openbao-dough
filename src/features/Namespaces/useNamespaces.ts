@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   namespacesDeleteNamespacesPathMutation,
-  namespacesListNamespacesOptions,
+  namespacesListNamespacesQueryKey,
   namespacesWriteNamespacesPathMutation,
 } from '@/shared/client/@tanstack/react-query.gen';
-import { namespacesReadNamespacesPath } from '@/shared/client/sdk.gen';
+import {
+  namespacesListNamespaces,
+  namespacesReadNamespacesPath,
+} from '@/shared/client/sdk.gen';
 import type { NamespacesListNamespacesResponse } from '@/shared/client/types.gen';
 import { useAuth } from '@/shared/hooks/useAuth';
 
@@ -35,12 +38,41 @@ export function useNamespaces() {
 
   // 1. Base "list" query – returns keys & maybe key_info
   const listQuery = useQuery({
-    ...namespacesListNamespacesOptions({
+    queryKey: namespacesListNamespacesQueryKey({
       client: client ?? undefined,
       query: { list: 'true' },
     }),
     enabled: !!client,
     retry: false,
+    queryFn: async () => {
+      if (!client) {
+        throw new Error('Client not available');
+      }
+
+      // Use throwOnError: false to check response status
+      const result = await namespacesListNamespaces({
+        client,
+        query: { list: 'true' },
+        throwOnError: false,
+      });
+
+      // If there's an error, check if it's a 404 (empty list)
+      if ('error' in result && result.error) {
+        // Check if the response status is 404
+        if (result.response.status === 404) {
+          // 404 means empty list, return empty response structure
+          return {
+            keys: [],
+            key_info: undefined,
+          } as NamespacesListNamespacesResponse;
+        }
+        // For other errors, throw them
+        throw result.error;
+      }
+
+      // Return the data if available
+      return result.data;
+    },
   });
 
   const responseData = extractListResponse(listQuery.data);
