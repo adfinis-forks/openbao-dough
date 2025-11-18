@@ -1,7 +1,6 @@
 import { MenuItem } from '@common/MenuItem';
 import {
   ChevronBackIcon,
-  FileTrayStackedIcon,
   MenuIcon,
   OpenBaoIcon,
   PersonIcon,
@@ -11,6 +10,7 @@ import { useLocation } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/shared/components/theme/ThemeToggle';
 import './Sidebar.css';
+import { NamespaceDropdown } from '@/features/Namespaces/NamespaceDropdown';
 import {
   type NavigationItem,
   type NavigationSection,
@@ -224,15 +224,7 @@ export function Sidebar() {
         </nav>
 
         {/* Footer with Namespace */}
-        <div className="sidebar__footer">
-          <div className="sidebar__namespace">
-            <div className="sidebar__namespace-label">
-              <FileTrayStackedIcon />
-              <span>namespace</span>
-            </div>
-            <p className="sidebar__namespace-value">/ (root)</p>
-          </div>
-        </div>
+        <NamespaceDropdown onCloseMobileMenu={closeMobileMenu} />
       </div>
     </>
   );
