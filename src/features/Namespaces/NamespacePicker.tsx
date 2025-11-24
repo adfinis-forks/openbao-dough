@@ -48,6 +48,7 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
 
   const closeDropdown = useCallback(() => {
     setIsNamespaceDropdownOpen(false);
+    setSearchQuery('');
     resetFocus();
   }, [resetFocus]);
 
