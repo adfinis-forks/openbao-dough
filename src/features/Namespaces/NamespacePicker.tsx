@@ -10,13 +10,13 @@ import {
 import { ChevronUp, Search } from '@/shared/components/common/Icons';
 import { Input } from '@/shared/components/common/Input';
 import { useNamespaces } from './useNamespaces';
-import './NamespaceDropdown.css';
+import './NamespacePicker.css';
 
-interface NamespaceDropdownProps {
+interface NamespacePickerProps {
   onCloseMobileMenu?: () => void;
 }
 
-export function NamespaceDropdown({ onCloseMobileMenu }: NamespaceDropdownProps) {
+export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
   const navigate = useNavigate();
 
   const [isNamespaceDropdownOpen, setIsNamespaceDropdownOpen] = useState(false);
@@ -419,3 +419,4 @@ export function NamespaceDropdown({ onCloseMobileMenu }: NamespaceDropdownProps)
     </div>
   );
 }
+

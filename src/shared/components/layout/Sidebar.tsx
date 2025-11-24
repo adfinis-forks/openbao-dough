@@ -10,7 +10,7 @@ import { useLocation } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/shared/components/theme/ThemeToggle';
 import './Sidebar.css';
-import { NamespaceDropdown } from '@/features/Namespaces/NamespaceDropdown';
+import { NamespacePicker } from '@/features/Namespaces/NamespacePicker';
 import {
   type NavigationItem,
   type NavigationSection,
@@ -224,7 +224,7 @@ export function Sidebar() {
         </nav>
 
         {/* Footer with Namespace */}
-        <NamespaceDropdown onCloseMobileMenu={closeMobileMenu} />
+        <NamespacePicker onCloseMobileMenu={closeMobileMenu} />
       </div>
     </>
   );
