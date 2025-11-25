@@ -18,6 +18,7 @@ import './Namespaces.css';
 import {
   useCreateNamespace,
   useDeleteNamespace,
+  useFilteredNamespaces,
   useNamespaces,
 } from './useNamespaces';
 
@@ -42,12 +43,10 @@ export const Namespaces: React.FC = () => {
     [namespaces],
   );
 
-  const filteredNamespaces = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return sortedNamespaces;
-
-    return sortedNamespaces.filter((ns) => ns.path.toLowerCase().includes(q));
-  }, [sortedNamespaces, searchQuery]);
+  const filteredNamespaces = useFilteredNamespaces(
+    sortedNamespaces,
+    searchQuery,
+  );
 
   const getNestingLevel = (path: string): number =>
     Math.max(path.split('/').length - 1, 0);

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import {
   namespacesDeleteNamespacesPathMutation,
   namespacesListNamespacesQueryKey,
@@ -28,6 +29,32 @@ const extractListResponse = (
   if (maybeWrapped.data) return maybeWrapped.data;
   return raw as NamespacesListNamespacesResponse;
 };
+
+/**
+ * Hook to debounce a value
+ */
+export function useDebouncer<T>(value: T, delay: number = 300): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
+export function useFilteredNamespaces(
+  namespaces: Namespace[],
+  searchQuery: string,
+  delay: number = 300,
+): Namespace[] {
+  const debouncedSearchQuery = useDebouncer(searchQuery, delay);
+
+  return useMemo(() => {
+    const q = debouncedSearchQuery.trim().toLowerCase();
+    if (!q) return namespaces;
+    return namespaces.filter((ns) => ns.path.toLowerCase().includes(q));
+  }, [namespaces, debouncedSearchQuery]);
+}
 
 /**
  * Hook to list all namespaces from the server

@@ -1,15 +1,9 @@
 import { FileTrayStackedIcon, RefreshIcon, SettingsIcon } from '@icons';
 import { useNavigate } from '@tanstack/react-router';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronUp, Search } from '@/shared/components/common/Icons';
 import { Input } from '@/shared/components/common/Input';
-import { useNamespaces } from './useNamespaces';
+import { useFilteredNamespaces, useNamespaces } from './useNamespaces';
 import './NamespacePicker.css';
 
 interface NamespacePickerProps {
@@ -32,12 +26,7 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
   const footerSettingsRef = useRef<HTMLButtonElement | null>(null);
 
   const { namespaces, loading, refetch, isFetching } = useNamespaces();
-
-  const filteredNamespaces = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return namespaces;
-    return namespaces.filter((ns) => ns.path.toLowerCase().includes(q));
-  }, [namespaces, searchQuery]);
+  const filteredNamespaces = useFilteredNamespaces(namespaces, searchQuery);
 
   const namespaceCount = filteredNamespaces.length;
   const totalFocusable = 1 + namespaceCount + 2; // search + namespaces + (refresh, settings)
@@ -60,7 +49,10 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
     (index: number) => {
       if (index === 0) {
         // search
-        searchContainerRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        searchContainerRef.current?.scrollIntoView({
+          block: 'nearest',
+          behavior: 'smooth',
+        });
         return;
       }
 
@@ -72,12 +64,18 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
       }
 
       if (index === namespaceCount + 1) {
-        footerRefreshRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        footerRefreshRef.current?.scrollIntoView({
+          block: 'nearest',
+          behavior: 'smooth',
+        });
         return;
       }
 
       if (index === namespaceCount + 2) {
-        footerSettingsRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        footerSettingsRef.current?.scrollIntoView({
+          block: 'nearest',
+          behavior: 'smooth',
+        });
         return;
       }
     },
@@ -280,9 +278,7 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
           <ChevronUp
             size={16}
             className={`sidebar__namespace-chevron ${
-              isNamespaceDropdownOpen
-                ? 'sidebar__namespace-chevron--open'
-                : ''
+              isNamespaceDropdownOpen ? 'sidebar__namespace-chevron--open' : ''
             }`}
           />
         </div>
@@ -371,6 +367,13 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
                               e.stopPropagation();
                               handleNamespaceSelect(index);
                             }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleNamespaceSelect(index);
+                              }
+                            }}
                             onMouseEnter={() => setFocusedIndex(virtualIndex)}
                             role="option"
                             aria-selected={isFocused}
@@ -420,4 +423,3 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
     </div>
   );
 }
-

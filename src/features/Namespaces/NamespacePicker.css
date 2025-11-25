@@ -166,7 +166,7 @@
 .sidebar__namespace-dropdown-button {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-primary);
+  background: var(--color-primary-500);
   color: var(--color-text-on-primary);
   border: none;
   border-radius: var(--radius-sm);
@@ -260,4 +260,3 @@
     max-height: 15rem;
   }
 }
-
