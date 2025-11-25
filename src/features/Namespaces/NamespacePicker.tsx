@@ -114,8 +114,10 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
 
   // Reset focused index when dropdown opens/closes or search changes
   useEffect(() => {
-    resetFocus();
-  }, [isNamespaceDropdownOpen, searchQuery, namespaceCount, resetFocus]);
+    if (!isNamespaceDropdownOpen || namespaceCount === 0) {
+      resetFocus();
+    }
+  }, [isNamespaceDropdownOpen, namespaceCount, resetFocus]);
 
   // Auto-focus dropdown container when it opens (not a specific item)
   useEffect(() => {
@@ -125,6 +127,25 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
       });
     }
   }, [isNamespaceDropdownOpen]);
+
+  useEffect(() => {
+    if (isNamespaceDropdownOpen) return;
+
+    if (filteredNamespaces.length > 0) {
+      const firstNamespaceVirtualIndex = 1;
+      setFocusedIndex(firstNamespaceVirtualIndex);
+      scrollVirtualItemIntoView(firstNamespaceVirtualIndex);
+      focusVirtualItem(firstNamespaceVirtualIndex);
+    } else {
+      setFocusedIndex(0);
+      focusVirtualItem(0);
+    }
+  }, [
+    isNamespaceDropdownOpen,
+    filteredNamespaces,
+    scrollVirtualItemIntoView,
+    focusVirtualItem,
+  ]);
 
   // Close namespace dropdown when clicking outside
   useEffect(() => {
