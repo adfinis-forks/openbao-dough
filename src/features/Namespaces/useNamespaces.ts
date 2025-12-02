@@ -242,12 +242,10 @@ export function useNamespaces() {
 
 /**
  * Hook to create or update a namespace
- * TODO: Update to create namespace in current namespace
  */
 export function useCreateNamespace() {
   const { getAuthenticatedClient } = useAuth();
-  // Use root namespace context for creation - pass empty string to force root
-  const client = getAuthenticatedClient('');
+  const client = getAuthenticatedClient();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -255,8 +253,6 @@ export function useCreateNamespace() {
       client: client ?? undefined,
     }),
     onSuccess: () => {
-      // Invalidate namespace list queries for all namespaces
-      // (namespace list is global, so we invalidate all namespace-specific queries)
       queryClient.invalidateQueries({
         predicate: (query) => {
           const key = query.queryKey;
