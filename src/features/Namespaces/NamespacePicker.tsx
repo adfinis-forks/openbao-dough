@@ -399,7 +399,6 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
                   to get started.
                 </p>
                 <Button
-                  type="button"
                   className="sidebar__namespace-dropdown-button"
                   variant="primary"
                   onClick={(e) => {
@@ -410,7 +409,6 @@ export function NamespacePicker({ onCloseMobileMenu }: NamespacePickerProps) {
                   Go to Namespaces
                 </Button>
                 <Button
-                  type="button"
                   variant="secondary"
                   className="sidebar__namespace-dropdown-button"
                   onClick={handleSwitchToRoot}

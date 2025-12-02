@@ -190,6 +190,22 @@
   margin-top: 1rem;
 }
 
+.key-info-display {
+  background-color: var(--color-bg-secondary, #1e1e1e);
+  color: var(--color-text-primary, #ffffff);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid var(--color-border);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 @media (max-width: 768px) {
   .namespaces-view__header {
     flex-direction: column;

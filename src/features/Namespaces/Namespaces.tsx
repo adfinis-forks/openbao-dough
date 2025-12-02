@@ -22,12 +22,14 @@ import {
   useDeleteNamespace,
   useFilteredNamespaces,
   useNamespaces,
+  type Namespace,
 } from './useNamespaces';
 
 export const Namespaces: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [namespacePath, setNamespacePath] = useState('');
+  const [viewingKeyInfo, setViewingKeyInfo] = useState<Namespace | null>(null);
 
   const { namespaces, loading, error, isFetching, refetch } = useNamespaces();
   const { setNamespace } = useAuth();
@@ -111,6 +113,11 @@ export const Namespaces: React.FC = () => {
   const handleBack = useCallback(() => {
     setIsCreating(false);
     setNamespacePath('');
+    setViewingKeyInfo(null);
+  }, []);
+
+  const handleViewKeyInfo = useCallback((namespace: Namespace) => {
+    setViewingKeyInfo(namespace);
   }, []);
 
   const handlePathChange = useCallback(
@@ -152,6 +159,24 @@ export const Namespaces: React.FC = () => {
       });
     }
   }, [namespacePath, createNamespace, addNotification, refetch]);
+
+  const getKeyInfoData = useCallback((namespace: Namespace) => {
+    const namespaceInfo = {
+      custom_metadata: namespace.custom_metadata || {},
+      id: namespace.id || '',
+      locked: namespace.locked ?? false,
+      path: namespace.path,
+      tainted: namespace.tainted ?? false,
+      uuid: namespace.uuid || namespace.id || '',
+    };
+
+    const keyInfo: Record<string, unknown> = {};
+    keyInfo[namespace.path] = namespaceInfo;
+
+    return {
+      key_info: keyInfo,
+    };
+  }, []);
 
   if (isCreating) {
     return (
@@ -198,6 +223,45 @@ export const Namespaces: React.FC = () => {
                       : 'Create Namespace'}
                   </Button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (viewingKeyInfo) {
+    const keyInfoData = getKeyInfoData(viewingKeyInfo);
+    const jsonString = JSON.stringify(keyInfoData, null, 2);
+
+    return (
+      <div className="create-namespace-view">
+        <div className="create-namespace-view__header">
+          <Button
+            variant="secondary"
+            icon={<ChevronDown size={16} />}
+            onClick={handleBack}
+            className="back-button"
+          >
+            Back to Namespaces
+          </Button>
+          <div>
+            <h1 className="create-namespace-view__title">
+              Key Info: {viewingKeyInfo.path}
+            </h1>
+            <p className="create-namespace-view__subtitle">
+              View key information for this namespace
+            </p>
+          </div>
+        </div>
+
+        <div className="create-namespace-view__content">
+          <div className="namespace-creation-state">
+            <div className="path-configuration">
+              <div className="path-form">
+                <h3>Key Info</h3>
+                <pre className="key-info-display">{jsonString}</pre>
               </div>
             </div>
           </div>
@@ -297,6 +361,9 @@ export const Namespaces: React.FC = () => {
                           onClick={() => handleSwitchNamespace(ns.path)}
                         >
                           Switch to Namespace
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleViewKeyInfo(ns)}>
+                          View Key Info
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           danger
