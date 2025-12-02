@@ -21,8 +21,10 @@ export interface AuthContextValue {
   token: string | null;
   tokenData: TokenLookupResponse | null;
   isAuthenticated: boolean;
+  currentNamespace: string | null;
   login: (token: string, namespace?: string) => Promise<void>;
   logout: (namespace?: string) => Promise<void>;
+  setNamespace: (namespace: string | null) => void;
   getAuthenticatedClient: (namespace?: string) => Client | null;
 }
 
@@ -42,15 +44,36 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [tokenData, setTokenData] = useState<TokenLookupResponse | null>(null);
+  const [currentNamespace, setCurrentNamespace] = useState<string | null>(null);
   const renewalTimer = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const isAuthenticated = !!token && !!tokenData;
 
+  // Initialize namespace from localStorage on mount
+  useEffect(() => {
+    const savedNamespace = localStorage.getItem('openbao.currentNamespace');
+    if (savedNamespace) {
+      setCurrentNamespace(savedNamespace);
+    }
+  }, []);
+
+  const setNamespace = useCallback((namespace: string | null) => {
+    setCurrentNamespace(namespace);
+    if (namespace) {
+      localStorage.setItem('openbao.currentNamespace', namespace);
+    } else {
+      localStorage.removeItem('openbao.currentNamespace');
+    }
+  }, []);
+
   const getAuthenticatedClient = useCallback(
     (namespace?: string) => {
-      return token ? createAuthClient(token, namespace) : null;
+      if (!token) return null;
+      // Use provided namespace, or fall back to current namespace, or undefined (root)
+      const nsToUse = namespace ?? currentNamespace ?? undefined;
+      return createAuthClient(token, nsToUse);
     },
-    [token],
+    [token, currentNamespace],
   );
 
   const login = useCallback(async (newToken: string, namespace?: string) => {
@@ -63,6 +86,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     setToken(newToken);
     setTokenData(data);
+    // Set namespace if provided during login
+    if (namespace) {
+      setCurrentNamespace(namespace);
+      localStorage.setItem('openbao.currentNamespace', namespace);
+    }
   }, []);
 
   const logout = useCallback(
@@ -77,6 +105,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
       setToken(null);
       setTokenData(null);
+      setCurrentNamespace(null);
+      localStorage.removeItem('openbao.currentNamespace');
     },
     [token],
   );
@@ -89,7 +119,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     renewalTimer.current = setTimeout(async () => {
       try {
         const { data } = await tokenRenewSelf({
-          client: createAuthClient(token),
+          client: createAuthClient(token, currentNamespace ?? undefined),
           body: {},
           throwOnError: false,
         });
@@ -100,7 +130,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => {
       if (renewalTimer.current) clearTimeout(renewalTimer.current);
     };
-  }, [token, tokenData]);
+  }, [token, tokenData, currentNamespace]);
 
   return (
     <AuthContext.Provider
@@ -108,8 +138,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         token,
         tokenData,
         isAuthenticated,
+        currentNamespace,
         login,
         logout,
+        setNamespace,
         getAuthenticatedClient,
       }}
     >

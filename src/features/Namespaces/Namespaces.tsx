@@ -14,6 +14,8 @@ import {
   Search,
 } from '../../shared/components/common/Icons';
 import { useNotifications } from '../../shared/components/common/Notification';
+import { useAuth } from '../../shared/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 import './Namespaces.css';
 import {
   useCreateNamespace,
@@ -28,6 +30,8 @@ export const Namespaces: React.FC = () => {
   const [namespacePath, setNamespacePath] = useState('');
 
   const { namespaces, loading, error, isFetching, refetch } = useNamespaces();
+  const { setNamespace } = useAuth();
+  const queryClient = useQueryClient();
 
   const deleteNamespace = useDeleteNamespace();
   const createNamespace = useCreateNamespace();
@@ -50,6 +54,19 @@ export const Namespaces: React.FC = () => {
 
   const getNestingLevel = (path: string): number =>
     Math.max(path.split('/').length - 1, 0);
+
+  const handleSwitchNamespace = useCallback(
+    (path: string) => {
+      setNamespace(path);
+      queryClient.invalidateQueries();
+      addNotification({
+        type: 'success',
+        title: 'Namespace switched',
+        message: `Switched to namespace "${path}"`,
+      });
+    },
+    [setNamespace, queryClient, addNotification],
+  );
 
   const handleDelete = useCallback(
     async (path: string) => {
@@ -276,7 +293,11 @@ export const Namespaces: React.FC = () => {
                         }
                         align="end"
                       >
-                        <DropdownMenuItem>Switch to Namespace</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleSwitchNamespace(ns.path)}
+                        >
+                          Switch to Namespace
+                        </DropdownMenuItem>
                         <DropdownMenuItem
                           danger
                           onClick={() => handleDelete(ns.path)}

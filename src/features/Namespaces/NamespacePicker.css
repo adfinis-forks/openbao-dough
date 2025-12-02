@@ -122,14 +122,14 @@
   transition: background-color 0.2s ease;
 }
 
-.sidebar__namespace-dropdown-item--clickable:hover {
-  background-color: var(--color-border-hover);
-}
-
 .sidebar__namespace-dropdown-item--focused {
   background-color: var(--color-border-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: -2px;
+}
+
+.sidebar__namespace-dropdown-item--selected .sidebar__namespace-dropdown-path {
+  color: var(--color-primary);
 }
 
 .sidebar__namespace-dropdown-item--icon {
@@ -159,21 +159,14 @@
 .sidebar__namespace-dropdown-description {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-md);
   line-height: 1.4;
 }
 
 .sidebar__namespace-dropdown-button {
   width: 100%;
+  margin-top: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-primary-500);
-  color: var(--color-text-on-primary);
-  border: none;
-  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
 }
 
 .sidebar__namespace-dropdown-button:hover {

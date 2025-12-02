@@ -95,7 +95,9 @@ export function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const namespace = search.namespace || undefined;
+    // Normalize namespace from input field - if empty, use root namespace (undefined)
+    const normalized = namespaceInput.trim().replace(/^\/+|\/+$/g, '');
+    const namespace = normalized || undefined;
 
     try {
       // Save last used auth method

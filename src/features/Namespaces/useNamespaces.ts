@@ -30,9 +30,6 @@ const extractListResponse = (
   return raw as NamespacesListNamespacesResponse;
 };
 
-/**
- * Hook to debounce a value
- */
 export function useDebouncer<T>(value: T, delay: number = 300): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -60,15 +57,20 @@ export function useFilteredNamespaces(
  * Hook to list all namespaces from the server
  */
 export function useNamespaces() {
-  const { getAuthenticatedClient } = useAuth();
+  const { getAuthenticatedClient, currentNamespace } = useAuth();
   const client = getAuthenticatedClient();
 
   // 1. Base "list" query – returns keys & maybe key_info
+  // Include namespace in query key for proper caching per namespace context
   const listQuery = useQuery({
-    queryKey: namespacesListNamespacesQueryKey({
-      client: client ?? undefined,
-      query: { list: 'true' },
-    }),
+    queryKey: [
+      ...namespacesListNamespacesQueryKey({
+        client: client ?? undefined,
+        query: { list: 'true' },
+      }),
+      'namespace',
+      currentNamespace ?? 'root',
+    ],
     enabled: !!client,
     retry: false,
     queryFn: async () => {
@@ -115,12 +117,15 @@ export function useNamespaces() {
       : [];
 
   // 2. Details query – enrich each namespace
+  // Include namespace in query key for proper caching per namespace context
   const detailsQuery = useQuery<Namespace[]>({
     queryKey: [
       'namespaces',
       'details',
       responseData?.keys,
       responseData?.key_info,
+      'namespace',
+      currentNamespace ?? 'root',
     ],
     enabled: !!client && hasKeys,
     queryFn: async () => {
@@ -237,10 +242,12 @@ export function useNamespaces() {
 
 /**
  * Hook to create or update a namespace
+ * TODO: Update to create namespace in current namespace
  */
 export function useCreateNamespace() {
   const { getAuthenticatedClient } = useAuth();
-  const client = getAuthenticatedClient();
+  // Use root namespace context for creation - pass empty string to force root
+  const client = getAuthenticatedClient('');
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -248,13 +255,18 @@ export function useCreateNamespace() {
       client: client ?? undefined,
     }),
     onSuccess: () => {
-      // Invalidate both list & details to be safe
+      // Invalidate namespace list queries for all namespaces
+      // (namespace list is global, so we invalidate all namespace-specific queries)
       queryClient.invalidateQueries({
-        // this should match the key prefix used in namespacesListNamespacesOptions
-        queryKey: ['namespacesListNamespaces'],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['namespaces', 'details'],
+        predicate: (query) => {
+          const key = query.queryKey;
+          // Match queries that start with 'namespacesListNamespaces' or 'namespaces'
+          return (
+            Array.isArray(key) &&
+            (key[0] === 'namespacesListNamespaces' ||
+              (key[0] === 'namespaces' && key[1] === 'details'))
+          );
+        },
       });
     },
   });
@@ -264,7 +276,7 @@ export function useCreateNamespace() {
  * Hook to delete a namespace
  */
 export function useDeleteNamespace() {
-  const { getAuthenticatedClient } = useAuth();
+  const { getAuthenticatedClient, currentNamespace, setNamespace } = useAuth();
   const client = getAuthenticatedClient();
   const queryClient = useQueryClient();
 
@@ -272,12 +284,26 @@ export function useDeleteNamespace() {
     ...namespacesDeleteNamespacesPathMutation({
       client: client ?? undefined,
     }),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      const deletedPath = variables.path.path;
+
+      // If the deleted namespace is the current namespace, switch back to root
+      if (currentNamespace === deletedPath) {
+        setNamespace(null);
+      }
+
+      // Invalidate namespace list queries for all namespaces
+      // (namespace list is global, so we invalidate all namespace-specific queries)
       queryClient.invalidateQueries({
-        queryKey: ['namespacesListNamespaces'],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['namespaces', 'details'],
+        predicate: (query) => {
+          const key = query.queryKey;
+          // Match queries that start with 'namespacesListNamespaces' or 'namespaces'
+          return (
+            Array.isArray(key) &&
+            (key[0] === 'namespacesListNamespaces' ||
+              (key[0] === 'namespaces' && key[1] === 'details'))
+          );
+        },
       });
     },
   });
