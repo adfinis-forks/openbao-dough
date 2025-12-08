@@ -60,8 +60,6 @@ export function useNamespaces() {
   const { getAuthenticatedClient, currentNamespace } = useAuth();
   const client = getAuthenticatedClient();
 
-  // 1. Base "list" query – returns keys & maybe key_info
-  // Include namespace in query key for proper caching per namespace context
   const listQuery = useQuery({
     queryKey: [
       ...namespacesListNamespacesQueryKey({
@@ -78,28 +76,23 @@ export function useNamespaces() {
         throw new Error('Client not available');
       }
 
-      // Use throwOnError: false to check response status
       const result = await namespacesListNamespaces({
         client,
         query: { list: 'true' },
         throwOnError: false,
       });
 
-      // If there's an error, check if it's a 404 (empty list)
+      //Error 404 is expected behaviour and we should show empty list if we receive it
       if ('error' in result && result.error) {
-        // Check if the response status is 404
         if (result.response.status === 404) {
-          // 404 means empty list, return empty response structure
           return {
             keys: [],
             key_info: undefined,
           } as NamespacesListNamespacesResponse;
         }
-        // For other errors, throw them
         throw result.error;
       }
 
-      // Return the data if available
       return result.data;
     },
   });
@@ -116,8 +109,6 @@ export function useNamespaces() {
       ? responseData.keys.map((path) => ({ path }))
       : [];
 
-  // 2. Details query – enrich each namespace
-  // Include namespace in query key for proper caching per namespace context
   const detailsQuery = useQuery<Namespace[]>({
     queryKey: [
       'namespaces',
@@ -135,7 +126,6 @@ export function useNamespaces() {
 
       const keyInfo = responseData.key_info;
 
-      // Case 1: key_info already contains everything
       if (
         keyInfo &&
         typeof keyInfo === 'object' &&
@@ -182,7 +172,6 @@ export function useNamespaces() {
         });
       }
 
-      // Case 2: call read endpoint for each namespace
       const namespaceDetails = await Promise.all(
         responseData.keys.map(async (path: string) => {
           try {
@@ -202,9 +191,7 @@ export function useNamespaces() {
                 custom_metadata: data.custom_metadata,
               } as Namespace;
             }
-          } catch {
-            // ignore individual failures
-          }
+          } catch {}
 
           return { path } as Namespace;
         }),
@@ -256,7 +243,6 @@ export function useCreateNamespace() {
       queryClient.invalidateQueries({
         predicate: (query) => {
           const key = query.queryKey;
-          // Match queries that start with 'namespacesListNamespaces' or 'namespaces'
           return (
             Array.isArray(key) &&
             (key[0] === 'namespacesListNamespaces' ||
