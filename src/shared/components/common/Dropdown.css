@@ -36,6 +36,10 @@
   left: 0;
 }
 
+.dropdown__content.dropdown__content--start {
+  margin-top: var(--spacing-xl);
+}
+
 .dropdown__content--end {
   right: 0;
 }

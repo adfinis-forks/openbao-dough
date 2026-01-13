@@ -69,7 +69,7 @@
 
 .auth-method-option.selected {
   border-color: var(--color-primary-hover);
-  background: var(--color-primary);
+  background: var(--color-primary-500);
 }
 
 .auth-method-option__icon {
@@ -118,5 +118,8 @@
 
 .enable-auth-method-view__actions {
   margin-top: 2rem;
-  text-align: center;
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  justify-content: flex-start;
 }

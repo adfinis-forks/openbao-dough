@@ -1,0 +1,198 @@
+.enable-auth-method-options-view {
+  min-width: 600px;
+  padding: var(--spacing-lg);
+}
+
+.enable-auth-method-options-view__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.enable-auth-method-options-view__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.enable-auth-method-options-view__description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Fields Container */
+.method-options__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+/* Field Base */
+.method-options__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Checkbox Fields */
+.method-options__checkbox-field {
+  gap: var(--spacing-sm);
+}
+
+.method-options__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.method-options__checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+/* Info Icon */
+.method-options__info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+  cursor: help;
+  margin-left: var(--spacing-xs);
+}
+
+.method-options__info-icon:hover {
+  color: var(--color-text-secondary);
+}
+
+/* Toggle Fields */
+.method-options__toggle-field {
+  gap: var(--spacing-sm);
+}
+
+.method-options__toggle-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.method-options__toggle {
+  width: 44px;
+  height: 24px;
+  cursor: pointer;
+  appearance: none;
+  background-color: var(--color-border);
+  border-radius: 12px;
+  position: relative;
+  transition: background-color var(--transition-base);
+}
+
+.method-options__toggle::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  top: 3px;
+  left: 3px;
+  transition: transform var(--transition-base);
+}
+
+.method-options__toggle:checked {
+  background-color: var(--color-primary);
+}
+
+.method-options__toggle:checked::before {
+  transform: translateX(20px);
+}
+
+.method-options__toggle-content {
+  margin-top: var(--spacing-sm);
+}
+
+.method-options__toggle-hint {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: var(--spacing-xs) 0 0 0;
+}
+
+/* List Input Fields */
+.method-options__list-field {
+  gap: var(--spacing-sm);
+}
+
+.method-options__field-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.method-options__list-input-container {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
+.method-options__list-input-container .input-wrapper {
+  flex: 1;
+}
+
+.method-options__add-button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.method-options__list-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+.method-options__list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.method-options__remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.method-options__remove-button:hover {
+  background-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+

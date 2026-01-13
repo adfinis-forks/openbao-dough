@@ -1,0 +1,114 @@
+.textarea-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+  max-width: 320px;
+}
+
+.textarea-wrapper--full-width {
+  max-width: none;
+}
+
+.textarea__container {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.textarea:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+}
+
+.textarea:focus:not(:disabled) {
+  border: var(--border-active);
+}
+
+.textarea:disabled {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* With Icons */
+.textarea--with-icon-left {
+  padding-left: 2.5rem;
+}
+
+.textarea--with-icon-right {
+  padding-right: 2.5rem;
+}
+
+.textarea__icon {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding-top: var(--spacing-sm);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.textarea__icon--left {
+  left: 0;
+}
+
+.textarea__icon--right {
+  right: 0;
+}
+
+/* Error State */
+.textarea--error,
+.textarea--error:hover,
+.textarea--error:focus {
+  border-color: var(--color-red-500);
+}
+
+.textarea--error:focus {
+  box-shadow: 0 0 0 3px var(--color-red);
+}
+
+/* Labels */
+.textarea__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Error and Hint Messages */
+.textarea__error,
+.textarea__hint {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: var(--spacing-xs);
+}
+
+.textarea__error {
+  color: var(--color-red-600);
+}
+
+.textarea__hint {
+  color: var(--color-text-muted);
+}
