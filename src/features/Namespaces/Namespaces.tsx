@@ -1,18 +1,18 @@
+import { useQueryClient } from '@tanstack/react-query';
 import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useNotifications } from '../../shared/components/common/Notification';
 import { useAuth } from '../../shared/hooks/useAuth';
-import { useQueryClient } from '@tanstack/react-query';
 import './Namespaces.css';
 import {
+  type Namespace,
   useCreateNamespace,
   useDeleteNamespace,
   useFilteredNamespaces,
   useNamespaces,
-  type Namespace,
 } from './useNamespaces';
-import { NamespaceTableView } from './Views/NamespaceTableView';
 import { CreateNamespaceView } from './Views/CreateNamespaceView';
+import { NamespaceTableView } from './Views/NamespaceTableView';
 import { ViewKeyInfoView } from './Views/ViewKeyInfoView';
 
 export const Namespaces: React.FC = () => {
