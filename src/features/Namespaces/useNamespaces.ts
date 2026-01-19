@@ -10,6 +10,7 @@ import {
   namespacesReadNamespacesPath,
 } from '@/shared/client/sdk.gen';
 import type { NamespacesListNamespacesResponse } from '@/shared/client/types.gen';
+import { useNotifications } from '@/shared/components/common/Notification';
 import { useAuth } from '@/shared/hooks/useAuth';
 
 export interface Namespace {
@@ -59,6 +60,7 @@ export function useFilteredNamespaces(
 export function useNamespaces() {
   const { getAuthenticatedClient, currentNamespace } = useAuth();
   const client = getAuthenticatedClient();
+  const { addNotification } = useNotifications();
 
   const listQuery = useQuery({
     queryKey: [
@@ -191,7 +193,13 @@ export function useNamespaces() {
                 custom_metadata: data.custom_metadata,
               } as Namespace;
             }
-          } catch {}
+          } catch {
+            addNotification({
+              type: 'warning',
+              title: 'Namespace details unavailable',
+              message: `Failed to fetch details for namespace "${path}".`,
+            });
+          }
 
           return { path } as Namespace;
         }),
@@ -219,10 +227,8 @@ export function useNamespaces() {
     loading: listQuery.isLoading || (hasKeys && detailsQuery.isLoading),
     error: errorMessage,
     isFetching: listQuery.isFetching || detailsQuery.isFetching,
-    // IMPORTANT: one place to refresh everything
     refetch: async () => {
       await listQuery.refetch();
-      await detailsQuery.refetch();
     },
   };
 }
