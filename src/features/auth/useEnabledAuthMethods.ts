@@ -16,17 +16,27 @@ export interface EnabledAuth {
  * Used in authenticated pages (like /auth route) to display configured auth methods
  */
 export function useEnabledAuthMethods() {
-  const { getAuthenticatedClient } = useAuth();
+  const { getAuthenticatedClient, currentNamespace } = useAuth();
   const client = getAuthenticatedClient();
+
+  const baseOptions = authListEnabledMethodsOptions({
+    client: client ?? undefined,
+  });
 
   const {
     data: list,
     isLoading,
     error: queryError,
   } = useQuery({
-    ...authListEnabledMethodsOptions({
-      client: client ?? undefined,
-    }),
+    ...baseOptions,
+    // Include namespace in query key for proper caching per namespace context
+    queryKey: [
+      ...(Array.isArray(baseOptions.queryKey)
+        ? baseOptions.queryKey
+        : [baseOptions.queryKey]),
+      'namespace',
+      currentNamespace ?? 'root',
+    ],
     enabled: !!client,
     retry: false,
   });
