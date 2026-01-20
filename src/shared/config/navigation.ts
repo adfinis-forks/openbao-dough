@@ -150,11 +150,6 @@ export const navigationConfig: NavigationGroup[] = [
     title: 'OpenBao',
     items: [
       {
-        path: '/dashboard',
-        label: 'Dashboard',
-        icon: AnalyticsIcon,
-      },
-      {
         path: '/secrets',
         label: 'Secrets engines',
         icon: KeyIcon,
@@ -167,11 +162,6 @@ export const navigationConfig: NavigationGroup[] = [
   {
     title: 'Monitoring',
     items: [
-      {
-        path: '/audit',
-        label: 'Audit Logs',
-        icon: ShieldIcon,
-      },
       {
         path: '/settings/seal',
         label: 'Seal OpenBao',

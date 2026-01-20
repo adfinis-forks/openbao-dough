@@ -14,8 +14,6 @@ import { Route as AuthenticatedRouteImport } from './../routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index'
 import { Route as AuthenticatedSecretsRouteImport } from './../routes/_authenticated/secrets'
 import { Route as AuthenticatedEnableAuthMethodRouteImport } from './../routes/_authenticated/enable-auth-method'
-import { Route as AuthenticatedDashboardRouteImport } from './../routes/_authenticated/dashboard'
-import { Route as AuthenticatedAuditRouteImport } from './../routes/_authenticated/audit'
 import { Route as AuthenticatedAccessRouteImport } from './../routes/_authenticated/access'
 import { Route as AuthenticatedAccessIndexRouteImport } from './../routes/_authenticated/access.index'
 import { Route as AuthenticatedSettingsSealRouteImport } from './../routes/_authenticated/settings.seal'
@@ -47,16 +45,6 @@ const AuthenticatedEnableAuthMethodRoute =
     path: '/enable-auth-method',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
-  id: '/audit',
-  path: '/audit',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedAccessRoute = AuthenticatedAccessRouteImport.update({
   id: '/access',
   path: '/access',
@@ -90,8 +78,6 @@ const AuthenticatedAccessNamespacesRoute =
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/access': typeof AuthenticatedAccessRouteWithChildren
-  '/audit': typeof AuthenticatedAuditRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/secrets': typeof AuthenticatedSecretsRoute
   '/': typeof AuthenticatedIndexRoute
@@ -102,8 +88,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/audit': typeof AuthenticatedAuditRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/secrets': typeof AuthenticatedSecretsRoute
   '/': typeof AuthenticatedIndexRoute
@@ -117,8 +101,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/access': typeof AuthenticatedAccessRouteWithChildren
-  '/_authenticated/audit': typeof AuthenticatedAuditRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/_authenticated/secrets': typeof AuthenticatedSecretsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -132,8 +114,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/login'
     | '/access'
-    | '/audit'
-    | '/dashboard'
     | '/enable-auth-method'
     | '/secrets'
     | '/'
@@ -144,8 +124,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
-    | '/audit'
-    | '/dashboard'
     | '/enable-auth-method'
     | '/secrets'
     | '/'
@@ -158,8 +136,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/_authenticated/access'
-    | '/_authenticated/audit'
-    | '/_authenticated/dashboard'
     | '/_authenticated/enable-auth-method'
     | '/_authenticated/secrets'
     | '/_authenticated/'
@@ -209,20 +185,6 @@ declare module '@tanstack/react-router' {
       path: '/enable-auth-method'
       fullPath: '/enable-auth-method'
       preLoaderRoute: typeof AuthenticatedEnableAuthMethodRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/audit': {
-      id: '/_authenticated/audit'
-      path: '/audit'
-      fullPath: '/audit'
-      preLoaderRoute: typeof AuthenticatedAuditRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/access': {
@@ -278,8 +240,6 @@ const AuthenticatedAccessRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAccessRoute: typeof AuthenticatedAccessRouteWithChildren
-  AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEnableAuthMethodRoute: typeof AuthenticatedEnableAuthMethodRoute
   AuthenticatedSecretsRoute: typeof AuthenticatedSecretsRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
@@ -289,8 +249,6 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccessRoute: AuthenticatedAccessRouteWithChildren,
-  AuthenticatedAuditRoute: AuthenticatedAuditRoute,
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEnableAuthMethodRoute: AuthenticatedEnableAuthMethodRoute,
   AuthenticatedSecretsRoute: AuthenticatedSecretsRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
