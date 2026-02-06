@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteImport } from './../routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index'
 import { Route as AuthenticatedEnableAuthMethodRouteImport } from './../routes/_authenticated/enable-auth-method'
 import { Route as AuthenticatedAccessRouteImport } from './../routes/_authenticated/access'
+import { Route as AuthenticatedSplatRouteImport } from './../routes/_authenticated/$'
 import { Route as AuthenticatedAccessIndexRouteImport } from './../routes/_authenticated/access.index'
 import { Route as AuthenticatedSettingsSealRouteImport } from './../routes/_authenticated/settings.seal'
 import { Route as AuthenticatedPoliciesAclRouteImport } from './../routes/_authenticated/policies.acl'
@@ -44,6 +45,11 @@ const AuthenticatedAccessRoute = AuthenticatedAccessRouteImport.update({
   path: '/access',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedSplatRoute = AuthenticatedSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedAccessIndexRoute =
   AuthenticatedAccessIndexRouteImport.update({
     id: '/',
@@ -71,6 +77,7 @@ const AuthenticatedAccessNamespacesRoute =
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
+  '/$': typeof AuthenticatedSplatRoute
   '/access': typeof AuthenticatedAccessRouteWithChildren
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/': typeof AuthenticatedIndexRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/$': typeof AuthenticatedSplatRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/': typeof AuthenticatedIndexRoute
   '/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/_authenticated/$': typeof AuthenticatedSplatRoute
   '/_authenticated/access': typeof AuthenticatedAccessRouteWithChildren
   '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/login'
+    | '/$'
     | '/access'
     | '/enable-auth-method'
     | '/'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/$'
     | '/enable-auth-method'
     | '/'
     | '/access/namespaces'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/login'
+    | '/_authenticated/$'
     | '/_authenticated/access'
     | '/_authenticated/enable-auth-method'
     | '/_authenticated/'
@@ -175,6 +187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccessRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/$': {
+      id: '/_authenticated/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof AuthenticatedSplatRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/access/': {
       id: '/_authenticated/access/'
       path: '/'
@@ -220,6 +239,7 @@ const AuthenticatedAccessRouteWithChildren =
   AuthenticatedAccessRoute._addFileChildren(AuthenticatedAccessRouteChildren)
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedSplatRoute: typeof AuthenticatedSplatRoute
   AuthenticatedAccessRoute: typeof AuthenticatedAccessRouteWithChildren
   AuthenticatedEnableAuthMethodRoute: typeof AuthenticatedEnableAuthMethodRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
@@ -228,6 +248,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedSplatRoute: AuthenticatedSplatRoute,
   AuthenticatedAccessRoute: AuthenticatedAccessRouteWithChildren,
   AuthenticatedEnableAuthMethodRoute: AuthenticatedEnableAuthMethodRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
