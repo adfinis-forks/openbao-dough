@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './../routes/__root'
 import { Route as LoginRouteImport } from './../routes/login'
 import { Route as AuthenticatedRouteImport } from './../routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index'
-import { Route as AuthenticatedSecretsRouteImport } from './../routes/_authenticated/secrets'
 import { Route as AuthenticatedEnableAuthMethodRouteImport } from './../routes/_authenticated/enable-auth-method'
 import { Route as AuthenticatedAccessRouteImport } from './../routes/_authenticated/access'
 import { Route as AuthenticatedAccessIndexRouteImport } from './../routes/_authenticated/access.index'
@@ -32,11 +31,6 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedSecretsRoute = AuthenticatedSecretsRouteImport.update({
-  id: '/secrets',
-  path: '/secrets',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedEnableAuthMethodRoute =
@@ -79,7 +73,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/access': typeof AuthenticatedAccessRouteWithChildren
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
-  '/secrets': typeof AuthenticatedSecretsRoute
   '/': typeof AuthenticatedIndexRoute
   '/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
   '/policies/acl': typeof AuthenticatedPoliciesAclRoute
@@ -89,7 +82,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
-  '/secrets': typeof AuthenticatedSecretsRoute
   '/': typeof AuthenticatedIndexRoute
   '/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
   '/policies/acl': typeof AuthenticatedPoliciesAclRoute
@@ -102,7 +94,6 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/access': typeof AuthenticatedAccessRouteWithChildren
   '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
-  '/_authenticated/secrets': typeof AuthenticatedSecretsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/access/namespaces': typeof AuthenticatedAccessNamespacesRoute
   '/_authenticated/policies/acl': typeof AuthenticatedPoliciesAclRoute
@@ -115,7 +106,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/access'
     | '/enable-auth-method'
-    | '/secrets'
     | '/'
     | '/access/namespaces'
     | '/policies/acl'
@@ -125,7 +115,6 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/enable-auth-method'
-    | '/secrets'
     | '/'
     | '/access/namespaces'
     | '/policies/acl'
@@ -137,7 +126,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/access'
     | '/_authenticated/enable-auth-method'
-    | '/_authenticated/secrets'
     | '/_authenticated/'
     | '/_authenticated/access/namespaces'
     | '/_authenticated/policies/acl'
@@ -171,13 +159,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/secrets': {
-      id: '/_authenticated/secrets'
-      path: '/secrets'
-      fullPath: '/secrets'
-      preLoaderRoute: typeof AuthenticatedSecretsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/enable-auth-method': {
@@ -241,7 +222,6 @@ const AuthenticatedAccessRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAccessRoute: typeof AuthenticatedAccessRouteWithChildren
   AuthenticatedEnableAuthMethodRoute: typeof AuthenticatedEnableAuthMethodRoute
-  AuthenticatedSecretsRoute: typeof AuthenticatedSecretsRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedPoliciesAclRoute: typeof AuthenticatedPoliciesAclRoute
   AuthenticatedSettingsSealRoute: typeof AuthenticatedSettingsSealRoute
@@ -250,7 +230,6 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccessRoute: AuthenticatedAccessRouteWithChildren,
   AuthenticatedEnableAuthMethodRoute: AuthenticatedEnableAuthMethodRoute,
-  AuthenticatedSecretsRoute: AuthenticatedSecretsRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedPoliciesAclRoute: AuthenticatedPoliciesAclRoute,
   AuthenticatedSettingsSealRoute: AuthenticatedSettingsSealRoute,
