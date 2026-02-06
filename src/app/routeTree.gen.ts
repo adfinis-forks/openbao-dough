@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './../routes/__root'
+import { Route as UnsealRouteImport } from './../routes/unseal'
 import { Route as LoginRouteImport } from './../routes/login'
 import { Route as AuthenticatedRouteImport } from './../routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './../routes/_authenticated/index'
@@ -20,6 +21,11 @@ import { Route as AuthenticatedSettingsSealRouteImport } from './../routes/_auth
 import { Route as AuthenticatedPoliciesAclRouteImport } from './../routes/_authenticated/policies.acl'
 import { Route as AuthenticatedAccessNamespacesRouteImport } from './../routes/_authenticated/access.namespaces'
 
+const UnsealRoute = UnsealRouteImport.update({
+  id: '/unseal',
+  path: '/unseal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -77,6 +83,7 @@ const AuthenticatedAccessNamespacesRoute =
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
+  '/unseal': typeof UnsealRoute
   '/$': typeof AuthenticatedSplatRoute
   '/access': typeof AuthenticatedAccessRouteWithChildren
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/unseal': typeof UnsealRoute
   '/$': typeof AuthenticatedSplatRoute
   '/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
   '/': typeof AuthenticatedIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/unseal': typeof UnsealRoute
   '/_authenticated/$': typeof AuthenticatedSplatRoute
   '/_authenticated/access': typeof AuthenticatedAccessRouteWithChildren
   '/_authenticated/enable-auth-method': typeof AuthenticatedEnableAuthMethodRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/login'
+    | '/unseal'
     | '/$'
     | '/access'
     | '/enable-auth-method'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/unseal'
     | '/$'
     | '/enable-auth-method'
     | '/'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/login'
+    | '/unseal'
     | '/_authenticated/$'
     | '/_authenticated/access'
     | '/_authenticated/enable-auth-method'
@@ -148,10 +160,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
+  UnsealRoute: typeof UnsealRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unseal': {
+      id: '/unseal'
+      path: '/unseal'
+      fullPath: '/unseal'
+      preLoaderRoute: typeof UnsealRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -263,6 +283,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
+  UnsealRoute: UnsealRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
