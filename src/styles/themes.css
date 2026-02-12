@@ -22,8 +22,8 @@
   --color-primary-bg-border: var(--color-primary-100);
 
   /* Secondary Colors */
-  --color-secondary: var(--color-secondary-500);
-  --color-secondary-hover: var(--color-secondary-600);
+  --color-secondary: var(--color-secondary-600);
+  --color-secondary-hover: var(--color-secondary-700);
   --color-secondary-light: var(--color-secondary-50);
 
   --color-red: var(--color-red-500);
