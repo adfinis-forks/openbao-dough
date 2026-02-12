@@ -1,0 +1,17 @@
+.seal-view {
+  max-width: 800px;
+}
+
+.seal-view h1 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.seal-view p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.seal-view__actions {
+  position: relative;
+  display: inline-block;
+}

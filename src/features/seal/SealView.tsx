@@ -6,6 +6,7 @@ import { ConfirmAction } from '@/shared/components/common/ConfirmAction';
 import { Lock } from '@/shared/components/common/Icons';
 import { useNotifications } from '@/shared/components/common/Notification';
 import { useAuth } from '@/shared/hooks/useAuth';
+import './SealView.css';
 
 export function SealView() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,25 +55,27 @@ export function SealView() {
         from responding to operations again until OpenBao is unsealed again with
         the "unseal" command or via the API.{' '}
       </p>
-      <Button
-        variant="outlined-danger"
-        icon={<Lock size={16} />}
-        onClick={() => setIsModalOpen(true)}
-      >
-        Seal OpenBao
-      </Button>
+      <div className="seal-view__actions">
+        <Button
+          variant="outlined-danger"
+          icon={<Lock size={16} />}
+          onClick={() => setIsModalOpen(true)}
+        >
+          Seal OpenBao
+        </Button>
 
-      <ConfirmAction
-        isOpen={isModalOpen}
-        onClose={() => !isSealing && setIsModalOpen(false)}
-        onConfirm={handleSeal}
-        title="Seal this Cluster?"
-        message="You will not be able to read or write any data until the cluster is unsealed again."
-        confirmText="Seal"
-        cancelText="Cancel"
-        confirmVariant="danger"
-        isLoading={isSealing}
-      />
+        <ConfirmAction
+          isOpen={isModalOpen}
+          onClose={() => !isSealing && setIsModalOpen(false)}
+          onConfirm={handleSeal}
+          title="Seal this Cluster?"
+          message="You will not be able to read or write any data until the cluster is unsealed again."
+          confirmText="Seal"
+          cancelText="Cancel"
+          confirmVariant="danger"
+          isLoading={isSealing}
+        />
+      </div>
     </div>
   );
 }

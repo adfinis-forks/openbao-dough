@@ -56,10 +56,16 @@ export function ConfirmAction({
         <Button
           variant={confirmVariant === 'danger' ? 'outlined-danger' : 'primary'}
           onClick={onConfirm}
+          className="confirm-action__button"
         >
           {confirmText}
         </Button>
-        <Button variant="danger" onClick={onClose} disabled={isLoading}>
+        <Button
+          variant="ghost"
+          onClick={onClose}
+          disabled={isLoading}
+          className="confirm-action__button"
+        >
           {cancelText}
         </Button>
       </div>
