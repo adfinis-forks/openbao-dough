@@ -13,20 +13,34 @@ import './Sidebar.css';
 import { NamespacePicker } from '@/features/Namespaces/NamespacePicker';
 import {
   type NavigationItem,
+  type NavigationLink,
   type NavigationSection,
   navigationConfig,
 } from '@/shared/config/navigation';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 function isNavigationSection(item: NavigationItem): item is NavigationSection {
   return 'sections' in item;
 }
 
+function isNavigationLink(item: NavigationItem): item is NavigationLink {
+  return 'path' in item;
+}
+
 export function Sidebar() {
   const location = useLocation();
+  const { inRootNamespace } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<NavigationSection | null>(
     null,
   );
+
+  const shouldShowItem = (item: NavigationItem) => {
+    if (isNavigationLink(item) && item.rootNamespaceOnly) {
+      return inRootNamespace;
+    }
+    return true;
+  };
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -178,47 +192,54 @@ export function Sidebar() {
           ) : (
             // Show main navigation panel
             <div className="sidebar__panel sidebar__panel--main">
-              {navigationConfig.map((group) => (
-                <div key={group.title} className="sidebar__menu-group">
-                  {/* e.g. OpenBao, Monitoring */}
-                  {group.title && (
-                    <h3 className="sidebar__group-title">{group.title}</h3>
-                  )}
+              {navigationConfig.map((group) => {
+                const visibleItems = group.items.filter(shouldShowItem);
+                if (visibleItems.length === 0) return null;
 
-                  <div className="sidebar__menu">
-                    {group.items.map((item) => {
-                      if (isNavigationSection(item)) {
+                return (
+                  <div key={group.title} className="sidebar__menu-group">
+                    {/* e.g. OpenBao, Monitoring */}
+                    {group.title && (
+                      <h3 className="sidebar__group-title">{group.title}</h3>
+                    )}
+
+                    <div className="sidebar__menu">
+                      {visibleItems.map((item) => {
+                        if (isNavigationSection(item)) {
+                          const IconComponent = item.icon;
+                          return (
+                            <MenuItem
+                              variant="section"
+                              key={item.label}
+                              onClick={() => openPanel(item)}
+                              icon={
+                                IconComponent ? <IconComponent /> : undefined
+                              }
+                            >
+                              {item.label}
+                            </MenuItem>
+                          );
+                        }
+
+                        const isActive = location.pathname === item.path;
                         const IconComponent = item.icon;
+
                         return (
                           <MenuItem
-                            variant="section"
+                            active={isActive}
                             key={item.label}
-                            onClick={() => openPanel(item)}
+                            to={item.path}
+                            onClick={handleNavClick}
                             icon={IconComponent ? <IconComponent /> : undefined}
                           >
                             {item.label}
                           </MenuItem>
                         );
-                      }
-
-                      const isActive = location.pathname === item.path;
-                      const IconComponent = item.icon;
-
-                      return (
-                        <MenuItem
-                          active={isActive}
-                          key={item.label}
-                          to={item.path}
-                          onClick={handleNavClick}
-                          icon={IconComponent ? <IconComponent /> : undefined}
-                        >
-                          {item.label}
-                        </MenuItem>
-                      );
-                    })}
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </nav>

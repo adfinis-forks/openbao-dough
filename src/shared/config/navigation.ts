@@ -17,6 +17,7 @@ export type NavigationLink = {
   path: string;
   label: string;
   icon?: Icon;
+  rootNamespaceOnly?: boolean;
 };
 
 export type NavigationSection = {
@@ -166,6 +167,7 @@ export const navigationConfig: NavigationGroup[] = [
         path: '/settings/seal',
         label: 'Seal OpenBao',
         icon: LockClosedIcon,
+        rootNamespaceOnly: true,
       },
     ],
   },

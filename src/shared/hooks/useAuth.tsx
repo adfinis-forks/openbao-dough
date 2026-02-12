@@ -22,6 +22,7 @@ export interface AuthContextValue {
   tokenData: TokenLookupResponse | null;
   isAuthenticated: boolean;
   currentNamespace: string | null;
+  inRootNamespace: boolean;
   login: (token: string, namespace?: string) => Promise<void>;
   logout: (namespace?: string) => Promise<void>;
   setNamespace: (namespace: string | null) => void;
@@ -48,6 +49,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const renewalTimer = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const isAuthenticated = !!token && !!tokenData;
+  const inRootNamespace = !currentNamespace || currentNamespace === '/';
 
   // Initialize namespace from localStorage on mount
   useEffect(() => {
@@ -139,6 +141,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         tokenData,
         isAuthenticated,
         currentNamespace,
+        inRootNamespace,
         login,
         logout,
         setNamespace,

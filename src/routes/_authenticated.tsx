@@ -5,7 +5,7 @@ import { useHealthCheck } from '@/shared/hooks/useHealthCheck';
 
 function AuthenticatedLayout() {
   useHealthCheck();
-  
+
   return (
     <AuthGuard>
       <Layout />
